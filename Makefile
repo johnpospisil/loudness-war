@@ -17,8 +17,11 @@ lint: ## Ruff lint + format check
 theme: ## Render theme preview figure
 	$(PY) -m lw.viz.theme
 
-ingest-ab: ## (P05/P06) Stream-parse AcousticBrainz low-level dumps -> Parquet
-	@echo "TODO P05/P06"
+ingest-ab-sample: ## (P05) Parse the local 100k sample dump -> data/interim/ab_lowlevel/sample.parquet
+	$(PY) -m lw.build.parse_lowlevel --sample
+
+ingest-ab: ## (P05/P06) Stream-parse all 30 low-level parts from HTTP (~21 h; resumable per part)
+	caffeinate -i $(PY) -m lw.build.parse_lowlevel --parts 0-29 --jobs 2
 
 ingest-mb: ## (P07) MusicBrainz JSON dumps -> Parquet
 	@echo "TODO P07"
@@ -34,4 +37,4 @@ report: ## (P21) Render Quarto article
 
 all: ingest-ab ingest-mb build models report ## Full rebuild
 
-.PHONY: help setup test lint theme ingest-ab ingest-mb build models report all
+.PHONY: help setup test lint theme ingest-ab-sample ingest-ab ingest-mb build models report all

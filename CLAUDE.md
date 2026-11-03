@@ -6,7 +6,9 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 - ✅ DONE! P00: Repo scaffold
 - ✅ DONE! P01: AcousticBrainz access probe
-- ⬜ P02: MusicBrainz access probe ← next
+- ✅ DONE! P05: Streaming low-level parser (moved ahead of P02)
+- ⬜ P02: MusicBrainz access probe ← next (full AcousticBrainz ingest running in the background)
+- ⬜ P03, P04, then P06 onward
 
 ## How we work
 
@@ -21,7 +23,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 ## Decisions (defaults; update if the user changes them)
 
-- **Metrics (changed at P01, 2026-11-02):** AcousticBrainz has **no `loudness_ebu128`** (every record comes from the Essentia `music 1.0` extractor). Headline loudness = **calibrated loudness (≈ LUFS) from `audio_properties.replay_gain`**; dynamics = **`lowlevel.dynamic_complexity`** (LRA analogue), plus `average_loudness`. P03 calibrates both against pyloudnorm LUFS/LRA. Charts label the measure "estimated LUFS" and give the calibration error. See `notes/p01_access_check.md`.
+- **Metrics (changed at P01, 2026-11-02):** AcousticBrainz has **no `loudness_ebu128`** (every record comes from the Essentia `music 1.0` extractor). Headline loudness = **calibrated loudness (≈ LUFS) from `audio_properties.replay_gain`**; dynamics = **`lowlevel.dynamic_complexity`** (LRA analogue), plus `average_loudness`. P03 calibrates both against pyloudnorm LUFS/LRA. Charts label the measure "estimated LUFS" and give the calibration error. See `notes/p01_access_check.md`. **The user approved this on 2026-11-02**, along with installing Rosetta for the original extractor and running P05 before P02.
 - Core sample: release years 1980–2022, tracks with valid `replay_gain` and `dynamic_complexity`. The 100k sample dump ends in 2014 and is used **only** for fixtures and tests.
 - Dump parts 0–29 are in submission order (part 0 ≤ 2014; later parts reach 2022), so all 30 parts are needed.
 - Headline break year: 2015, with 2013–2017 as alternatives.
@@ -48,7 +50,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 ## Phase 1 — Build the dataset
 
-- [ ] **P05: Streaming low-level parser.** Write `src/lw/build/parse_lowlevel.py`. It streams `tar.zst` (local file or HTTP), parses each JSON with orjson, keeps ~25 fields (recording MBID, submission offset, Essentia version, replay_gain, dynamic_complexity, average_loudness, spectral_rms, silence rates, band energies, spectral flatness/centroid, codec, bitrate, sample rate, lossless flag, length, tag release MBID, tag date, tag album/artist), and writes Parquet in row-group batches. Make it resumable per archive part, and log malformed records rather than crashing. Build test fixtures from 20 real sample-dump records. Run it on the sample dump and report throughput. *Figures: none.*
+- [x] ✅ DONE! **P05: Streaming low-level parser.** _Done 2026-11-02: HTTP/file → Parquet streaming parser with Range-resume and sha256 check; 4,878 rec/s locally, ingest network-bound at ~8.5 MB/s (~21 h for 632 GB); 11 tests pass._ Write `src/lw/build/parse_lowlevel.py`. It streams `tar.zst` (local file or HTTP), parses each JSON with orjson, keeps ~25 fields (recording MBID, submission offset, Essentia version, replay_gain, dynamic_complexity, average_loudness, spectral_rms, silence rates, band energies, spectral flatness/centroid, codec, bitrate, sample rate, lossless flag, length, tag release MBID, tag date, tag album/artist), and writes Parquet in row-group batches. Make it resumable per archive part, and log malformed records rather than crashing. Build test fixtures from 20 real sample-dump records. Run it on the sample dump and report throughput. *Figures: none.*
 
 - [ ] **P06: Full AcousticBrainz ingest.** Run P05 over every low-level dump part (background job, resumable, checksums verified), plus the high-level genre/mood fields we need. Delete each archive once it is parsed, or stream it so it never touches disk. Report rows, failures, field null rates and wall time. *Figures: `figures/p06_submissions_by_codec.png`, `figures/p06_field_coverage.png` (null rate per field).*
 
