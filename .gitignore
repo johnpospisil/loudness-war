@@ -1,0 +1,19 @@
+# Data (large / regenerable)
+data/raw/*
+data/interim/*
+data/processed/*
+!data/**/.gitkeep
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Quarto
+report/_site/
+report/.quarto/
+report/*_files/
+
+.DS_Store
