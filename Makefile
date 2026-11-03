@@ -23,7 +23,10 @@ ingest-ab-sample: ## (P05) Parse the local 100k sample dump -> data/interim/ab_l
 ingest-ab: ## (P05/P06) Stream-parse all 30 low-level parts from HTTP (~21 h; resumable per part)
 	caffeinate -i $(PY) -m lw.build.parse_lowlevel --parts 0-29 --jobs 2
 
-ingest-mb: ## (P07) MusicBrainz JSON dumps -> Parquet
+fetch-mb: ## (P02) Stream the MusicBrainz full export; keep 35 tables in data/raw/musicbrainz/
+	$(PY) -m lw.ingest.musicbrainz_dump
+
+ingest-mb: ## (P07) MusicBrainz tables -> Parquet
 	@echo "TODO P07"
 
 build: ## (P08-P10) Release match, dedupe, genres -> data/processed/tracks.parquet
@@ -37,4 +40,4 @@ report: ## (P21) Render Quarto article
 
 all: ingest-ab ingest-mb build models report ## Full rebuild
 
-.PHONY: help setup test lint theme ingest-ab-sample ingest-ab ingest-mb build models report all
+.PHONY: help setup test lint theme ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all
