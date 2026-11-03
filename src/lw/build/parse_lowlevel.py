@@ -199,13 +199,14 @@ class HashingReader(io.RawIOBase):
 class ResumableHTTPReader(io.RawIOBase):
     """Sequential HTTP body reader that reconnects with a Range header after errors."""
 
-    def __init__(self, url: str, retries: int = 20, chunk: int = 1 << 20, timeout: int = 60):
+    # 120 retries capped at 60 s rides out network outages of about 2 hours (DNS drops included).
+    def __init__(self, url: str, retries: int = 120, chunk: int = 1 << 20, timeout: int = 60):
         self.url, self.retries, self.chunk, self.timeout = url, retries, chunk, timeout
         self.pos = 0
         self.length: int | None = None
         self._buf = b""
         self._it: Iterator[bytes] | None = None
-        self._open()
+        self._open_with_retry(None)
 
     def readable(self) -> bool:
         return True
@@ -220,8 +221,25 @@ class ResumableHTTPReader(io.RawIOBase):
             self.length = int(r.headers.get("Content-Length", 0)) or None
         self._it = r.iter_content(chunk_size=self.chunk)
 
+    def _open_with_retry(self, exc: Exception | None, attempt: int = 0) -> None:
+        """(Re)connect, retrying with backoff; a failed reconnect counts as another attempt."""
+        while True:
+            if exc is not None:
+                attempt += 1
+                if attempt > self.retries:
+                    raise OSError(f"giving up on {self.url} at byte {self.pos}") from exc
+                wait = min(60, 2**attempt)
+                log.warning(
+                    "HTTP error at byte %s (%s); retry %s in %ss", self.pos, exc, attempt, wait
+                )
+                time.sleep(wait)
+            try:
+                self._open()
+                return
+            except (requests.RequestException, OSError) as e:
+                exc = e
+
     def readinto(self, b) -> int:
-        attempt = 0
         while not self._buf:
             try:
                 self._buf = next(self._it)
@@ -235,13 +253,7 @@ class ResumableHTTPReader(io.RawIOBase):
                 exc = e
             else:
                 break
-            attempt += 1
-            if attempt > self.retries:
-                raise OSError(f"giving up on {self.url} at byte {self.pos}") from exc
-            wait = min(60, 2**attempt)
-            log.warning("HTTP error at byte %s (%s); retry %s in %ss", self.pos, exc, attempt, wait)
-            time.sleep(wait)
-            self._open()
+            self._open_with_retry(exc)
         n = min(len(b), len(self._buf))
         b[:n] = self._buf[:n]
         self._buf = self._buf[n:]
@@ -259,7 +271,7 @@ def expected_sha256(part: int | None) -> str | None:
         sums = (SAMPLE_PATH.parent / "sample.sha256sums").read_text()
         fname = SAMPLE_PATH.name
     else:
-        sums = requests.get(f"{BASE_URL}/{DUMP}/sha256sums", timeout=60).text
+        sums = ResumableHTTPReader(f"{BASE_URL}/{DUMP}/sha256sums").read().decode()
         fname = f"{DUMP}-{part}.tar.zst"
     for line in sums.splitlines():
         h, _, f = line.partition("  ")

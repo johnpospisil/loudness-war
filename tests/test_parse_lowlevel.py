@@ -125,3 +125,39 @@ def test_http_reader_resumes_after_drop(tmp_path, monkeypatch):
     assert (tmp_path / "part=05.done.json").exists()
     # second run is skipped via the done marker
     assert pll.process_part(5, tmp_path, source=url, verify=False)["rows"] == 20
+
+
+def test_http_reader_retries_failed_connects(monkeypatch):
+    """A DNS outage on the first connect and on a reconnect is retried, not fatal (2026-11-03)."""
+    import requests
+
+    body = b"x" * 100
+    calls = {"n": 0}
+
+    class Resp:
+        def __init__(self, start):
+            self.status_code = 206 if start else 200
+            self.headers = {"Content-Length": str(len(body) - start)}
+            self.start = start
+
+        def raise_for_status(self):
+            pass
+
+        def iter_content(self, chunk_size):
+            yield body[self.start : self.start + 40]
+            if self.start == 0:
+                raise requests.ConnectionError("dropped")
+            yield body[self.start + 40 :]
+
+    def fake_get(url, headers=None, **kw):
+        calls["n"] += 1
+        if calls["n"] in (1, 3):  # first connect and first reconnect fail like a DNS error
+            raise requests.ConnectionError("Failed to resolve")
+        start = int(headers["Range"][6:-1]) if headers else 0
+        return Resp(start)
+
+    monkeypatch.setattr(pll.requests, "get", fake_get)
+    monkeypatch.setattr(pll.time, "sleep", lambda s: None)
+    r = pll.ResumableHTTPReader("http://example.invalid/x", retries=5)
+    assert r.read() == body
+    assert calls["n"] == 4
