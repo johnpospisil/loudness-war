@@ -2,11 +2,16 @@
 
 Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prompt.
 
+## Progress
+
+- ✅ DONE! P00: Repo scaffold
+- ⬜ P01: AcousticBrainz access probe ← next
+
 ## How we work
 
 - Run the prompts below **in order**, one per session turn. The user types `Run P07` (or similar).
 - Work as an expert data scientist: state assumptions, check the data before modelling, and report uncertainty (CIs, sensitivity). Never claim causation (brief §5, "What you won't claim").
-- **After every prompt:** (1) list every figure created, with its path, and show it (Read the PNG); (2) give 3–5 bullet findings or numbers; (3) ask any questions that came up; (4) tick the prompt below as `- [x] ✅ DONE! **Pxx: …** _Done YYYY-MM-DD: one-line result._` and add "✅ DONE" to a phase heading once all its prompts are done.
+- **After every prompt:** (1) list every figure created, with its path, and show it (Read the PNG); (2) give 3–5 bullet findings or numbers; (3) ask any questions that came up; (4) tick the prompt below as `- [x] ✅ DONE! **Pxx: …** _Done YYYY-MM-DD: one-line result._` and add "✅ DONE" to a phase heading once all its prompts are done. Also update the **Progress** list at the top: add a `✅ DONE! Pxx` line and move the `← next` marker.
 - Figures: `figures/pNN_<name>.png` (static, 200 dpi) and, for the hero and interactive charts, `.html` as well. Every figure uses `src/lw/viz/theme.py`. Each figure must work as a standalone image: title, units (LUFS, LU), n, and source line ("Data: AcousticBrainz + MusicBrainz, CC0").
 - Data layout: `data/raw/` (downloads, git-ignored), `data/interim/` (Parquet), `data/processed/` (analysis tables), `data/reference/` (hand-built, committed). Big dumps are **streamed and parsed on the fly, never stored whole** (240 GB free disk).
 - Stack: Python 3.12 via `uv`, polars + DuckDB for data, pyarrow Parquet, statsmodels / PyMC for models, matplotlib (static) + Plotly or Observable (interactive), Quarto for the report, pytest for tests.
