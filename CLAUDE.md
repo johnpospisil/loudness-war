@@ -9,8 +9,9 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - ✅ DONE! P05: Streaming low-level parser (moved ahead of P02)
 - ✅ DONE! P02: MusicBrainz access probe
 - ✅ DONE! P03: Calibrate the AcousticBrainz proxies
-- ⬜ P04: Normalisation timeline ← next (full AcousticBrainz ingest finished: 30/30 parts, 29.46M rows)
-- ⬜ P06 onward
+- ✅ DONE! P04: Normalisation timeline
+- ⬜ P06: Full AcousticBrainz ingest report ← next (ingest itself finished: 30/30 parts, 29.46M rows)
+- ⬜ P07 onward
 
 ## How we work
 
@@ -28,17 +29,17 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - **Metrics (changed at P01, 2026-11-02):** AcousticBrainz has **no `loudness_ebu128`** (every record comes from the Essentia `music 1.0` extractor). Headline loudness = **calibrated loudness (≈ LUFS) from `audio_properties.replay_gain`**; dynamics = **`lowlevel.dynamic_complexity`** (LRA analogue), plus `average_loudness`. P03 calibrates both against pyloudnorm LUFS/LRA. Charts label the measure "estimated LUFS" and give the calibration error. See `notes/p01_access_check.md`. **The user approved this on 2026-11-02**, along with installing Rosetta for the original extractor and running P05 before P02.
 - Core sample: release years 1980–2022, tracks with valid `replay_gain` and `dynamic_complexity`. The 100k sample dump ends in 2014 and is used **only** for fixtures and tests.
 - Dump parts 0–29 are in submission order (part 0 ≤ 2014; later parts reach 2022), so all 30 parts are needed.
-- Headline break year: 2015, with 2013–2017 as alternatives.
+- Headline break year: 2015, with 2013–2017 as alternatives. (P04: report 2016 alongside 2015, since the era starts Dec 2015 and release years are whole years.)
 - "Lossless" = FLAC/ALAC/WAV/AIFF; lossy is flagged and dropped in robustness checks.
 - Genre: MusicBrainz release-group tags mapped to ~12 top-level genres; AcousticBrainz high-level genre used only as a fallback, and flagged.
 - Ingest scale: **stream the full low-level dumps** (user decision, 2026-11-02).
-- Own audio: **some rips, mostly lossy** (user decision, 2026-11-02). P18 treats them as secondary evidence, and the R128 test signals plus published measurements serve as the main check. Ask the user for the folder path at P03.
+- Own audio: **some rips, mostly lossy** (user decision, 2026-11-02). P18 treats them as secondary evidence, and the R128 test signals plus published measurements serve as the main check. P03 used `~/Music/iTunes/iTunes Media/Music` + `~/Music/Music` (AAC). **Update 2026-11-05:** the user will rip ~12 CDs to FLAC/ALAC with MusicBrainz IDs (quiet pre-1990, loud-war peak, post-2015, classical/jazz, metal/EDM, plus an original + remaster pair if possible) for P18. Ask for the folder path at P18. The 64 KB short/broken files in the library are intentional; leave them skipped.
 - App: **static site on GitHub Pages** (user decision, 2026-11-02).
 - Genre model: **Bayesian, PyMC** (user decision, 2026-11-02).
 
 ---
 
-## Phase 0 — Setup and day-one access check
+## Phase 0 — Setup and day-one access check ✅ DONE
 
 - [x] ✅ DONE! **P00: Repo scaffold.** _Done 2026-11-02: git repo, uv env (Py 3.12, PyMC installed), Makefile, theme.py with validated palette + save_fig, 3 tests pass, ruff clean._ `git init`; create the skeleton from brief §7 (`src/lw/...`, `tests/`, `report/`, `app/`, `data/`, `figures/`, `notes/`); `pyproject.toml` with uv, ruff, pytest; `.gitignore` for `data/raw`, `data/interim`; Makefile with stub targets; `src/lw/viz/theme.py` (one palette, fonts, a `save_fig()` helper that writes the source line); README and DATA.md stubs. Verify with `uv run pytest` (one smoke test) and `make help`. *Figures: `figures/p00_theme_preview.png` (swatch and sample line chart).*
 
@@ -48,7 +49,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 - [x] ✅ DONE! **P03: Reproduce EBU R128 with pyloudnorm and calibrate the AcousticBrainz proxies.** _Done 2026-11-04: pyloudnorm + ffmpeg pass all 9 EBU 3341/3342 cases; on 1,185 own tracks (322 albums) LUFS = −23.44 − 1.042·RG (CV RMSE 1.34 LU), LRA = −0.24 + 1.78·DC (CV RMSE 2.93 LU, spread compressed ~18%); memory guards added after the audiobook freeze; see `notes/p03_calibration.md`._ *(Expanded at P01.)* Run the AcousticBrainz-era Essentia extractor (`data/raw/essentia_extractor/streaming_extractor_music`, needs Rosetta, or the `essentia` pip package with parity checked) and pyloudnorm on the same audio: R128 test signals, synthetic signals of controlled loudness and crest factor, and the user's files. Fit LUFS ~ f(`replay_gain`) and LRA ~ g(`dynamic_complexity`) with prediction intervals; save the result to `data/reference/proxy_calibration.json`. *Original scope:* Write `src/lw/measure/pyloudnorm_check.py`. Validate against EBU Tech 3341/3342 test signals (generate a 1 kHz sine at −23 dBFS, which should read −23 LUFS, plus the LRA test cases), with tolerance tests in pytest. Where Essentia is installable, compare pyloudnorm against Essentia's `LoudnessEBUR128` on the same files, since AcousticBrainz used Essentia, and record any systematic offset. Run it on a few of the user's own files if provided. *Figures: `figures/p03_r128_conformance.png` (expected vs measured on the test signals), `figures/p03_rg_vs_lufs.png`, `figures/p03_dyncomp_vs_lra.png` (calibration fits).*
 
-- [ ] **P04: Normalisation timeline.** Research and build `data/reference/normalisation_timeline.csv` with columns service, platform, default_on_date, target_LUFS, method (track/album), source_url, source_quote, confidence. Cover Spotify, YouTube, Apple Music / iTunes Sound Check, Tidal, Amazon Music, Deezer, Pandora, plus AES TD1004 (2015) and ITU-R BS.1770 / EBU R128 milestones. Flag anything we could not verify. *Figures: `figures/p04_normalisation_timeline.png` (timeline strip; it is also the shaded band reused in later charts).*
+- [x] ✅ DONE! **P04: Normalisation timeline.** _Done 2026-11-05: 20 cited events (8 high, 9 medium, 3 low/UNVERIFIED); era starts 2015.95 (YouTube Dec 2015), 3 major services default-on by 2017.90 (Tidal Nov 2017); `lw.normalisation.era_start()` feeds later charts; see `notes/p04_normalisation_timeline.md`._ Research and build `data/reference/normalisation_timeline.csv` with columns service, platform, default_on_date, target_LUFS, method (track/album), source_url, source_quote, confidence. Cover Spotify, YouTube, Apple Music / iTunes Sound Check, Tidal, Amazon Music, Deezer, Pandora, plus AES TD1004 (2015) and ITU-R BS.1770 / EBU R128 milestones. Flag anything we could not verify. *Figures: `figures/p04_normalisation_timeline.png` (timeline strip; it is also the shaded band reused in later charts).*
 
 ## Phase 1 — Build the dataset
 

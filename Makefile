@@ -35,6 +35,9 @@ calibrate: ## (P03) R128 conformance, synthetic + own-library measurements, prox
 	$(PY) -m lw.measure.calibrate
 	$(PY) -m lw.viz.p03
 
+timeline: ## (P04) Normalisation timeline figure from data/reference/normalisation_timeline.csv
+	$(PY) -m lw.viz.p04
+
 ingest-mb: ## (P07) MusicBrainz tables -> Parquet
 	@echo "TODO P07"
 
@@ -49,4 +52,4 @@ report: ## (P21) Render Quarto article
 
 all: ingest-ab ingest-mb build models report ## Full rebuild
 
-.PHONY: help setup test lint theme calibrate ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all
+.PHONY: help setup test lint theme calibrate timeline ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all
