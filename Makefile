@@ -26,6 +26,15 @@ ingest-ab: ## (P05/P06) Stream-parse all 30 low-level parts from HTTP (~21 h; re
 fetch-mb: ## (P02) Stream the MusicBrainz full export; keep 35 tables in data/raw/musicbrainz/
 	$(PY) -m lw.ingest.musicbrainz_dump
 
+MUSIC_ROOTS ?= --root "$(HOME)/Music/iTunes/iTunes Media/Music" --root "$(HOME)/Music/Music"
+
+calibrate: ## (P03) R128 conformance, synthetic + own-library measurements, proxy fit, figures
+	$(PY) -m lw.measure.pyloudnorm_check conformance
+	$(PY) -m lw.measure.pyloudnorm_check synthetic --jobs 5
+	caffeinate -i $(PY) -m lw.measure.pyloudnorm_check library $(MUSIC_ROOTS) --n 1200 --jobs 3
+	$(PY) -m lw.measure.calibrate
+	$(PY) -m lw.viz.p03
+
 ingest-mb: ## (P07) MusicBrainz tables -> Parquet
 	@echo "TODO P07"
 
@@ -40,4 +49,4 @@ report: ## (P21) Render Quarto article
 
 all: ingest-ab ingest-mb build models report ## Full rebuild
 
-.PHONY: help setup test lint theme ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all
+.PHONY: help setup test lint theme calibrate ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all
