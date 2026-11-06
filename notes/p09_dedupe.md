@@ -114,3 +114,11 @@ In the main sample:
 - `figures/p09_tracks_per_year.png`
 - `figures/p09_codec_mix_by_year.png`
 - `figures/p09_lossy_gain_check.png` (added: the gain-normalisation diagnostic)
+
+## Follow-up decisions (user, 2026-11-05)
+
+1. **The headline sample is lossless only.** `in_main_lossless` means the main sample plus at least one lossless submission: 2,997,536 units, 771,003 of them from 2015–2022. Median estimated LUFS is −11.72 and median LRA is 7.14 LU. P12/P13 use it as the main line, with the all-codec `in_main` line as the dashed comparison.
+2. **Re-stream the dumps for gain tags.** `src/lw/build/parse_gaintags.py` (`make ingest-ab-tags`, ~21 h) keeps the normalisation tags and provenance tags for each submission (list in the module docstring).
+   - Sample check: 1,866 files carry `mp3gain_undo`. They sit at a replay gain of about 0 dB whatever their step count (`+001` … `+008`), so each file's original level can be recovered: original RG ≈ RG − 1.5 dB × steps.
+   - `file_name` is present on every record.
+   - Once the stream finishes: correct or flag those files, rebuild `tracks.parquet`, and re-check both the 2014+ lossy gap and the −5.5 dB MP3 hump. The undo-tagged files sit at ~0 dB, not −5.5, so the hump may come from a different tool or target.

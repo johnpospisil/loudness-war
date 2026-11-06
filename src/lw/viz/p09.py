@@ -35,36 +35,40 @@ def fig_funnel(s: dict) -> None:
         ("release year 1980–2022", f["units_core"], "unit"),
         ("main sample: tier A/B, not a reissue", f["units_main"], "unit"),
         ("  … and consistent submissions", f["units_main_consistent"], "unit"),
+        ("headline: main sample with a lossless copy", f["units_main_lossless"], "head"),
     ]
     theme.apply()
     fig, ax = plt.subplots(figsize=(10, 5.6))
     y = np.arange(len(steps))[::-1]
     vals = np.array([v for _, v, _ in steps]) / 1e6
-    cols = [theme.SERIES[0] if k == "sub" else theme.SERIES[2] for *_, k in steps]
+    cols = [{"sub": theme.SERIES[0], "unit": theme.SERIES[2], "head": theme.SERIES[6]}[k]
+            for *_, k in steps]  # fmt: skip
     ax.barh(y, vals, color=cols, height=0.68)
     prev = None
     for yi, (_lab, v, k), vm in zip(y, steps, vals, strict=True):
         drop = ""
         if prev is not None and prev[1] == k and prev[0] != v:
             drop = f"   −{prev[0] - v:,}"
+        if k == "head":
+            drop = f"   {v / f['units_main']:.0%} of the main sample"
         ax.text(vm + 0.25, yi, f"{v:,}{drop}", va="center", fontsize=8.5, color=theme.TEXT)
         prev = (v, k)
     ax.set_yticks(y, [lab for lab, *_ in steps], fontsize=9)
     ax.set_xlim(0, vals.max() * 1.32)
     ax.set_xlabel("Rows (millions)")
     ax.grid(axis="y", visible=False)
-    ax.text(0.98, 0.42, "submissions", color=theme.SERIES[0], transform=ax.transAxes,
+    ax.text(0.98, 0.9, "submissions", color=theme.SERIES[0], transform=ax.transAxes,
             ha="right", fontsize=9, fontweight="bold")  # fmt: skip
-    ax.text(0.98, 0.12, "units", color=theme.SERIES[2], transform=ax.transAxes, ha="right",
+    ax.text(0.98, 0.2, "units", color=theme.SERIES[2], transform=ax.transAxes, ha="right",
             fontsize=9, fontweight="bold")  # fmt: skip
     ex = sum(v for k, v in f["excluded"].items() if k != "unmatched")
     fig.suptitle(
         f"Quality exclusions remove {ex / f['after_unmatched']:.1%} of matched submissions; "
-        f"{f['units_main'] / 1e6:.1f}M units make the main sample",
+        f"{f['units_main_lossless'] / 1e6:.1f}M lossless units make the headline sample",
         x=0.01, ha="left", fontsize=12.5, fontweight="bold",
     )  # fmt: skip
     fig.tight_layout()
-    theme.save_fig(fig, "p09_data_funnel", n=f["units_main"], source=SRC, note=UNIT)
+    theme.save_fig(fig, "p09_data_funnel", n=f["units_main_lossless"], source=SRC, note=UNIT)
 
 
 def fig_per_year(c) -> None:

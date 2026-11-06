@@ -135,6 +135,7 @@ def test_pinned_funnel():
     }  # fmt: skip
     assert (f["units"], f["units_core"], f["units_main"]) == (9_269_713, 8_793_287, 7_206_307)
     assert f["units_main_consistent"] == 6_640_436
+    assert f["units_main_lossless"] == 2_997_536  # headline sample (P12/P13)
     m = s["summary"]
     assert m["recordings"] == 6_773_007 and m["releases"] == 1_215_764
     assert m["median_lufs_main"] == pytest.approx(-11.79, abs=0.01)

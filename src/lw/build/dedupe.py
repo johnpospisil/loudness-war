@@ -31,7 +31,8 @@ Steps, each counted in the funnel (``data/processed/tracks_funnel.json``):
    are kept for robustness checks.
 
 The output is ``data/processed/tracks.parquet``, with all years. ``in_core`` marks 1980-2022 and
-``in_main`` marks the P12 main sample (core, tier A/B, not a reissue).
+``in_main`` marks core, tier A/B, not a reissue; ``in_main_lossless`` (the headline sample
+for P12/P13, user decision 2026-11-05) also requires a lossless submission.
 
     uv run python -m lw.build.dedupe
 """
@@ -211,7 +212,9 @@ def dedupe(
       n_lossless = n_sub as all_lossless,
       coalesce(n_lossless = 0 and bit_rate_lossy < {LOW_BITRATE}, false) as low_bitrate,
       coalesce(year between {CORE[0]} and {CORE[1]}, false) as in_core,
-      coalesce(year between {CORE[0]} and {CORE[1]} and match_tier in ('A', 'B') and not is_reissue, false) as in_main
+      coalesce(year between {CORE[0]} and {CORE[1]} and match_tier in ('A', 'B') and not is_reissue, false) as in_main,
+      coalesce(year between {CORE[0]} and {CORE[1]} and match_tier in ('A', 'B') and not is_reissue, false)
+        and n_lossless > 0 as in_main_lossless
     from u
     ) to '{parts}/b{b:03d}.parquet' (format parquet, compression zstd)""")
     tmp = out.with_name(out.name + ".tmp")
@@ -222,10 +225,12 @@ def dedupe(
     shutil.rmtree(parts)
     shutil.rmtree(stage)
     con.execute(f"create or replace view tracks as select * from read_parquet('{out}')")
-    f["units"], f["units_core"], f["units_main"], f["units_main_consistent"] = con.execute(
+    (f["units"], f["units_core"], f["units_main"], f["units_main_consistent"],
+     f["units_main_lossless"]) = con.execute(
         "select count(*), count(*) filter (where in_core), count(*) filter (where in_main),"
-        " count(*) filter (where in_main and not inconsistent) from tracks"
-    ).fetchone()
+        " count(*) filter (where in_main and not inconsistent),"
+        " count(*) filter (where in_main_lossless) from tracks"
+    ).fetchone()  # fmt: skip
     f["seconds"] = round(time.time() - t0, 1)
     return f
 

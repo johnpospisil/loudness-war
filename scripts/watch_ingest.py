@@ -3,6 +3,7 @@
 
 python3 scripts/watch_ingest.py               # low-level dump, refresh every 5 s
 python3 scripts/watch_ingest.py --highlevel   # high-level dump (P06)
+python3 scripts/watch_ingest.py --tags        # gain/provenance tag re-stream (P09)
 python3 scripts/watch_ingest.py --once        # print once and exit
 """
 
@@ -14,17 +15,18 @@ import time
 from pathlib import Path
 
 HIGH = "--highlevel" in sys.argv
-D = (
-    Path(__file__).resolve().parent.parent
-    / "data"
-    / "interim"
-    / ("ab_highlevel" if HIGH else "ab_lowlevel")
-)
+TAGS = "--tags" in sys.argv
+MODE = "tags" if TAGS else "high" if HIGH else "low"
+D = Path(__file__).resolve().parent.parent / "data" / "interim" / {
+    "low": "ab_lowlevel", "high": "ab_highlevel", "tags": "ab_gaintags"}[MODE]  # fmt: skip
 # sum of Content-Length over all 30 parts (low-level: P01; high-level: P06)
 TOTAL_BYTES = 41_780_535_425 if HIGH else 631_788_161_107
-PROC = "parse_highlevel --parts" if HIGH else "parse_lowlevel --parts"
-TITLE = "AcousticBrainz HIGH-level ingest" if HIGH else "AcousticBrainz ingest"
-RESUME = "make ingest-ab-hl" if HIGH else "make ingest-ab"
+PROC = {"low": "parse_lowlevel --parts", "high": "parse_highlevel --parts",
+        "tags": "parse_gaintags --parts"}[MODE]  # fmt: skip
+TITLE = {"low": "AcousticBrainz ingest", "high": "AcousticBrainz HIGH-level ingest",
+         "tags": "AcousticBrainz gain-tag re-stream"}[MODE]  # fmt: skip
+RESUME = {"low": "make ingest-ab", "high": "make ingest-ab-hl", "tags": "make ingest-ab-tags"}[MODE]
+LOGNAME = "run.log" if TAGS else "ingest.log"
 N_PARTS = 30
 WIDTH = 40
 LINE = re.compile(
@@ -56,7 +58,7 @@ def snapshot() -> str:
     rows_done = sum(s["rows"] for s in done.values())
 
     active = {}
-    log = D / "ingest.log"
+    log = D / LOGNAME
     if log.exists():
         for chunk in log.read_text(errors="replace").replace("\r", "\n").splitlines():
             m = LINE.search(chunk)

@@ -26,6 +26,9 @@ ingest-ab: ## (P05/P06) Stream-parse all 30 low-level parts from HTTP (~21 h; re
 ingest-ab-hl: ## (P06) Stream-parse all 30 high-level parts (genre/mood classifiers; ~32 GB)
 	caffeinate -i $(PY) -m lw.build.parse_highlevel --parts 0-29 --jobs 2
 
+ingest-ab-tags: ## (P09) Re-stream the 30 low-level parts for gain/provenance tags only (~21 h; resumable)
+	caffeinate -i $(PY) -m lw.build.parse_gaintags --parts 0-29 --jobs 2
+
 ab-report: ## (P06) Ingest report: rows, failures, null rates, figures
 	$(PY) -m lw.viz.p06
 
@@ -66,4 +69,4 @@ report: ## (P21) Render Quarto article
 
 all: ingest-ab ingest-mb build models report ## Full rebuild
 
-.PHONY: match dedupe help setup test lint theme calibrate timeline ingest-ab-hl ab-report ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all
+.PHONY: match dedupe ingest-ab-tags help setup test lint theme calibrate timeline ingest-ab-hl ab-report ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all
