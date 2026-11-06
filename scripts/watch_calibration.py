@@ -31,8 +31,9 @@ def hms(s: float) -> str:
 
 
 def running() -> int:
-    out = subprocess.run(["pgrep", "-f", "streaming_extractor_music"], capture_output=True,
-                         text=True).stdout
+    out = subprocess.run(
+        ["pgrep", "-f", "streaming_extractor_music"], capture_output=True, text=True
+    ).stdout
     return len(out.split())
 
 
@@ -65,7 +66,9 @@ def snapshot() -> str:
         lines.append(f"  ({prior:,} files already measured in an earlier run)")
     if "Traceback" in text:
         lines.append("  ⚠ Traceback in library.log — check it")
-    lines.append("\n  (log line every 25 files; between them the count is estimated · Ctrl-C to quit)")
+    lines.append(
+        "\n  (log line every 25 files; between them the count is estimated · Ctrl-C to quit)"
+    )
     return "\n".join(lines)
 
 

@@ -10,8 +10,9 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - ✅ DONE! P02: MusicBrainz access probe
 - ✅ DONE! P03: Calibrate the AcousticBrainz proxies
 - ✅ DONE! P04: Normalisation timeline
-- ⬜ P06: Full AcousticBrainz ingest report ← next (ingest itself finished: 30/30 parts, 29.46M rows)
-- ⬜ P07 onward
+- ✅ DONE! P06: Full AcousticBrainz ingest
+- ⬜ P07: MusicBrainz tables ← next
+- ⬜ P08 onward
 
 ## How we work
 
@@ -55,7 +56,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 - [x] ✅ DONE! **P05: Streaming low-level parser.** _Done 2026-11-02: HTTP/file → Parquet streaming parser with Range-resume and sha256 check; 4,878 rec/s locally, ingest network-bound at ~8.5 MB/s (~21 h for 632 GB); 11 tests pass._ Write `src/lw/build/parse_lowlevel.py`. It streams `tar.zst` (local file or HTTP), parses each JSON with orjson, keeps ~25 fields (recording MBID, submission offset, Essentia version, replay_gain, dynamic_complexity, average_loudness, spectral_rms, silence rates, band energies, spectral flatness/centroid, codec, bitrate, sample rate, lossless flag, length, tag release MBID, tag date, tag album/artist), and writes Parquet in row-group batches. Make it resumable per archive part, and log malformed records rather than crashing. Build test fixtures from 20 real sample-dump records. Run it on the sample dump and report throughput. *Figures: none.*
 
-- [ ] **P06: Full AcousticBrainz ingest.** Run P05 over every low-level dump part (background job, resumable, checksums verified), plus the high-level genre/mood fields we need. Delete each archive once it is parsed, or stream it so it never touches disk. Report rows, failures, field null rates and wall time. *Figures: `figures/p06_submissions_by_codec.png`, `figures/p06_field_coverage.png` (null rate per field).*
+- [x] ✅ DONE! **P06: Full AcousticBrainz ingest.** _Done 2026-11-05: low-level and high-level 30/30 parts each, sha256 all OK, 29,460,584 submissions / 7,564,215 recordings, 0 real parse failures; audio features 0% null, release-MBID tag 24.5% null; 37% lossless, swinging by bulk submitter; 0.49% empty high-level docs and 3,640 repeated keys go to P09; see `notes/p06_ab_ingest.md`._ Run P05 over every low-level dump part (background job, resumable, checksums verified), plus the high-level genre/mood fields we need. Delete each archive once it is parsed, or stream it so it never touches disk. Report rows, failures, field null rates and wall time. *Figures: `figures/p06_submissions_by_codec.png`, `figures/p06_field_coverage.png` (null rate per field).*
 
 - [ ] **P07: MusicBrainz tables.** *(Changed at P02: the source is the full export already fetched to `data/raw/musicbrainz/<dump>/mbdump/`; read it with `lw.ingest.musicbrainz_dump.connect()`, resolve the `*_gid_redirect` tables, and follow `notes/p02_mb_access.md`.)* Build Parquet tables: `recording_release` (recording MBID, release MBID, medium/track position), `release` (date, precision, country, status, packaging, label, barcode, release group), `release_group` (first_release_date, primary/secondary types), `rg_tags` (tag, count). Add tests for partial dates (YYYY, YYYY-MM). *Figures: none.*
 

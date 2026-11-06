@@ -23,6 +23,12 @@ ingest-ab-sample: ## (P05) Parse the local 100k sample dump -> data/interim/ab_l
 ingest-ab: ## (P05/P06) Stream-parse all 30 low-level parts from HTTP (~21 h; resumable per part)
 	caffeinate -i $(PY) -m lw.build.parse_lowlevel --parts 0-29 --jobs 2
 
+ingest-ab-hl: ## (P06) Stream-parse all 30 high-level parts (genre/mood classifiers; ~32 GB)
+	caffeinate -i $(PY) -m lw.build.parse_highlevel --parts 0-29 --jobs 2
+
+ab-report: ## (P06) Ingest report: rows, failures, null rates, figures
+	$(PY) -m lw.viz.p06
+
 fetch-mb: ## (P02) Stream the MusicBrainz full export; keep 35 tables in data/raw/musicbrainz/
 	$(PY) -m lw.ingest.musicbrainz_dump
 
@@ -52,4 +58,4 @@ report: ## (P21) Render Quarto article
 
 all: ingest-ab ingest-mb build models report ## Full rebuild
 
-.PHONY: help setup test lint theme calibrate timeline ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all
+.PHONY: help setup test lint theme calibrate timeline ingest-ab-hl ab-report ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all
