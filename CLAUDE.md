@@ -12,8 +12,9 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - ✅ DONE! P04: Normalisation timeline
 - ✅ DONE! P06: Full AcousticBrainz ingest
 - ✅ DONE! P07: MusicBrainz tables
-- ⬜ P08: Release matching and reissue flag ← next
-- ⬜ P09 onward
+- ✅ DONE! P08: Release matching and reissue flag
+- ⬜ P09: Dedupe and the analysis table ← next
+- ⬜ P10 onward
 
 ## How we work
 
@@ -35,6 +36,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - "Lossless" = FLAC/ALAC/WAV/AIFF; lossy is flagged and dropped in robustness checks.
 - Genre: MusicBrainz release-group tags mapped to ~12 top-level genres; AcousticBrainz high-level genre used only as a fallback, and flagged.
 - Ingest scale: **stream the full low-level dumps** (user decision, 2026-11-02).
+- Reissue rule (P08): deluxe / special edition / bonus tracks are `is_deluxe`, **not** reissues (86% are released with the original); reissue keywords are remaster, anniversary, reissue, legacy edition, expanded.
 - Own audio: **some rips, mostly lossy** (user decision, 2026-11-02). P18 treats them as secondary evidence, and the R128 test signals plus published measurements serve as the main check. P03 used `~/Music/iTunes/iTunes Media/Music` + `~/Music/Music` (AAC). **Update 2026-11-05:** the user will rip ~12 CDs to FLAC/ALAC with MusicBrainz IDs (quiet pre-1990, loud-war peak, post-2015, classical/jazz, metal/EDM, plus an original + remaster pair if possible) for P18. Ask for the folder path at P18. The 64 KB short/broken files in the library are intentional; leave them skipped.
 - App: **static site on GitHub Pages** (user decision, 2026-11-02).
 - Genre model: **Bayesian, PyMC** (user decision, 2026-11-02).
@@ -61,7 +63,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 - [x] ✅ DONE! **P07: MusicBrainz tables.** _Done 2026-11-05: 6 Parquet tables in `data/interim/mb/` (58.8M track links, 5.9M releases, 4.6M groups, 5.0M tag links, 5.5M redirects) built in ~1 min; partial dates keep their precision; 10.3% of AB recordings resolve only via a redirect, 0.25% missing; see `notes/p07_mb_tables.md`._ *(Changed at P02: the source is the full export already fetched to `data/raw/musicbrainz/<dump>/mbdump/`; read it with `lw.ingest.musicbrainz_dump.connect()`, resolve the `*_gid_redirect` tables, and follow `notes/p02_mb_access.md`.)* Build Parquet tables: `recording_release` (recording MBID, release MBID, medium/track position), `release` (date, precision, country, status, packaging, label, barcode, release group), `release_group` (first_release_date, primary/secondary types), `rg_tags` (tag, count). Add tests for partial dates (YYYY, YYYY-MM). *Figures: none.*
 
-- [ ] **P08: Release matching and reissue flag.** Write `src/lw/build/release_match.py`. Tier A: the file's release MBID tag is a valid release that contains this recording. Tier B: the file's date tag plus album name match one of the recording's releases. Tier C: fall back to the recording's earliest release. Compute `release_year`, `rg_first_year`, `is_reissue` (release year > rg first year + 1, **plus a title/comment keyword flag and a format flag, because some reissues carry the original date**; see `notes/p02_mb_access.md`), `is_compilation`, `is_live`. Check for wrong-edition tags using `length_s` against the MB track length on the tagged release; barcode agreement is not independent evidence. Write pytest cases for 10 hand-verified tricky cases (remasters, deluxe editions, compilations). *Figures: `figures/p08_match_tiers.png` (share of tracks by tier and year).*
+- [x] ✅ DONE! **P08: Release matching and reissue flag.** _Done 2026-11-05: tiers A 73.0% / B 12.8% / C 14.0% / unmatched 0.2% of 29.46M submissions; 11.2% of matched are reissues (date 10.2%, keyword and format add 1.0 pt); same-year deluxe editions split out as `is_deluxe` (2.5%), not reissues; 0.7% wrong-edition suspects; 18 hand-verified cases incl. 7 of the user's rips; see `notes/p08_release_match.md`._ Write `src/lw/build/release_match.py`. Tier A: the file's release MBID tag is a valid release that contains this recording. Tier B: the file's date tag plus album name match one of the recording's releases. Tier C: fall back to the recording's earliest release. Compute `release_year`, `rg_first_year`, `is_reissue` (release year > rg first year + 1, **plus a title/comment keyword flag and a format flag, because some reissues carry the original date**; see `notes/p02_mb_access.md`), `is_compilation`, `is_live`. Check for wrong-edition tags using `length_s` against the MB track length on the tagged release; barcode agreement is not independent evidence. Write pytest cases for 10 hand-verified tricky cases (remasters, deluxe editions, compilations). *Figures: `figures/p08_match_tiers.png` (share of tracks by tier and year).*
 
 - [ ] **P09: Dedupe and the analysis table.** Write `src/lw/build/dedupe.py`: take the median per (recording, release), keep the submission count and IQR, and use the IQR to flag inconsistent measurements. Add codec/bitrate flags. Apply exclusions (LUFS > 0 or < −60, duration < 30 s, invalid LRA) and log each one. Output `data/processed/tracks.parquet`. *Figures: `figures/p09_data_funnel.png` (rows surviving each step), `figures/p09_tracks_per_year.png`, `figures/p09_codec_mix_by_year.png`.*
 

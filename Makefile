@@ -47,8 +47,12 @@ timeline: ## (P04) Normalisation timeline figure from data/reference/normalisati
 ingest-mb: ## (P07) MusicBrainz tables -> data/interim/mb/*.parquet (~1 min)
 	$(PY) -m lw.build.mb_tables
 
-build: ## (P08-P10) Release match, dedupe, genres -> data/processed/tracks.parquet
-	@echo "TODO P08-P10"
+match: ## (P08) Match AB submissions to MB releases, reissue flags -> data/interim/ab_matched.parquet
+	$(PY) -m lw.build.release_match
+	$(PY) -m lw.viz.p08
+
+build: match ## (P08-P10) Release match, dedupe, genres -> data/processed/tracks.parquet
+	@echo "TODO P09-P10"
 
 models: ## (P12-P17) Fit models and write figures
 	@echo "TODO P12-P17"
@@ -58,4 +62,4 @@ report: ## (P21) Render Quarto article
 
 all: ingest-ab ingest-mb build models report ## Full rebuild
 
-.PHONY: help setup test lint theme calibrate timeline ingest-ab-hl ab-report ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all
+.PHONY: match help setup test lint theme calibrate timeline ingest-ab-hl ab-report ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all
