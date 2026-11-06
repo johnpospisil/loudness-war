@@ -51,8 +51,12 @@ match: ## (P08) Match AB submissions to MB releases, reissue flags -> data/inter
 	$(PY) -m lw.build.release_match
 	$(PY) -m lw.viz.p08
 
-build: match ## (P08-P10) Release match, dedupe, genres -> data/processed/tracks.parquet
-	@echo "TODO P09-P10"
+dedupe: ## (P09) Exclusions + median per (recording, release) -> data/processed/tracks.parquet
+	$(PY) -m lw.build.dedupe
+	$(PY) -m lw.viz.p09
+
+build: match dedupe ## (P08-P10) Release match, dedupe, genres -> data/processed/tracks.parquet
+	@echo "TODO P10"
 
 models: ## (P12-P17) Fit models and write figures
 	@echo "TODO P12-P17"
@@ -62,4 +66,4 @@ report: ## (P21) Render Quarto article
 
 all: ingest-ab ingest-mb build models report ## Full rebuild
 
-.PHONY: match help setup test lint theme calibrate timeline ingest-ab-hl ab-report ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all
+.PHONY: match dedupe help setup test lint theme calibrate timeline ingest-ab-hl ab-report ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all

@@ -13,8 +13,9 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - ✅ DONE! P06: Full AcousticBrainz ingest
 - ✅ DONE! P07: MusicBrainz tables
 - ✅ DONE! P08: Release matching and reissue flag
-- ⬜ P09: Dedupe and the analysis table ← next
-- ⬜ P10 onward
+- ✅ DONE! P09: Dedupe and the analysis table
+- ⬜ P10: Genre assignment ← next
+- ⬜ P11 onward
 
 ## How we work
 
@@ -36,6 +37,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - "Lossless" = FLAC/ALAC/WAV/AIFF; lossy is flagged and dropped in robustness checks.
 - Genre: MusicBrainz release-group tags mapped to ~12 top-level genres; AcousticBrainz high-level genre used only as a fallback, and flagged.
 - Ingest scale: **stream the full low-level dumps** (user decision, 2026-11-02).
+- **Unit loudness (P09): lossless first.** `lufs`/`lra` = median over a unit's lossless submissions if it has any, else its lossy ones; some lossy files had MP3Gain/aacgain applied (identical audio, level shifted). `lufs_all`, `lufs_lossless`, `lufs_lossy` are kept. Lossy copies read ~0.4 LU quieter than lossless from 2014 on, so the lossless-only check is essential in P12/P13/P19.
 - Reissue rule (P08): deluxe / special edition / bonus tracks are `is_deluxe`, **not** reissues (86% are released with the original); reissue keywords are remaster, anniversary, reissue, legacy edition, expanded.
 - Own audio: **some rips, mostly lossy** (user decision, 2026-11-02). P18 treats them as secondary evidence, and the R128 test signals plus published measurements serve as the main check. P03 used `~/Music/iTunes/iTunes Media/Music` + `~/Music/Music` (AAC). **Update 2026-11-05:** the user will rip ~12 CDs to FLAC/ALAC with MusicBrainz IDs (quiet pre-1990, loud-war peak, post-2015, classical/jazz, metal/EDM, plus an original + remaster pair if possible) for P18. Ask for the folder path at P18. The 64 KB short/broken files in the library are intentional; leave them skipped.
 - App: **static site on GitHub Pages** (user decision, 2026-11-02).
@@ -65,7 +67,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 - [x] ✅ DONE! **P08: Release matching and reissue flag.** _Done 2026-11-05: tiers A 73.0% / B 12.8% / C 14.0% / unmatched 0.2% of 29.46M submissions; 11.2% of matched are reissues (date 10.2%, keyword and format add 1.0 pt); same-year deluxe editions split out as `is_deluxe` (2.5%), not reissues; 0.7% wrong-edition suspects; 18 hand-verified cases incl. 7 of the user's rips; see `notes/p08_release_match.md`._ Write `src/lw/build/release_match.py`. Tier A: the file's release MBID tag is a valid release that contains this recording. Tier B: the file's date tag plus album name match one of the recording's releases. Tier C: fall back to the recording's earliest release. Compute `release_year`, `rg_first_year`, `is_reissue` (release year > rg first year + 1, **plus a title/comment keyword flag and a format flag, because some reissues carry the original date**; see `notes/p02_mb_access.md`), `is_compilation`, `is_live`. Check for wrong-edition tags using `length_s` against the MB track length on the tagged release; barcode agreement is not independent evidence. Write pytest cases for 10 hand-verified tricky cases (remasters, deluxe editions, compilations). *Figures: `figures/p08_match_tiers.png` (share of tracks by tier and year).*
 
-- [ ] **P09: Dedupe and the analysis table.** Write `src/lw/build/dedupe.py`: take the median per (recording, release), keep the submission count and IQR, and use the IQR to flag inconsistent measurements. Add codec/bitrate flags. Apply exclusions (LUFS > 0 or < −60, duration < 30 s, invalid LRA) and log each one. Output `data/processed/tracks.parquet`. *Figures: `figures/p09_data_funnel.png` (rows surviving each step), `figures/p09_tracks_per_year.png`, `figures/p09_codec_mix_by_year.png`.*
+- [x] ✅ DONE! **P09: Dedupe and the analysis table.** _Done 2026-11-05: 29.46M submissions → 9,269,713 (recording, release) units, 7,206,307 in the main sample (median −11.79 est. LUFS, 6.71 LU LRA); exclusions remove 0.85%; found MP3Gain-normalised lossy files, so unit loudness is lossless-first; see `notes/p09_dedupe.md`._ Write `src/lw/build/dedupe.py`: take the median per (recording, release), keep the submission count and IQR, and use the IQR to flag inconsistent measurements. Add codec/bitrate flags. Apply exclusions (LUFS > 0 or < −60, duration < 30 s, invalid LRA) and log each one. Output `data/processed/tracks.parquet`. *Figures: `figures/p09_data_funnel.png` (rows surviving each step), `figures/p09_tracks_per_year.png`, `figures/p09_codec_mix_by_year.png`.*
 
 - [ ] **P10: Genre assignment.** Write `src/lw/build/genres.py`: map MusicBrainz tags to ~12 top-level genres (rock, metal, pop, hip-hop, electronic/EDM, jazz, classical, folk/country, R&B/soul, punk, reggae, other) with the map kept in `data/reference/genre_map.csv`; use AcousticBrainz high-level as a fallback. Compare the genre mix in AcousticBrainz against all MusicBrainz releases per year; this comparison gives the reweighting targets for P19. *Figures: `figures/p10_genre_mix_ab_vs_mb.png`, `figures/p10_genre_coverage.png`.*
 
