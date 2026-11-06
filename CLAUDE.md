@@ -11,8 +11,9 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - ✅ DONE! P03: Calibrate the AcousticBrainz proxies
 - ✅ DONE! P04: Normalisation timeline
 - ✅ DONE! P06: Full AcousticBrainz ingest
-- ⬜ P07: MusicBrainz tables ← next
-- ⬜ P08 onward
+- ✅ DONE! P07: MusicBrainz tables
+- ⬜ P08: Release matching and reissue flag ← next
+- ⬜ P09 onward
 
 ## How we work
 
@@ -58,7 +59,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 - [x] ✅ DONE! **P06: Full AcousticBrainz ingest.** _Done 2026-11-05: low-level and high-level 30/30 parts each, sha256 all OK, 29,460,584 submissions / 7,564,215 recordings, 0 real parse failures; audio features 0% null, release-MBID tag 24.5% null; 37% lossless, swinging by bulk submitter; 0.49% empty high-level docs and 3,640 repeated keys go to P09; see `notes/p06_ab_ingest.md`._ Run P05 over every low-level dump part (background job, resumable, checksums verified), plus the high-level genre/mood fields we need. Delete each archive once it is parsed, or stream it so it never touches disk. Report rows, failures, field null rates and wall time. *Figures: `figures/p06_submissions_by_codec.png`, `figures/p06_field_coverage.png` (null rate per field).*
 
-- [ ] **P07: MusicBrainz tables.** *(Changed at P02: the source is the full export already fetched to `data/raw/musicbrainz/<dump>/mbdump/`; read it with `lw.ingest.musicbrainz_dump.connect()`, resolve the `*_gid_redirect` tables, and follow `notes/p02_mb_access.md`.)* Build Parquet tables: `recording_release` (recording MBID, release MBID, medium/track position), `release` (date, precision, country, status, packaging, label, barcode, release group), `release_group` (first_release_date, primary/secondary types), `rg_tags` (tag, count). Add tests for partial dates (YYYY, YYYY-MM). *Figures: none.*
+- [x] ✅ DONE! **P07: MusicBrainz tables.** _Done 2026-11-05: 6 Parquet tables in `data/interim/mb/` (58.8M track links, 5.9M releases, 4.6M groups, 5.0M tag links, 5.5M redirects) built in ~1 min; partial dates keep their precision; 10.3% of AB recordings resolve only via a redirect, 0.25% missing; see `notes/p07_mb_tables.md`._ *(Changed at P02: the source is the full export already fetched to `data/raw/musicbrainz/<dump>/mbdump/`; read it with `lw.ingest.musicbrainz_dump.connect()`, resolve the `*_gid_redirect` tables, and follow `notes/p02_mb_access.md`.)* Build Parquet tables: `recording_release` (recording MBID, release MBID, medium/track position), `release` (date, precision, country, status, packaging, label, barcode, release group), `release_group` (first_release_date, primary/secondary types), `rg_tags` (tag, count). Add tests for partial dates (YYYY, YYYY-MM). *Figures: none.*
 
 - [ ] **P08: Release matching and reissue flag.** Write `src/lw/build/release_match.py`. Tier A: the file's release MBID tag is a valid release that contains this recording. Tier B: the file's date tag plus album name match one of the recording's releases. Tier C: fall back to the recording's earliest release. Compute `release_year`, `rg_first_year`, `is_reissue` (release year > rg first year + 1, **plus a title/comment keyword flag and a format flag, because some reissues carry the original date**; see `notes/p02_mb_access.md`), `is_compilation`, `is_live`. Check for wrong-edition tags using `length_s` against the MB track length on the tagged release; barcode agreement is not independent evidence. Write pytest cases for 10 hand-verified tricky cases (remasters, deluxe editions, compilations). *Figures: `figures/p08_match_tiers.png` (share of tracks by tier and year).*
 

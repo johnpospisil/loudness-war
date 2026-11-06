@@ -44,8 +44,8 @@ calibrate: ## (P03) R128 conformance, synthetic + own-library measurements, prox
 timeline: ## (P04) Normalisation timeline figure from data/reference/normalisation_timeline.csv
 	$(PY) -m lw.viz.p04
 
-ingest-mb: ## (P07) MusicBrainz tables -> Parquet
-	@echo "TODO P07"
+ingest-mb: ## (P07) MusicBrainz tables -> data/interim/mb/*.parquet (~1 min)
+	$(PY) -m lw.build.mb_tables
 
 build: ## (P08-P10) Release match, dedupe, genres -> data/processed/tracks.parquet
 	@echo "TODO P08-P10"
