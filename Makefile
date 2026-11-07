@@ -69,7 +69,8 @@ eda: ## (P11) Profile + album spot-check -> data/processed/p11_*.{json,csv}, fig
 build: match dedupe genres ## (P08-P10) Release match, dedupe, genres -> data/processed/tracks.parquet
 
 models: ## (P12-P17) Fit models and write figures
-	@echo "TODO P12-P17"
+	$(PY) -m lw.models.yearly
+	$(PY) -m lw.viz.p12
 
 report: ## (P21) Render Quarto article
 	@echo "TODO P21"

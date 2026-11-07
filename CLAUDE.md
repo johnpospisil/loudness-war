@@ -16,8 +16,9 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - ✅ DONE! P09: Dedupe and the analysis table
 - ✅ DONE! P10: Genre assignment
 - ✅ DONE! P11: EDA and sanity checks
-- ⬜ P12: Hero chart v1 and LRA chart ← next
-- ⬜ P13 onward
+- ✅ DONE! P12: Hero chart v1 and LRA chart
+- ⬜ P13: Interrupted time series ← next
+- ⬜ P14 onward
 
 ## How we work
 
@@ -79,7 +80,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 ## Phase 2 — Models and core charts
 
-- [ ] **P12: Hero chart v1 and LRA chart.** Plot median LUFS by release year, 1980–2022, with the P10–P90 band, bootstrap CI on the median, the normalisation era shaded from P04, and n per year shown. Make the same chart for LRA, **with two lines: all units and units with < 5% near-silent frames** (user decision 2026-11-07, P11: est. LRA tracks silence, ρ 0.92), labelled as an estimate that includes silence; floor est. LRA at 0. Use `in_main_lossless` (tier A+B, no reissues, lossless source; decided at P09) as the main sample, and overlay a dashed comparison line: `in_main` minus units with `loudness_source = 'lossy'` and `bit_rate_lossy <= 160000` (user decision 2026-11-07; label it "all codecs, excluding ≤160 kbps"). *Figures: `figures/p12_hero_lufs.png` + `.html`, `figures/p12_lra.png` + `.html` (brief charts 1–2).*
+- [x] ✅ DONE! **P12: Hero chart v1 and LRA chart.** _Done 2026-11-07: headline median est. LUFS rose ~5 LU to the mid-2000s, then flat (2010–15 −10.90, 2016–22 −10.87; release-group bootstrap CIs ±0.19); P90 flat, P10 rose; est. LRA −0.6 LU since 1980s, flat without silence; weighting sensitivity found (box sets/compilations of old recordings mask a 0.15–0.4 LU post-2009 easing) — headline definition question open; see `notes/p12_hero.md`._ Plot median LUFS by release year, 1980–2022, with the P10–P90 band, bootstrap CI on the median, the normalisation era shaded from P04, and n per year shown. Make the same chart for LRA, **with two lines: all units and units with < 5% near-silent frames** (user decision 2026-11-07, P11: est. LRA tracks silence, ρ 0.92), labelled as an estimate that includes silence; floor est. LRA at 0. Use `in_main_lossless` (tier A+B, no reissues, lossless source; decided at P09) as the main sample, and overlay a dashed comparison line: `in_main` minus units with `loudness_source = 'lossy'` and `bit_rate_lossy <= 160000` (user decision 2026-11-07; label it "all codecs, excluding ≤160 kbps"). *Figures: `figures/p12_hero_lufs.png` + `.html`, `figures/p12_lra.png` + `.html` (brief charts 1–2).*
 
 - [ ] **P13: Interrupted time series.** Write `src/lw/models/its.py`: a segmented regression of the yearly median (and a track-level model with year fixed effects) with level and slope change at 2015, Newey-West SEs, and pre-trend projection. Re-run with break years 2013–2017, placebo breaks (1995–2010), and a data-driven break search (Bai-Perron or a likelihood-profile scan). Answer the brief's falsification test: is there a break vs the 2000–2014 trend? *Figures: `figures/p13_its_fit.png` (observed vs counterfactual), `figures/p13_break_year_sensitivity.png`, `figures/p13_breakpoint_profile.png`.*
 
