@@ -15,8 +15,9 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - ✅ DONE! P08: Release matching and reissue flag
 - ✅ DONE! P09: Dedupe and the analysis table
 - ✅ DONE! P10: Genre assignment
-- ⬜ P11: EDA and sanity checks ← next
-- ⬜ P12 onward
+- ✅ DONE! P11: EDA and sanity checks
+- ⬜ P12: Hero chart v1 and LRA chart ← next
+- ⬜ P13 onward
 
 ## How we work
 
@@ -60,7 +61,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 - [x] ✅ DONE! **P04: Normalisation timeline.** _Done 2026-11-05: 20 cited events (8 high, 9 medium, 3 low/UNVERIFIED); era starts 2015.95 (YouTube Dec 2015), 3 major services default-on by 2017.90 (Tidal Nov 2017); `lw.normalisation.era_start()` feeds later charts; see `notes/p04_normalisation_timeline.md`._ Research and build `data/reference/normalisation_timeline.csv` with columns service, platform, default_on_date, target_LUFS, method (track/album), source_url, source_quote, confidence. Cover Spotify, YouTube, Apple Music / iTunes Sound Check, Tidal, Amazon Music, Deezer, Pandora, plus AES TD1004 (2015) and ITU-R BS.1770 / EBU R128 milestones. Flag anything we could not verify. *Figures: `figures/p04_normalisation_timeline.png` (timeline strip; it is also the shaded band reused in later charts).*
 
-## Phase 1 — Build the dataset
+## Phase 1 — Build the dataset ✅ DONE
 
 - [x] ✅ DONE! **P05: Streaming low-level parser.** _Done 2026-11-02: HTTP/file → Parquet streaming parser with Range-resume and sha256 check; 4,878 rec/s locally, ingest network-bound at ~8.5 MB/s (~21 h for 632 GB); 11 tests pass._ Write `src/lw/build/parse_lowlevel.py`. It streams `tar.zst` (local file or HTTP), parses each JSON with orjson, keeps ~25 fields (recording MBID, submission offset, Essentia version, replay_gain, dynamic_complexity, average_loudness, spectral_rms, silence rates, band energies, spectral flatness/centroid, codec, bitrate, sample rate, lossless flag, length, tag release MBID, tag date, tag album/artist), and writes Parquet in row-group batches. Make it resumable per archive part, and log malformed records rather than crashing. Build test fixtures from 20 real sample-dump records. Run it on the sample dump and report throughput. *Figures: none.*
 
@@ -74,7 +75,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 - [x] ✅ DONE! **P10: Genre assignment.** _Done 2026-11-07: 2,251-tag map (94.9% weight agrees with MB parent genres); 79.8% of main units genre from release-group tags, 94.4% from MB tags incl. new artist-tag fallback, 5.6% from the weak rosamerica classifier (33% agreement, flagged); AB over-represents rock/classical, under-represents hip-hop after 2015; P19 weights in `genre_mix.parquet`; see `notes/p10_genres.md`._ Write `src/lw/build/genres.py`: map MusicBrainz tags to ~12 top-level genres (rock, metal, pop, hip-hop, electronic/EDM, jazz, classical, folk/country, R&B/soul, punk, reggae, other) with the map kept in `data/reference/genre_map.csv`; use AcousticBrainz high-level as a fallback. Compare the genre mix in AcousticBrainz against all MusicBrainz releases per year; this comparison gives the reweighting targets for P19. *Figures: `figures/p10_genre_mix_ab_vs_mb.png`, `figures/p10_genre_coverage.png`.*
 
-- [ ] **P11: EDA and sanity checks.** Profile `tracks.parquet`: distributions, outliers, and the correlation between LUFS, LRA, dynamic complexity and average_loudness. Spot-check 50 well-known albums (Death Magnetic, Californication, (What's the Story) Morning Glory?, Random Access Memories, etc.) against published values where their terms allow. Flag anything implausible. Write `notes/p11_eda.md`. *Figures: `figures/p11_ridgeline_lufs_by_decade.png` (brief chart 5), `figures/p11_lufs_vs_lra.png` (hexbin), `figures/p11_spotcheck_albums.png`.*
+- [x] ✅ DONE! **P11: EDA and sanity checks.** _Done 2026-11-07: decade medians −15.8 → −10.9 est. LUFS; all 20 Wikipedia-cited loud albums above their year median (14 top quartile), both 'dynamic' ones below; est. LRA tracks silence (ρ 0.92) and is nearly flat without it, so P12 adds a near-silence-free LRA line; edition mismatch hits single classics, not yearly medians; see `notes/p11_eda.md`._ Profile `tracks.parquet`: distributions, outliers, and the correlation between LUFS, LRA, dynamic complexity and average_loudness. Spot-check 50 well-known albums (Death Magnetic, Californication, (What's the Story) Morning Glory?, Random Access Memories, etc.) against published values where their terms allow. Flag anything implausible. Write `notes/p11_eda.md`. *Figures: `figures/p11_ridgeline_lufs_by_decade.png` (brief chart 5), `figures/p11_lufs_vs_lra.png` (hexbin), `figures/p11_spotcheck_albums.png`.*
 
 ## Phase 2 — Models and core charts
 

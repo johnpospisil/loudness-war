@@ -62,6 +62,10 @@ genres: ## (P10) Genre per unit (adds columns to tracks.parquet; rerun after ded
 	$(PY) -m lw.build.genres
 	$(PY) -m lw.viz.p10
 
+eda: ## (P11) Profile + album spot-check -> data/processed/p11_*.{json,csv}, figures
+	$(PY) -m lw.eda
+	$(PY) -m lw.viz.p11
+
 build: match dedupe genres ## (P08-P10) Release match, dedupe, genres -> data/processed/tracks.parquet
 
 models: ## (P12-P17) Fit models and write figures
@@ -72,4 +76,4 @@ report: ## (P21) Render Quarto article
 
 all: ingest-ab ingest-mb build models report ## Full rebuild
 
-.PHONY: match dedupe genres ingest-ab-tags help setup test lint theme calibrate timeline ingest-ab-hl ab-report ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all
+.PHONY: match dedupe genres eda ingest-ab-tags help setup test lint theme calibrate timeline ingest-ab-hl ab-report ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all
