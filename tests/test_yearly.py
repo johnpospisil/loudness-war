@@ -23,14 +23,14 @@ def test_weighted_median_boot_centres_on_median():
 def test_pinned_yearly():
     d = pl.read_parquet(yr.OUT)
     h = d.filter((pl.col("sample") == "headline") & (pl.col("metric") == "lufs"))
-    assert h.height == 43 and h["n"].sum() == 2_997_479
+    assert h.height == 43 and h["n"].sum() == 2_604_546
 
     def mean(a, b):
         return h.filter(pl.col("year").is_between(a, b))["median"].mean()
 
-    assert mean(1980, 1989) == pytest.approx(-15.58, abs=0.02)
-    assert mean(2010, 2015) == pytest.approx(-10.90, abs=0.02)
-    assert mean(2016, 2022) == pytest.approx(-10.87, abs=0.02)
+    assert mean(1980, 1989) == pytest.approx(-15.61, abs=0.02)
+    assert mean(2010, 2015) == pytest.approx(-10.64, abs=0.02)
+    assert mean(2016, 2022) == pytest.approx(-10.81, abs=0.02)
     assert (h["ci_lo"] <= h["median"]).all() and (h["median"] <= h["ci_hi"]).all()
     lra = d.filter((pl.col("sample") == "headline") & (pl.col("metric") == "lra"))
     assert (lra["p10"] >= 0).all()

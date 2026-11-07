@@ -343,8 +343,9 @@ def assign(con) -> dict:
     }
     excl = f"exclude ({', '.join(c for c in gcols if c in have)})" if have & set(gcols) else ""
     tmp = TRACKS.with_name("tracks.genre.tmp.parquet")
-    con.execute(f"""copy (
-        select t.* {excl},
+    # genre columns on a narrow key table first, then one join back to the wide table (memory)
+    con.execute(f"""create or replace temp table gcols as
+        select t.recording_mbid, t.release_mbid,
           coalesce(rg.genre, rl.genre, rc.genre, ar.genre, {hl_case(HL_CLASSIFIER)}) as genre,
           case when rg.genre is not null then 'rg' when rl.genre is not null then 'release'
                when rc.genre is not null then 'recording' when ar.genre is not null then 'artist'
@@ -355,12 +356,18 @@ def assign(con) -> dict:
           {hl_case("genre_rosamerica")} as genre_hl_rosamerica,
           {hl_case("genre_dortmund")} as genre_hl_dortmund,
           {hl_case("genre_tzanetakis")} as genre_hl_tzanetakis
-        from read_parquet('{TRACKS}') t
+        from (select recording_mbid, release_mbid, release_group_mbid
+              from read_parquet('{TRACKS}')) t
         left join w_rg rg on rg.id = t.release_group_mbid
         left join w_release rl on rl.id = t.release_mbid
         left join w_recording rc on rc.id = t.recording_mbid
         left join w_artist ar on ar.id = t.release_group_mbid
-        left join hl on hl.recording_mbid = t.recording_mbid and hl.release_mbid = t.release_mbid
+        left join hl on hl.recording_mbid = t.recording_mbid and hl.release_mbid = t.release_mbid""")
+    for tbl in ["hl", "w_recording", "w_release", "t_rg", "t_release", "t_recording", "t_artist"]:
+        con.execute(f"drop table if exists {tbl}")  # free memory before the wide join
+    con.execute("set threads = 4")
+    con.execute(f"""copy (select t.* {excl}, g.* exclude (recording_mbid, release_mbid)
+        from read_parquet('{TRACKS}') t left join gcols g using (recording_mbid, release_mbid)
     ) to '{tmp}' (format parquet, compression zstd, row_group_size 500000)""")
     shutil.move(tmp, TRACKS)
     con.execute(f"create or replace view tracks as select * from read_parquet('{TRACKS}')")
@@ -378,19 +385,23 @@ def assign(con) -> dict:
     con.execute(f"""copy (
         with mb as (select year, genre, count(*) n from mb_rg where genre is not null group by all),
         ab as (select year, genre, count(*) n, count(distinct release_group_mbid) n_rg,
-                      count(*) filter (where in_main_lossless) n_ll
+                      count(*) filter (where in_main_lossless) n_ll,
+                      count(*) filter (where in_headline) n_hl
                from tracks where in_main and genre is not null group by all),
         g as (select distinct year, genre from (select year, genre from mb union all
                                                 select year, genre from ab))
         select g.year, g.genre,
           coalesce(mb.n, 0) as mb_rg, coalesce(ab.n, 0) as ab_units,
           coalesce(ab.n_rg, 0) as ab_rg, coalesce(ab.n_ll, 0) as ab_units_lossless,
+          coalesce(ab.n_hl, 0) as ab_units_headline,
           coalesce(mb.n, 0) / sum(coalesce(mb.n, 0)) over w as mb_share,
           coalesce(ab.n, 0) / sum(coalesce(ab.n, 0)) over w as ab_unit_share,
           coalesce(ab.n_rg, 0) / sum(coalesce(ab.n_rg, 0)) over w as ab_rg_share,
           coalesce(ab.n_ll, 0) / sum(coalesce(ab.n_ll, 0)) over w as ab_lossless_share,
+          coalesce(ab.n_hl, 0) / sum(coalesce(ab.n_hl, 0)) over w as ab_headline_share,
           mb_share / nullif(ab_unit_share, 0) as weight,
-          mb_share / nullif(ab_lossless_share, 0) as weight_lossless
+          mb_share / nullif(ab_lossless_share, 0) as weight_lossless,
+          mb_share / nullif(ab_headline_share, 0) as weight_headline
         from g left join mb using (year, genre) left join ab using (year, genre)
         window w as (partition by g.year)
         order by 1, 2) to '{MIX}' (format parquet)""")

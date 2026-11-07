@@ -149,3 +149,12 @@ Effect on the main table: 9,264,611 units (−5,102); main sample 7,202,054; **h
 The low-bitrate shift grew from about −0.15 LU to −0.44 LU around 2005–07, the loudness-war peak, so it probably tracks how hot the master is. It doesn't change at 2015. So the post-2015 "lossy reads quieter" gap is neither stream normalisation nor a mastering change. It can still bias any all-codec series by a few tenths of an LU.
 
 **For P12/P13/P19:** the headline stays lossless-only. The all-codec dashed line should note this bias. P19 adds a specification that drops units whose lossy copies are ≤ 160 kbps.
+
+## First-appearance flag (added at P12, 2026-11-07)
+
+`dedupe.py` now adds three columns:
+- `rec_first_year`: the recording's earliest dated MusicBrainz release, restricted to recordings AcousticBrainz has;
+- `first_appearance`: release year ≤ `rec_first_year` + 1; an unknown first year counts as true;
+- **`in_headline`** = `in_main_lossless` and `first_appearance`: 2,604,546 units, the headline sample from P12 on.
+
+This drops box sets and best-ofs of old recordings, which the release-group reissue rule misses. The reasons are in `notes/p12_hero.md`.

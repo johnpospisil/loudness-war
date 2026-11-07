@@ -8,10 +8,13 @@ unit-level bootstrap would understate the uncertainty.
 
 Samples (CLAUDE.md decisions):
 
-* ``headline``          ``in_main_lossless`` (main sample with a lossless submission)
-* ``all_codec_ex160``   ``in_main`` minus units whose loudness comes from a lossy copy at
-                        <= 160 kbps (the dashed comparison; low-bitrate copies read ~0.44 LU
-                        quiet, notes/p09_dedupe.md)
+* ``headline``          ``in_headline``: main sample, a lossless submission, and the
+                        recording's first appearance (user decision 2026-11-07)
+* ``all_codec_ex160``   first-appearance ``in_main`` units minus those whose loudness comes from
+                        a lossy copy at <= 160 kbps (the dashed comparison; low-bitrate copies
+                        read ~0.44 LU quiet, notes/p09_dedupe.md)
+* ``lossless_all_units`` ``in_main_lossless``, the headline before 2026-11-07 (old recordings in
+                        new box sets / best-ofs included), kept for P19
 * ``headline_low_sil``  headline units with < 5% near-silent frames (LRA chart; P11 showed est.
                         LRA tracks silence)
 
@@ -39,10 +42,11 @@ B = 1000
 SEED = 20261107
 LOW_SIL = 0.05
 SAMPLES = {
-    "headline": "in_main_lossless",
-    "all_codec_ex160": "in_main and not (loudness_source = 'lossy'"
+    "headline": "in_headline",
+    "all_codec_ex160": "in_main and first_appearance and not (loudness_source = 'lossy'"
     " and coalesce(bit_rate_lossy, 1e9) <= 160000)",
-    "headline_low_sil": f"in_main_lossless and silence_rate_60db < {LOW_SIL}",
+    "headline_low_sil": f"in_headline and silence_rate_60db < {LOW_SIL}",
+    "lossless_all_units": "in_main_lossless",  # pre-2026-11-07 headline, kept for P19
 }  # fmt: skip
 METRICS = ["lufs", "lra"]
 

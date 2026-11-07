@@ -19,7 +19,7 @@ SRC = "Data: AcousticBrainz + MusicBrainz, CC0"
 Y0, Y1 = 1980, 2022
 CAL = {"lufs": "est. LUFS = calibrated AcousticBrainz replay gain (P03; ±1.3 LU per track)",
        "lra": "est. LRA = calibrated dynamic complexity (P03; ±2.9 LU per track); includes silence, floored at 0"}  # fmt: skip
-UNIT = "unit = one recording on one release; headline = release years 1980–2022, tier A/B match, not a reissue, ≥1 lossless submission"
+UNIT = "unit = one recording on one release; headline = release years 1980–2022, tier A/B match, not a reissue, ≥1 lossless submission, recording's first appearance (≤1 year after its first release)"
 CI = "95% CI: release-group bootstrap (1,000 reps)"
 
 
@@ -107,9 +107,10 @@ def _png(d: pl.DataFrame, metric: str) -> None:
     )
     pre, post = _period(h, 2010, 2015), _period(h, 2016, 2022)
     if metric == "lufs":
+        base = _period(h, 2005, 2015)
         title = (
-            f"Loudness rose about {_period(h, 2005, 2009) - _period(h, 1980, 1989):.0f} LU until the mid-2000s, "
-            f"then held steady: no drop after streaming normalisation began"
+            f"Loudness rose about {_period(h, 2005, 2009) - _period(h, 1980, 1989):.0f} LU until the late 2000s "
+            f"and has barely moved since: 2016–22 is {base - post:.1f} LU quieter than 2005–15"
         )
         sub = (
             f"Median est. LUFS by release year · mean of yearly medians 2010–15: {pre:.2f}, "
@@ -118,7 +119,7 @@ def _png(d: pl.DataFrame, metric: str) -> None:
     else:
         lp, lq = _period(low, 2005, 2009), _period(low, 2016, 2022)
         title = (
-            "Loudness range drifted down slowly with no rebound after 2015; "
+            "Loudness range drifted down slowly and has barely changed since 2005; "
             "without silence it has been flat since the mid-2000s"
         )
         sub = (
@@ -216,8 +217,8 @@ def fig_sensitivity() -> None:
         left join rf on rf.recording_mbid = t.recording_mbid
         where t.in_main_lossless""").pl()
     variants = {
-        "every unit counts once (headline)": lambda g: np.median(g["lufs"]),
-        "recording's first appearance only (87% of units)": lambda g: np.median(g.filter(pl.col("first_app").fill_null(False))["lufs"]),
+        "all units, incl. old recordings in new box sets (pre-P12 headline)": lambda g: np.median(g["lufs"]),
+        "recording's first appearance only (headline, 87% of units)": lambda g: np.median(g.filter(pl.col("first_app").fill_null(False))["lufs"]),
         "compilations excluded": lambda g: np.median(g.filter(~pl.col("comp"))["lufs"]),
         "release group capped at 30 units": lambda g: _wmed(g["lufs"].to_numpy(), np.minimum(1, 30 / g["n_rg"].to_numpy())),
         "every release group weighted equally": lambda g: _wmed(g["lufs"].to_numpy(), 1 / g["n_rg"].to_numpy()),
@@ -233,7 +234,7 @@ def fig_sensitivity() -> None:
     theme.shade_era(ax, start=era_start(), end=Y1 + 0.5)
     cols = [theme.SERIES[0], theme.SERIES[1], theme.SERIES[2], theme.SERIES[3], theme.SERIES[6]]
     for (k, v), col in zip(rows.items(), cols, strict=True):
-        ax.plot(years, v, color=col, lw=2.4 if "headline" in k else 1.6, marker="o", ms=2.6,
+        ax.plot(years, v, color=col, lw=2.6 if "(headline" in k else 1.6, marker="o", ms=2.6,
                 label=f"{k}: 2005–09 {np.mean(v[10:15]):.2f}, 2016–22 {np.mean(v[21:]):.2f}")  # fmt: skip
     ax.set_xlim(1994.5, Y1 + 0.5)
     ax.set_ylabel("Median est. LUFS")
@@ -241,8 +242,8 @@ def fig_sensitivity() -> None:
     ax.legend(loc="lower right", fontsize=8.2, framealpha=0.92)
     fig.suptitle("Which units count moves the post-2005 level by up to 0.5 LU and the post-2015 "
                  "change by up to 0.4 LU", x=0.01, ha="left", fontsize=12.5, fontweight="bold")  # fmt: skip
-    ax.set_title("Headline sample, median est. LUFS by release year under five weighting / "
-                 "inclusion rules (period means in the legend)", loc="left", fontsize=9.5,
+    ax.set_title("Main sample with a lossless copy, median est. LUFS by release year under five "
+                 "weighting / inclusion rules (period means in the legend)", loc="left", fontsize=9.5,
                  color=theme.TEXT_2)  # fmt: skip
     fig.tight_layout()
     theme.save_fig(fig, "p12_weighting_sensitivity", n=d.height, source=SRC,

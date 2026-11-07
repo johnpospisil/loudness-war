@@ -109,3 +109,5 @@ The MusicBrainz reference covers **3,271,754 Album/EP/Single release groups** wi
 - **P15:** genre model on tag-sourced genres. Exclude `genre_source = 'hl'`, or run it as a sensitivity check. Report `genre_share` as the label-uncertainty measure; could down-weight units with share < 0.5.
 - **P19:** reweight with `genre_mix.parquet` (`weight` for `in_main`, `weight_lossless` for `in_main_lossless`).
 - **P22 (app):** the genre distribution per year uses the same `genre` column.
+
+**Update (P12, 2026-11-07):** `genre_mix.parquet` also holds `ab_units_headline`, `ab_headline_share` and **`weight_headline`**, the P19 targets for the new headline sample `in_headline`.

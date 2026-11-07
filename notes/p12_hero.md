@@ -2,68 +2,76 @@
 
 Run 2026-11-07 with `make models` (the P12 part). The yearly table comes from `src/lw/models/yearly.py` and goes to `data/processed/p12_yearly.parquet`; the figures come from `src/lw/viz/p12.py`.
 
+## Headline sample (changed during P12, user decision 2026-11-07)
+
+**`in_headline`** = `in_main_lossless` **and `first_appearance`**: **2,604,546 units**. A unit counts only if its release year is at most one year after the recording's earliest dated MusicBrainz release (`rec_first_year`, built in `dedupe.py`). This removes box sets, best-ofs and other compilations of **old recordings**, which P08's release-group reissue rule can't see, because they are new release groups. It keeps 87% of `in_main_lossless` units (98% of non-compilations, 58% of compilations).
+
+**Why.** The first P12 run on `in_main_lossless` showed single box sets of archive recordings dominating whole years. *Bach 333 – The New Complete Edition* is 5,411 tracks, 4.6% of 2018 (median −19.2). A 2004 complete-works edition is 3,438 tracks (3.9%). Compilations also fell from 35% of units (2005–09) to 15% (2016–22). That shift in composition masked a small post-2009 easing and dragged pre-2015 years down (`figures/p12_weighting_sensitivity.png`).
+
+The old definition stays in `p12_yearly.parquet` as sample `lossless_all_units`, for P19.
+
 ## Method
 
 - **Samples:**
-  - **headline** = `in_main_lossless`: 2,997,479 units, 1980–2022.
-  - **comparison** = `in_main` minus units whose loudness comes from a ≤160 kbps lossy copy (user decision, P09).
-  - **near-silence-free** = headline units with fewer than 5% frames below −60 dB, for the LRA chart (P11).
+  - `headline` = `in_headline`;
+  - `all_codec_ex160` = first-appearance `in_main` minus units whose loudness comes from a ≤160 kbps lossy copy (dashed line);
+  - `headline_low_sil` = headline units with fewer than 5% near-silent frames (LRA chart, P11);
+  - `lossless_all_units` = the pre-change headline.
 - **Per release year:** median, P10, P90, n units and n release groups.
-- **95% CI on the median: cluster bootstrap by release group.** Each release group gets a Poisson(1) weight; 1,000 replicates; seed 20261107. Tracks from one album share a master and often several editions, so a track-level bootstrap would understate the uncertainty.
-  - Median CI half-width: 0.19 LU for est. LUFS (max 0.45) and 0.15 LU for est. LRA.
-  - A unit test checks that clustering widens the CI.
-- **Est. LRA is floored at 0** (171 units were below 0).
-- **Era shading** starts at `era_start()` = 2015.95 (P04). The dotted line marks `era_consolidated()` = 2017.90, when three major services normalise by default.
+- **95% CI on the median: cluster bootstrap by release group.** Each release group gets a Poisson(1) weight; 1,000 replicates; seed 20261107. Tracks of one album share a master and often several editions; a unit test checks that clustering widens the CI.
+  - The median CI half-width for est. LUFS is **0.17 LU** (max 0.33).
+- **Est. LRA is floored at 0.**
+- **Era shading** starts at `era_start()` = 2015.95. The dotted line marks `era_consolidated()` = 2017.90.
 
 ## Results: est. LUFS (`figures/p12_hero_lufs.png` + `.html`)
 
 | mean of yearly medians | 1980–89 | 1990–2004 | 2005–09 | 2010–15 | 2016–22 |
 |---|---|---|---|---|---|
-| headline | −15.58 | −12.96 | −10.96 | −10.90 | −10.87 |
-| all codecs excl. ≤160 kbps | −15.45 | −13.12 | −10.99 | −10.80 | −10.84 |
-| P10 / P90 (headline) | −20.9 / −11.0 | −20.7 / −9.2 | −20.2 / −7.5 | −19.2 / −7.5 | −17.9 / −7.4 |
+| **headline** | −15.61 | −12.86 | −10.65 | −10.64 | **−10.81** |
+| all codecs excl. ≤160 kbps (first appearance) | −15.47 | −13.02 | −10.79 | −10.61 | −10.78 |
+| pre-change headline (`lossless_all_units`) | −15.58 | −12.96 | −10.96 | −10.90 | −10.87 |
+| headline P10 / P90 | −21.0 / −10.9 | −20.7 / −9.2 | −19.2 / −7.4 | −18.5 / −7.4 | −17.7 / −7.4 |
 
-- **Median loudness rose about 5 LU from the late 1980s (low point −16.2 in 1986) to the mid-2000s, then held steady.** In the headline series there is no visible drop after the era starts. Formal test: P13.
-- **The loudest decile didn't come down.** P90 stays at −7.4 to −7.5 from 2005 to 2022. The quiet end rose (P10 −20.2 → −17.9), so the distribution **narrowed from below**. P14 tests this formally.
-- **The comparison line tracks the headline** within ±0.33 LU in every year (mean difference −0.01 LU). The lossless restriction doesn't drive the result.
-- **2022 is thin:** 10,558 units from 1,290 release groups. Its median (−10.48) has a CI of ±0.24.
+- **Median loudness rose about 5 LU**, from a low of −16.2 in 1986 to a peak of −10.41 in 2009.
+- **Since then it has eased only slightly.** 2010–17 sits at −10.6 to −10.7, and 2018–21 at −10.85 to −10.99 (yearly CIs about ±0.1–0.2). 2016–22 is **0.2 LU quieter than 2005–15**.
+- The easing is gradual and visible from about 2013, so it doesn't look like a step at the era start. Whether 2015/16 is a break against the trend is P13's question.
+- **The loud end didn't move:** P90 sits at −7.4 in every period since 2005. **The quiet end rose:** P10 went −19.2 → −17.7. So the distribution narrowed from below.
+- **The comparison line tracks the headline** within −0.31 to +0.25 LU in every year (mean −0.03). Restricting to lossless doesn't drive the result.
+- **2022 is thin:** 10,362 units from 1,284 release groups, median −10.50 (CI −10.76 to −10.26).
 
 ## Results: est. LRA (`figures/p12_lra.png` + `.html`)
 
 | mean of yearly medians | 1980–89 | 1990–2004 | 2005–09 | 2010–15 | 2016–22 |
 |---|---|---|---|---|---|
-| headline | 7.57 | 7.37 | 7.10 | 6.99 | 6.92 |
-| < 5% near-silent frames | 4.35 | 4.16 | 4.05 | 4.05 | 4.07 |
-| all codecs excl. ≤160 kbps | 7.41 | 7.07 | 6.63 | 6.57 | 6.66 |
+| headline | 7.57 | 7.31 | 6.89 | 6.80 | 6.89 |
+| < 5% near-silent frames | 4.33 | 4.14 | 4.04 | 4.03 | 4.07 |
+| all codecs excl. ≤160 kbps | 7.42 | 7.03 | 6.50 | 6.46 | 6.64 |
 
-- Est. LRA drifted down by about 0.6 LU over four decades, with **no rebound after 2015**.
-- Among near-silence-free tracks it has been **flat since the mid-2000s (4.05 → 4.07)**. As P11 showed, most of the headline drift tracks the falling share of silence in tracks.
+- Est. LRA fell about 0.7 LU from the 1980s to the 2000s and has been flat since 2005. 2016–22 is 0.09 LU above 2010–15, a negligible change.
+- Among near-silence-free tracks it is flat at about 4.05 LU since the mid-2000s. Most of the earlier drift tracks the falling share of silence in tracks (P11).
 
-## The weighting question (`figures/p12_weighting_sensitivity.png`)
+## Weighting sensitivity (`figures/p12_weighting_sensitivity.png`)
 
-**The 2004 and 2018 dips each come from one huge box set.**
-- 2018: *Bach 333 – The New Complete Edition*, 5,411 tracks, 4.6% of the year's headline units, median −19.2.
-- 2004: a complete-works edition with 3,438 tracks, 3.9%.
+Five rules, on the main sample with a lossless copy, for 2005–09 vs 2016–22:
 
-These are archive recordings in a new release group, so P08's reissue flag (release year > group's first year + 1) doesn't catch them. Compilations make up 35% of headline units in 2005–09 and only 15% in 2016–22. That compositional shift **masks a small post-2009 easing** in the headline series:
+| rule | 2005–09 | 2016–22 |
+|---|---|---|
+| all units (pre-change headline) | −10.96 | −10.87 |
+| **first appearance only (headline)** | **−10.64** | **−10.81** |
+| compilations excluded | −10.43 | −10.82 |
+| release group capped at 30 units | −10.57 | −10.72 |
+| every release group weighted equally (the "average release", a different estimand) | −10.41 | −10.31 |
 
-| median est. LUFS, headline sample | 2005–09 | 2016–22 | change |
-|---|---|---|---|
-| every unit counts once (current headline) | −10.96 | −10.87 | +0.09 |
-| **only the recording's first appearance** (release year ≤ the recording's earliest MB release year + 1; keeps 87% of units, 98% of non-compilations) | −10.64 | −10.81 | −0.17 |
-| compilations excluded | −10.43 | −10.82 | −0.39 |
-| each release group capped at 30 units | −10.57 | −10.72 | −0.15 |
-| every release group weighted equally (a different estimand: the average release) | −10.41 | −10.31 | +0.10 |
+The three rules that remove old material agree:
+- a peak around 2007–09;
+- 0.15–0.4 LU lower by 2016–22;
+- the easing starts before 2015.
 
-The three rules that remove old material in new packaging agree:
-- the level peaks around **2007–09 at about −10.4 to −10.5**;
-- it is **0.15–0.4 LU lower by 2016–22**;
-- the easing starts **before 2015** (2010–14 already lower than 2009).
-
-The "first appearance" rule targets the estimand most directly: "loudness of music newly released that year". It also generalises the reissue logic from release group to recording. **Changing the headline definition is a user decision** (question raised after P12).
+P19 will carry all five as rows of the specification curve.
 
 ## Flags for P13+
 
-- P13 should be run on whichever headline definition is chosen. The other definitions become rows in the P19 specification curve.
-- The near-silence-free est. LUFS series eases from −9.2 (2008–10) to −10.3 (2020–22) and starts about 2011. Again, that is before the era.
-- P14: the loud tail is flat, while the quiet tail rose.
+- P13 runs on `in_headline`. Expect a small negative level/slope change of a few tenths of an LU at most, and check whether it beats the pre-trend (the easing starts about 2010–13).
+- The near-silence-free est. LUFS series eases from −9.2 (2008–10) to −10.3 (2020–22), also starting before the era.
+- P14: P90 is flat and P10 rose, so look for compression from below rather than the loud tail coming down.
+- P10 reweighting targets for the headline are in `genre_mix.parquet` (`weight_headline`).

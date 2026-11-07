@@ -30,7 +30,7 @@ def base(**kw):
     return row
 
 
-def run(rows, tmp_path, tags=None):
+def run(rows, tmp_path, tags=None, rec_first=None):
     con = duckdb.connect()
     df = pl.DataFrame(rows, infer_schema_length=None)
     for c in df.columns:  # untyped all-null columns -> varchar
@@ -41,8 +41,13 @@ def run(rows, tmp_path, tags=None):
     if tags is not None:
         con.register("tags_df", pl.DataFrame(tags, infer_schema_length=None))
         con.execute("create table tags as select * from tags_df")
+    if rec_first is not None:
+        con.register("rf_df", pl.DataFrame(rec_first, schema=["recording_mbid", "rec_first_year"],
+                                           orient="row"))  # fmt: skip
+        con.execute("create table rf as select * from rf_df")
     f = dd.dedupe(con, "src", tmp_path / "t.parquet", tmp_path / "x.parquet", cal=CAL,
-                  tags="tags" if tags is not None else None)  # fmt: skip
+                  tags="tags" if tags is not None else None,
+                  rec_first="rf" if rec_first is not None else None)  # fmt: skip
     t = {(r["recording_mbid"], r["release_mbid"]): r
          for r in pl.read_parquet(tmp_path / "t.parquet").to_dicts()}  # fmt: skip
     x = pl.read_parquet(tmp_path / "x.parquet")
@@ -181,9 +186,34 @@ def test_pinned_funnel():
     }  # fmt: skip
     assert (f["units"], f["units_core"], f["units_main"]) == (9_264_611, 8_788_511, 7_202_054)
     assert f["units_main_consistent"] == 6_640_205
-    assert f["units_main_lossless"] == 2_997_479  # headline sample (P12/P13)
+    assert f["units_main_lossless"] == 2_997_479
+    assert f["units_headline"] == 2_604_546  # + recording's first appearance (P12 on)
     m = s["summary"]
     assert m["recordings"] == 6_769_680 and m["releases"] == 1_214_688
     assert m["median_lufs_main"] == pytest.approx(-11.79, abs=0.01)
     assert m["median_lra_main"] == pytest.approx(6.71, abs=0.01)
     assert m["inconsistent_among_multi"] == pytest.approx(0.1764, abs=1e-3)
+
+
+def test_first_appearance_headline(tmp_path):
+    rows = [
+        base(recording_mbid="r1", recording_mbid_mb="r1", release_mbid="new", year=2010,
+             md5_encoded="1"),  # first released 2009: within a year, kept
+        base(recording_mbid="r2", recording_mbid_mb="r2", release_mbid="box", year=2018,
+             md5_encoded="2"),  # first released 1975: an old recording in a new box set
+        base(recording_mbid="r3", recording_mbid_mb="r3", release_mbid="x", year=2001,
+             md5_encoded="3"),  # no dated release known: kept
+        base(recording_mbid="r4", recording_mbid_mb="r4", release_mbid="y", year=2001,
+             md5_encoded="4", codec="mp3", bit_rate=320000),  # first appearance but lossy only
+    ]  # fmt: skip
+    f, t, _ = run(rows, tmp_path, rec_first=[("r1", 2009), ("r2", 1975), ("r4", 2001)])
+    got = {k[0]: (v["rec_first_year"], v["first_appearance"], v["in_main_lossless"],
+                  v["in_headline"]) for k, v in t.items()}  # fmt: skip
+    assert got == {"r1": (2009, True, True, True), "r2": (1975, False, True, False),
+                   "r3": (None, True, True, True), "r4": (2001, True, False, False)}  # fmt: skip
+    assert f["units_headline"] == 2
+
+
+def test_first_appearance_without_mb(tmp_path):
+    f, t, _ = run([base()], tmp_path)
+    assert t[("r1", "rel1")]["in_headline"] and f["units_headline"] == 1

@@ -37,8 +37,11 @@ Steps, each counted in the funnel (``data/processed/tracks_funnel.json``):
    are kept for robustness checks.
 
 The output is ``data/processed/tracks.parquet``, with all years. ``in_core`` marks 1980-2022 and
-``in_main`` marks core, tier A/B, not a reissue; ``in_main_lossless`` (the headline sample
-for P12/P13, user decision 2026-11-05) also requires a lossless submission.
+``in_main`` marks core, tier A/B, not a reissue; ``in_main_lossless`` also requires a lossless
+submission (user decision 2026-11-05). ``in_headline`` (the headline sample from P12 on, user
+decision 2026-11-07) further requires ``first_appearance``: the unit's year is at most one year
+after the recording's earliest dated MusicBrainz release, so box sets and best-ofs of old
+recordings (which P08's release-group reissue rule misses) leave the headline.
 
     uv run python -m lw.build.dedupe
 """
@@ -62,6 +65,8 @@ LRA_MAX = 50.0
 IQR_LUFS, IQR_LRA = 1.5, 3.0
 LOW_BITRATE = 128_000
 CORE = (1980, 2022)
+FIRST_APP_SLACK = 1  # years after the recording's first dated release still counted as "new"
+MB = ROOT / "data" / "interim" / "mb"
 LOSSLESS_CODEC = "(codec in ('flac', 'alac', 'ape', 'wavpack', 'tta') or codec like 'pcm%')"
 TAGS = ROOT / "data" / "interim" / "ab_gaintags"
 # appended last so the earlier funnel counts are unchanged; lossy submissions only
@@ -108,11 +113,14 @@ def dedupe(
     cal: dict | None = None,
     buckets: int = 48,
     tags: str | None = None,
+    rec_first: str | None = None,
 ) -> dict:
     """Build the analysis table from the view/table ``src`` (P08 columns). Returns the funnel.
 
     ``tags`` is a table/view of per-submission gain and provenance tags (``parse_gaintags``);
-    without it the two tag exclusions remove nothing.
+    without it the two tag exclusions remove nothing. ``rec_first`` is a table/view of
+    (recording_mbid, rec_first_year): each recording's earliest dated MusicBrainz release; without
+    it every unit counts as a first appearance.
     """
     cal = cal or calibration()
     (a0, a1), (b0, b1) = cal["lufs"], cal["lra"]
@@ -262,17 +270,24 @@ def dedupe(
     ) to '{parts}/b{b:03d}.parquet' (format parquet, compression zstd)""")
     tmp = out.with_name(out.name + ".tmp")
     out.parent.mkdir(parents=True, exist_ok=True)
-    con.execute(f"""copy (select * from read_parquet('{parts}/*.parquet'))
+    rf = rec_first or "(select null::varchar as recording_mbid, null::int as rec_first_year)"
+    # first appearance: the release is within a year of the recording's first dated release
+    # (P12, user decision 2026-11-07); unknown first year -> kept
+    con.execute(f"""copy (select p.*, rf.rec_first_year::int as rec_first_year,
+            coalesce(p.year <= rf.rec_first_year + {FIRST_APP_SLACK}, true) as first_appearance,
+            p.in_main_lossless and coalesce(p.year <= rf.rec_first_year + {FIRST_APP_SLACK}, true)
+              as in_headline
+        from read_parquet('{parts}/*.parquet') p left join {rf} rf using (recording_mbid))
         to '{tmp}' (format parquet, compression zstd, row_group_size 500000)""")
     tmp.rename(out)
     shutil.rmtree(parts)
     shutil.rmtree(stage)
     con.execute(f"create or replace view tracks as select * from read_parquet('{out}')")
     (f["units"], f["units_core"], f["units_main"], f["units_main_consistent"],
-     f["units_main_lossless"]) = con.execute(
+     f["units_main_lossless"], f["units_headline"]) = con.execute(
         "select count(*), count(*) filter (where in_core), count(*) filter (where in_main),"
         " count(*) filter (where in_main and not inconsistent),"
-        " count(*) filter (where in_main_lossless) from tracks"
+        " count(*) filter (where in_main_lossless), count(*) filter (where in_headline) from tracks"
     ).fetchone()  # fmt: skip
     f["seconds"] = round(time.time() - t0, 1)
     return f
@@ -312,7 +327,14 @@ def main(argv: list[str] | None = None) -> None:
         tags = "gtags"
     else:
         print(f"warning: {TAGS} incomplete; gain_tagged / stream_rip exclusions skipped")
-    stats = {"funnel": dedupe(con, "m", args.out, tags=tags)}
+    con.execute(f"""create temp table rec_first as
+        select rr.recording_mbid, min(r.release_year) as rec_first_year
+        from read_parquet('{MB}/recording_release.parquet') rr
+        join read_parquet('{MB}/release.parquet') r using (release_mbid)
+        where r.release_year is not null
+          and rr.recording_mbid in (select distinct recording_mbid_mb from m)
+        group by 1""")  # only recordings AcousticBrainz has (keeps the join small)
+    stats = {"funnel": dedupe(con, "m", args.out, tags=tags, rec_first="rec_first")}
     stats["summary"] = summarise(con)
     stats["thresholds"] = {"min_len_s": MIN_LEN_S, "lufs": [LUFS_MIN, LUFS_MAX],
                            "lra_max": LRA_MAX, "iqr_lufs": IQR_LUFS, "iqr_lra": IQR_LRA,
