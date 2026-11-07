@@ -41,6 +41,7 @@ TABLES = {
         "artist_credit", "artist", "area", "country_area", "iso_3166_1", "isrc", "genre",
         "tag", "release_group_tag", "recording_tag", "release_tag", "artist_tag",
         "release_group_meta", "release_meta", "recording_meta", "replication_control",
+        "artist_credit_name", "l_genre_genre", "link", "link_type",  # added at P10
     ],
     "mbdump-derived.tar.bz2": [
         "tag", "release_group_tag", "recording_tag", "release_tag", "artist_tag",
@@ -54,12 +55,17 @@ def latest_dump() -> str:
     return requests.get(f"{BASE}/LATEST", timeout=60).text.strip()
 
 
-def fetch(archive: str, dump: str, out: Path) -> dict:
-    """Stream one archive, writing only wanted members. Skips if already done."""
-    done = out / f"{archive}.done.json"
+def fetch(archive: str, dump: str, out: Path, only: list[str] | None = None) -> dict:
+    """Stream one archive, writing only wanted members. Skips if already done.
+
+    ``only`` fetches just those tables (added later, e.g. P10's ``artist_credit_name``) into the
+    same export directory, with their own done marker, and stops once all of them are written.
+    """
+    tag = f".{'+'.join(sorted(only))}" if only else ""
+    done = out / f"{archive}{tag}.done.json"
     if done.exists():
         return json.loads(done.read_text())
-    want = set(TABLES[archive])
+    want = set(only or TABLES[archive])
     url = f"{BASE}/{dump}/{archive}"
     raw = ResumableHTTPReader(url)
     bar = tqdm(total=raw.length, unit="B", unit_scale=True, desc=archive)
@@ -74,7 +80,9 @@ def fetch(archive: str, dump: str, out: Path) -> dict:
             if not m.isfile():
                 continue
             name = Path(m.name).name
-            if (m.name.startswith("mbdump/") and name in want) or name in META:
+            if only and want <= {Path(k).name for k in kept}:
+                break  # partial read: the sha256 below cannot be checked
+            if (m.name.startswith("mbdump/") and name in want) or (name in META and not only):
                 dest = out / ("mbdump" if m.name.startswith("mbdump/") else "") / name
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 with open(dest, "wb") as fh:
@@ -83,6 +91,15 @@ def fetch(archive: str, dump: str, out: Path) -> dict:
                         fh.write(chunk)
                 kept[m.name] = m.size
     bar.close()
+    if only:
+        missing = want - {Path(k).name for k in kept}
+        if missing:
+            raise OSError(f"{archive}: tables not found: {sorted(missing)}")
+        stats = {"archive": archive, "dump": dump, "only": sorted(only),
+                 "bytes": reader.nbytes, "sha256_ok": None,
+                 "seconds": round(time.time() - t0, 1), "kept": kept}  # fmt: skip
+        done.write_text(json.dumps(stats, indent=2))
+        return stats
     sums = requests.get(f"{BASE}/{dump}/SHA256SUMS", timeout=60).text
     expect = next((ln.split()[0] for ln in sums.splitlines() if ln.endswith(archive)), None)
     stats = {
@@ -125,10 +142,15 @@ def schema_sql(out: Path) -> str:
 def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--dump", help="export directory name (default: LATEST)")
+    ap.add_argument("--only", help="comma-separated extra core tables to add to an export")
     args = ap.parse_args(argv)
     dump = args.dump or latest_dump()
     out = RAW / dump
     out.mkdir(parents=True, exist_ok=True)
+    if args.only:
+        s = fetch("mbdump.tar.bz2", dump, out, only=args.only.split(","))
+        print(f"mbdump.tar.bz2: {sorted(s['kept'])}, {s['seconds']}s")
+        return
     for archive in ("mbdump-derived.tar.bz2", "mbdump.tar.bz2"):
         s = fetch(archive, dump, out)
         print(f"{archive}: {len(s['kept'])} members, sha256_ok={s['sha256_ok']}, {s['seconds']}s")

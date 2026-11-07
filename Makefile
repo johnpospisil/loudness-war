@@ -58,8 +58,11 @@ dedupe: ## (P09) Exclusions + median per (recording, release) -> data/processed/
 	$(PY) -m lw.build.dedupe
 	$(PY) -m lw.viz.p09
 
-build: match dedupe ## (P08-P10) Release match, dedupe, genres -> data/processed/tracks.parquet
-	@echo "TODO P10"
+genres: ## (P10) Genre per unit (adds columns to tracks.parquet; rerun after dedupe) + MB mix
+	$(PY) -m lw.build.genres
+	$(PY) -m lw.viz.p10
+
+build: match dedupe genres ## (P08-P10) Release match, dedupe, genres -> data/processed/tracks.parquet
 
 models: ## (P12-P17) Fit models and write figures
 	@echo "TODO P12-P17"
@@ -69,4 +72,4 @@ report: ## (P21) Render Quarto article
 
 all: ingest-ab ingest-mb build models report ## Full rebuild
 
-.PHONY: match dedupe ingest-ab-tags help setup test lint theme calibrate timeline ingest-ab-hl ab-report ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all
+.PHONY: match dedupe genres ingest-ab-tags help setup test lint theme calibrate timeline ingest-ab-hl ab-report ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all

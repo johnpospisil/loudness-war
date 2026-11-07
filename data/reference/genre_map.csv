@@ -1,0 +1,2252 @@
+tag,genre,rule,is_mb_genre,mb_parents,main_units
+rock,rock,rule:rock,True,,2109946
+electronic,electronic,rule:electronic,True,,1756391
+pop,pop,rule:pop,True,,1018757
+pop rock,rock,override,True,,438377
+jazz,jazz,rule:jazz,True,,419900
+classical,classical,rule:classical,True,,415904
+experimental,other,override,True,,404581
+hip hop,hip_hop,rule:hip_hop,True,,404381
+alternative rock,rock,rule:rock,True,rock,401448
+ambient,electronic,rule:electronic,True,,372959
+indie rock,rock,rule:rock,True,alternative rock,332098
+synth-pop,pop,override,True,pop,289226
+punk,punk,rule:punk,True,,247562
+metal,metal,rule:metal,True,,226287
+hard rock,rock,rule:rock,True,rock,217558
+house,electronic,rule:electronic,True,edm,217300
+heavy metal,metal,rule:metal,True,metal,215288
+electro,electronic,rule:electronic,True,dance,214237
+folk,folk_country,rule:folk_country,True,,210671
+blues,rnb_soul,rule:rnb_soul,True,,205592
+downtempo,electronic,rule:electronic,True,electronic,195682
+industrial,electronic,rule:electronic,True,,182568
+techno,electronic,rule:electronic,True,edm,176246
+soul,rnb_soul,rule:rnb_soul,True,,151340
+country,folk_country,rule:folk_country,True,,148850
+folk rock,rock,override,True,rock,146801
+pop/rock,rock,extra_tag,False,,137290
+trance,electronic,rule:electronic,True,edm,126615
+soundtrack,other,extra_tag,False,,114993
+rock and roll,rock,rule:rock,True,rock,109952
+new wave,rock,override,True,rock,106012
+reggae,reggae,rule:reggae,True,,103160
+blues rock,rock,override,True,,101597
+instrumental,ignore,override,True,,101246
+indie pop,pop,override,True,pop,99667
+psychedelic rock,rock,rule:rock,True,rock,97115
+disco,rnb_soul,rule:rnb_soul,True,,93240
+funk,rnb_soul,rule:rnb_soul,True,,92017
+soft rock,rock,rule:rock,True,rock,89791
+black metal,metal,rule:metal,True,metal,88803
+latin,other,rule:other,True,,88501
+ballad,pop,rule:pop,True,,87469
+classic rock,rock,rule:rock,True,rock,86108
+electronica,electronic,rule:electronic,True,electronic,85815
+death metal,metal,rule:metal,True,metal,84683
+idm,electronic,rule:electronic,True,electronic,84383
+noise,other,override,True,experimental,82188
+r&b,rnb_soul,rule:rnb_soul,True,,81748
+ebm,electronic,rule:electronic,True,post-industrial,81149
+dance-pop,pop,override,True,pop,78827
+contemporary r&b,rnb_soul,rule:rnb_soul,True,r&b,77128
+post-punk,rock,override,True,rock,76507
+lo-fi,rock,override,True,alternative rock,75766
+post-rock,rock,rule:rock,True,rock,75646
+dance,electronic,rule:electronic,True,,75153
+indie,rock,extra_tag,False,,74804
+dark ambient,electronic,rule:electronic,True,,72400
+modern classical,classical,rule:classical,True,western classical,69027
+drone,electronic,rule:electronic,True,,67994
+art rock,rock,rule:rock,True,rock,67741
+psychedelic,rock,rule:rock,True,,67633
+pop rap,hip_hop,override,True,hip hop,65529
+progressive rock,rock,rule:rock,True,rock,65063
+alternative,rock,extra_tag,False,,64582
+trip hop,electronic,rule:electronic,True,downtempo,64259
+dub,reggae,rule:reggae,True,reggae,62970
+baroque,classical,rule:classical,True,western classical,62530
+punk rock,punk,rule:punk,True,punk,61378
+alternative/indie rock,rock,extra_tag,False,,58984
+country rock,folk_country,rule:folk_country,True,,58632
+singer-songwriter,folk_country,rule:folk_country,True,,57778
+hip-hop,hip_hop,extra_tag,False,,57615
+euro house,electronic,rule:electronic,True,house,54890
+swing,jazz,rule:jazz,True,jazz,54331
+drum and bass,electronic,rule:electronic,True,edm,53819
+vgm,other,extra_tag,False,,53098
+vaporwave,electronic,rule:electronic,True,electronic,51972
+synthwave,electronic,rule:electronic,True,electronic,51565
+progressive metal,metal,rule:metal,True,metal,50921
+dark wave,electronic,rule:electronic,True,,50296
+shoegaze,rock,rule:rock,True,alternative rock,49322
+breakbeat,electronic,rule:electronic,True,edm,49298
+easy listening,pop,rule:pop,True,pop,49252
+avant-garde,other,override,True,,49154
+deep house,electronic,rule:electronic,True,house,48521
+rock & roll,rock,extra_tag,False,,48509
+europop,pop,rule:pop,True,pop,48153
+doom metal,metal,rule:metal,True,metal,48150
+dubstep,electronic,rule:electronic,True,edm,48035
+pop punk,punk,override,True,punk rock,47721
+alternative metal,metal,rule:metal,True,metal,47564
+contemporary pop/rock,pop,extra_tag,False,,46858
+progressive house,electronic,rule:electronic,True,house,46503
+video game music,other,extra_tag,False,,45981
+garage rock,rock,override,True,rock,45363
+electropop,pop,override,True,pop,44583
+rockabilly,rock,rule:rock,True,rock and roll,44164
+leftfield,electronic,rule:electronic,True,electronic,42635
+alternative pop/rock,rock,extra_tag,False,,42132
+adult contemporary,pop,extra_tag,False,,41745
+new age,other,override,True,,41551
+stoner rock,rock,rule:rock,True,hard rock,41414
+album rock,rock,extra_tag,False,,40937
+dream pop,rock,override,True,alternative rock,39898
+contemporary jazz,jazz,rule:jazz,True,jazz,39501
+chiptune,electronic,rule:electronic,True,bit music,39375
+tech house,electronic,rule:electronic,True,house,36384
+power pop,rock,override,True,pop rock,35772
+orchestral,classical,rule:classical,True,,35497
+progressive trance,electronic,rule:electronic,True,trance,35118
+j-pop,pop,override,True,pop,34475
+non-music,other,override,True,,34207
+ska,reggae,rule:reggae,True,,33953
+breaks,electronic,rule:electronic,True,,33848
+grunge,rock,rule:rock,True,alternative rock,33064
+emo,punk,rule:punk,True,alternative rock; post-hardcore,33049
+electro house,electronic,rule:electronic,True,house,32875
+post-hardcore,punk,rule:punk,True,punk,32858
+big band,jazz,rule:jazz,True,jazz,32104
+score,other,extra_tag,False,,31727
+power metal,metal,rule:metal,True,metal,31261
+opera,classical,rule:classical,True,western classical,31254
+classical box set,classical,extra_tag,False,,29887
+experimental rock,rock,rule:rock,True,rock,29708
+rap,hip_hop,extra_tag,False,,29594
+thrash metal,metal,rule:metal,True,metal,29539
+indie folk,folk_country,rule:folk_country,True,contemporary folk,29071
+americana,folk_country,rule:folk_country,True,,29054
+hardcore punk,punk,rule:punk,True,punk rock,28889
+schlager,pop,rule:pop,True,pop,28637
+comedy,other,rule:other,True,,27782
+bluegrass,folk_country,rule:folk_country,True,country,27778
+trap,hip_hop,rule:hip_hop,True,hip hop,27660
+chillout,electronic,rule:electronic,True,,27565
+arena rock,rock,rule:rock,True,rock,27354
+glitch,electronic,rule:electronic,True,electronic,27106
+progressive,rock,rule:rock,True,,26743
+alternative and punk,rock,extra_tag,False,,26705
+art pop,pop,override,True,pop,26386
+metalcore,metal,rule:metal,True,,26004
+grindcore,metal,rule:metal,True,,24410
+post-grunge,rock,rule:rock,True,alternative rock,24328
+psytrance,electronic,rule:electronic,True,trance,24062
+space rock,rock,rule:rock,True,psychedelic rock,23931
+nu metal,metal,rule:metal,True,alternative metal,23226
+neo-psychedelia,rock,rule:rock,True,psychedelic,23107
+celtic,folk_country,rule:folk_country,True,folk,22502
+jungle,electronic,rule:electronic,True,drum and bass,22140
+boom bap,hip_hop,rule:hip_hop,True,hip hop,21986
+industrial metal,metal,rule:metal,True,,21339
+noise rock,rock,rule:rock,True,rock,21232
+symphonic metal,metal,rule:metal,True,metal,21072
+chillwave,electronic,rule:electronic,True,indietronica,21002
+hardcore hip hop,hip_hop,override,True,hip hop,20828
+edm,electronic,rule:electronic,True,electronic,20646
+britpop,rock,rule:rock,True,alternative rock,20063
+breakcore,electronic,rule:electronic,True,edm,20034
+smooth jazz,jazz,rule:jazz,True,jazz,19885
+instrumental hip hop,hip_hop,rule:hip_hop,True,hip hop,19819
+jazz-funk,jazz,rule:jazz,True,jazz,19809
+symphonic rock,rock,override,True,rock,19714
+r b,rnb_soul,extra_tag,False,,19665
+alternative pop,pop,override,True,pop,19539
+southern rock,rock,rule:rock,True,rock,19347
+pop soul,rnb_soul,override,True,,19250
+game,other,extra_tag,False,,19035
+neo soul,rnb_soul,rule:rnb_soul,True,soul,18956
+melodic death metal,metal,rule:metal,True,death metal,18456
+hardcore,punk,extra_tag,False,,18450
+rock and indie,rock,extra_tag,False,,18426
+gangsta rap,hip_hop,rule:hip_hop,True,hip hop,18421
+post-metal,metal,rule:metal,True,metal,18282
+gothic rock,rock,rule:rock,True,rock,18114
+gospel,rnb_soul,rule:rnb_soul,True,,17971
+adult alternative pop/rock,rock,extra_tag,False,,17744
+hard trance,electronic,rule:electronic,True,trance,17369
+spoken word,other,rule:other,True,,17361
+dancehall,reggae,rule:reggae,True,reggae,17275
+roots reggae,reggae,rule:reggae,True,reggae,17254
+urban,rnb_soul,extra_tag,False,,17239
+funk soul,rnb_soul,extra_tag,False,,17166
+alternative dance,electronic,override,True,,17069
+krautrock,rock,override,True,experimental rock,16927
+neofolk,folk_country,rule:folk_country,True,contemporary folk,16715
+christmas,other,extra_tag,False,,16684
+chamber pop,pop,override,True,indie pop,16549
+gothic metal,metal,rule:metal,True,metal,16500
+jazz rock,jazz,rule:jazz,True,rock,16239
+big beat,electronic,rule:electronic,True,breakbeat,16155
+glam,rock,rule:rock,True,,16143
+contemporary country,folk_country,rule:folk_country,True,country,16069
+sludge metal,metal,rule:metal,True,metal,16034
+math rock,rock,rule:rock,True,rock,16002
+concerto,classical,rule:classical,True,western classical,15971
+gothic,rock,override,True,,15710
+christmas music,other,rule:other,True,,15360
+underground hip hop,hip_hop,rule:hip_hop,True,hip hop,15134
+gabber,electronic,rule:electronic,True,hardcore techno,14897
+eurodance,electronic,rule:electronic,True,dance,14847
+aor,rock,rule:rock,True,rock,14834
+happy hardcore,electronic,override,True,hardcore techno,14811
+country blues,rnb_soul,override,True,blues,14766
+lounge,pop,rule:pop,True,easy listening,14722
+east coast hip hop,hip_hop,rule:hip_hop,True,hip hop,14709
+electric blues,rnb_soul,rule:rnb_soul,True,blues,14374
+symphony,classical,rule:classical,True,western classical,14328
+soul jazz,jazz,rule:jazz,True,jazz,14192
+post-bop,jazz,rule:jazz,True,jazz,14104
+instrumental rock,rock,rule:rock,True,rock,13561
+film score,other,extra_tag,False,,13496
+speed metal,metal,rule:metal,True,heavy metal,13453
+folk pop,folk_country,rule:folk_country,True,,13446
+vocal jazz,jazz,rule:jazz,True,jazz,13372
+alternative hip hop,hip_hop,rule:hip_hop,True,hip hop,13305
+acid jazz,jazz,rule:jazz,True,,13167
+dance-rock,rock,override,True,rock,13126
+industrial rock,rock,override,True,,13045
+conscious hip hop,hip_hop,rule:hip_hop,True,hip hop,13028
+stoner metal,metal,rule:metal,True,metal,12790
+musical,other,rule:other,True,,12630
+atmospheric black metal,metal,rule:metal,True,black metal,12524
+chicago blues,rnb_soul,rule:rnb_soul,True,blues,12332
+doo-wop,rnb_soul,rule:rnb_soul,True,r&b,12324
+grime,hip_hop,rule:hip_hop,True,edm,12272
+psychedelic pop,pop,override,True,pop,12141
+medieval,classical,rule:classical,True,western classical,11983
+country pop,folk_country,rule:folk_country,True,,11953
+jazz fusion,jazz,rule:jazz,True,jazz,11746
+indietronica,electronic,override,True,electronic,11740
+teen pop,pop,rule:pop,True,pop,11678
+free jazz,jazz,rule:jazz,True,jazz,11610
+cool jazz,jazz,rule:jazz,True,jazz,11514
+plunderphonics,other,override,True,experimental,11443
+future funk,electronic,override,True,house,11356
+uk garage,electronic,override,True,edm,11155
+folk punk,punk,rule:punk,True,punk,11103
+club,electronic,rule:electronic,True,electronic,11049
+noise pop,rock,override,True,indie rock,11031
+coldwave,electronic,rule:electronic,True,post-punk,10963
+folk metal,metal,rule:metal,True,metal,10918
+bossa nova,jazz,rule:jazz,True,samba,10814
+cyberpunk,electronic,override,True,,10736
+contemporary folk,folk_country,rule:folk_country,True,folk,10643
+reggae-pop,reggae,rule:reggae,True,reggae,10637
+experimental electronic,electronic,rule:electronic,True,electronic,10606
+surf,rock,rule:rock,True,rock,10334
+italo-disco,electronic,override,True,electro-disco,10297
+baroque pop,pop,override,True,pop,10274
+funk metal,metal,rule:metal,True,,10231
+latin jazz,jazz,rule:jazz,True,jazz,10222
+acoustic rock,rock,rule:rock,True,rock,10110
+dark electro,electronic,rule:electronic,True,electro-industrial,10060
+experimental hip hop,hip_hop,rule:hip_hop,True,hip hop,9989
+glam rock,rock,rule:rock,True,rock,9925
+dub techno,electronic,override,True,minimal techno,9890
+ambient pop,pop,override,True,pop,9884
+acid house,electronic,rule:electronic,True,house,9827
+latin pop,pop,override,True,pop,9738
+hard bop,jazz,rule:jazz,True,jazz,9691
+jangle pop,rock,override,True,pop rock,9652
+dungeon synth,electronic,rule:electronic,True,electronic,9517
+alternative r&b,rnb_soul,rule:rnb_soul,True,contemporary r&b,9384
+electro-industrial,electronic,rule:electronic,True,industrial,9295
+afrobeat,other,override,True,,9287
+groove metal,metal,rule:metal,True,metal,9146
+alternative punk,punk,rule:punk,True,punk,8972
+nu disco,electronic,override,True,electronic,8952
+west coast hip hop,hip_hop,rule:hip_hop,True,hip hop,8896
+renaissance,classical,rule:classical,True,western classical,8817
+free improvisation,jazz,override,True,,8802
+witch house,electronic,rule:electronic,True,electronic,8745
+dixieland,jazz,rule:jazz,True,jazz,8684
+ska punk,punk,rule:punk,True,,8670
+rave,electronic,rule:electronic,True,edm,8642
+delta blues,rnb_soul,rule:rnb_soul,True,blues,8640
+garage house,electronic,override,True,house,8606
+blue-eyed soul,rnb_soul,rule:rnb_soul,True,r&b,8262
+melodic hardcore,punk,rule:punk,True,hardcore punk,8261
+musique concrète,other,override,True,electroacoustic,8213
+darksynth,electronic,rule:electronic,True,synthwave,8185
+post-industrial,electronic,rule:electronic,True,industrial,8020
+eurobeat,electronic,rule:electronic,True,dance,8004
+heartland rock,rock,rule:rock,True,rock,7889
+roots rock,rock,rule:rock,True,rock,7850
+rocksteady,reggae,rule:reggae,True,,7841
+broken beat,electronic,override,True,edm,7831
+lo-fi hip hop,hip_hop,rule:hip_hop,True,instrumental hip hop,7667
+goa trance,electronic,rule:electronic,True,trance,7619
+berlin school,electronic,rule:electronic,True,progressive electronic,7610
+piano rock,rock,rule:rock,True,rock,7578
+rap rock,rock,override,True,,7435
+hardstyle,electronic,rule:electronic,True,edm,7336
+power electronics,other,override,True,noise,7320
+garage punk,punk,override,True,,7306
+screamo,punk,rule:punk,True,post-hardcore,6999
+contemporary christian,pop,override,True,pop,6998
+hi-nrg,electronic,rule:electronic,True,electro-disco,6998
+post-punk revival,rock,override,True,post-punk,6767
+chanson française,pop,rule:pop,True,,6760
+djent,metal,rule:metal,True,progressive metal,6722
+cinematic classical,classical,rule:classical,True,western classical,6683
+deathcore,metal,rule:metal,True,,6668
+alternative country,folk_country,rule:folk_country,True,country,6613
+classical crossover,classical,rule:classical,True,pop,6581
+rhythm & blues,rnb_soul,extra_tag,False,,6464
+glam metal,metal,rule:metal,True,hard rock,6451
+texas blues,rnb_soul,rule:rnb_soul,True,blues,6353
+psychobilly,punk,override,True,,6327
+technical death metal,metal,rule:metal,True,death metal,6302
+futurepop,electronic,rule:electronic,True,electronic,6301
+future bass,electronic,rule:electronic,True,edm,6290
+funk rock,rock,override,True,,6222
+traditional pop,pop,rule:pop,True,pop,6202
+horror punk,punk,rule:punk,True,punk rock,6161
+jump blues,rnb_soul,rule:rnb_soul,True,blues,6051
+hip house,electronic,override,True,house,6015
+avant-garde jazz,jazz,rule:jazz,True,jazz,5982
+flamenco,other,rule:other,True,,5963
+progressive pop,pop,override,True,pop,5959
+skate punk,punk,rule:punk,True,punk rock,5948
+jazz rap,hip_hop,rule:hip_hop,True,hip hop,5867
+salsa,other,rule:other,True,,5840
+glitch hop,electronic,rule:electronic,True,,5838
+electronic rock,rock,override,True,,5813
+traditional country,folk_country,rule:folk_country,True,country,5805
+cloud rap,hip_hop,rule:hip_hop,True,hip hop,5795
+hard house,electronic,rule:electronic,True,house,5789
+piano blues,rnb_soul,rule:rnb_soul,True,blues,5752
+acid rock,rock,rule:rock,True,psychedelic rock,5719
+mod,rock,rule:rock,True,rock,5670
+new jack swing,rnb_soul,override,True,contemporary r&b,5663
+sophisti-pop,pop,rule:pop,True,pop,5640
+contemporary classical,classical,rule:classical,True,western classical,5631
+mpb,pop,rule:pop,True,,5568
+heavy psych,rock,override,True,psychedelic rock,5491
+garage rock revival,rock,override,True,garage rock,5450
+electroacoustic,other,override,True,experimental electronic,5434
+harsh noise,other,override,True,noise,5368
+desert rock,rock,rule:rock,True,stoner rock,5332
+viking metal,metal,rule:metal,True,metal,5299
+rap metal,metal,rule:metal,True,alternative metal,5285
+speedcore,electronic,rule:electronic,True,hardcore techno,5280
+field recording,other,override,True,,5204
+avant-garde metal,metal,rule:metal,True,metal,5193
+footwork,electronic,rule:electronic,True,edm,5183
+electroclash,electronic,rule:electronic,True,edm,5182
+comedy rock,rock,rule:rock,True,rock,5181
+folktronica,electronic,override,True,electronic,5162
+g-funk,hip_hop,rule:hip_hop,True,hip hop,5143
+reggaeton,other,override,True,,5096
+jazz pop,jazz,rule:jazz,True,pop,5072
+no wave,rock,rule:rock,True,experimental rock,4938
+aggrotech,electronic,override,True,dark electro,4871
+abstract hip hop,hip_hop,rule:hip_hop,True,hip hop,4852
+synth funk,rnb_soul,rule:rnb_soul,True,funk,4830
+horrorcore,hip_hop,rule:hip_hop,True,hip hop,4811
+k-pop,pop,override,True,pop,4727
+classic country,folk_country,rule:folk_country,True,country,4726
+cumbia,other,rule:other,True,,4664
+ambient techno,electronic,rule:electronic,True,techno,4652
+samba,other,rule:other,True,,4642
+honky tonk,folk_country,rule:folk_country,True,country,4638
+deep soul,rnb_soul,rule:rnb_soul,True,soul,4637
+minimal techno,electronic,rule:electronic,True,techno,4570
+juke,electronic,rule:electronic,True,ghetto house,4556
+alternative folk,folk_country,rule:folk_country,True,contemporary folk,4544
+surf rock,rock,rule:rock,True,surf,4532
+dance-punk,rock,override,True,post-punk,4527
+progressive electronic,electronic,rule:electronic,True,electronic,4486
+southern hip hop,hip_hop,rule:hip_hop,True,hip hop,4460
+gypsy jazz,jazz,rule:jazz,True,jazz,4449
+ragga,reggae,rule:reggae,True,dancehall,4424
+louisiana blues,rnb_soul,rule:rnb_soul,True,blues,4397
+tango,other,rule:other,True,,4327
+rock opera,rock,override,True,rock,4302
+anarcho-punk,punk,rule:punk,True,punk,4299
+slowcore,rock,rule:rock,True,indie rock,4292
+mathcore,metal,rule:metal,True,metalcore,4286
+deathrock,rock,rule:rock,True,punk rock,4275
+melodic black metal,metal,rule:metal,True,black metal,4265
+oi,punk,rule:punk,True,punk rock,4228
+anti-folk,folk_country,rule:folk_country,True,contemporary folk,4158
+brutal death metal,metal,rule:metal,True,death metal,4086
+nu jazz,jazz,rule:jazz,True,electronic,4053
+interview,other,rule:other,True,spoken word,4007
+symphonic black metal,metal,rule:metal,True,black metal,4003
+powerviolence,punk,override,True,hardcore punk,3996
+wave,electronic,override,True,electronic,3996
+new romantic,pop,override,True,new wave,3984
+illbient,electronic,override,True,electronic,3970
+euro-disco,electronic,override,True,disco,3937
+j-rock,rock,rule:rock,True,alternative rock,3927
+christian rock,rock,rule:rock,True,rock,3926
+blackgaze,metal,override,True,,3922
+political hip hop,hip_hop,rule:hip_hop,True,hip hop,3922
+dark folk,folk_country,rule:folk_country,True,neofolk,3847
+depressive black metal,metal,rule:metal,True,black metal,3818
+afro-cuban jazz,jazz,rule:jazz,True,latin jazz,3788
+smooth soul,rnb_soul,rule:rnb_soul,True,soul,3771
+bedroom pop,pop,rule:pop,True,indie pop,3718
+motown,rnb_soul,rule:rnb_soul,True,pop soul,3696
+emo pop,punk,rule:punk,True,,3680
+melodic metalcore,metal,rule:metal,True,metalcore,3661
+psychedelic folk,folk_country,rule:folk_country,True,contemporary folk,3648
+ragtime,jazz,rule:jazz,True,,3635
+post-britpop,rock,rule:rock,True,alternative rock,3572
+goregrind,metal,rule:metal,True,grindcore,3554
+ragga hip-hop,hip_hop,rule:hip_hop,True,,3545
+sound collage,other,override,True,experimental,3530
+poetry,other,rule:other,True,,3475
+country folk,folk_country,rule:folk_country,True,,3464
+french house,electronic,rule:electronic,True,house,3435
+tribal house,electronic,rule:electronic,True,house,3341
+freestyle,electronic,override,True,edm,3275
+blackened death metal,metal,rule:metal,True,death metal,3249
+slacker rock,rock,rule:rock,True,indie rock,3245
+crust punk,punk,rule:punk,True,hardcore punk,3238
+new beat,electronic,rule:electronic,True,ebm,3209
+western classical,classical,rule:classical,True,classical,3209
+sound art,other,override,True,experimental,3182
+filk,folk_country,override,True,contemporary folk,3153
+punk blues,punk,override,True,rock,3138
+future garage,electronic,rule:electronic,True,uk garage,3123
+minimalism,classical,rule:classical,True,modern classical,3108
+electropunk,punk,rule:punk,True,punk,3101
+dreampunk,electronic,override,True,vaporwave,3095
+turntablism,hip_hop,rule:hip_hop,True,hip hop,3081
+dirty south,hip_hop,override,True,southern hip hop,3065
+deep techno,electronic,rule:electronic,True,techno,3056
+hiphop,hip_hop,extra_tag,False,,3051
+klezmer,other,rule:other,True,,3015
+ethereal wave,electronic,override,True,dark wave,3008
+twee pop,pop,rule:pop,True,indie pop,2969
+pub rock,rock,rule:rock,True,rock,2955
+new rave,electronic,rule:electronic,True,alternative dance,2878
+minimal wave,electronic,override,True,electronic,2867
+latin rock,rock,rule:rock,True,rock,2849
+acid techno,electronic,rule:electronic,True,techno,2831
+boogie rock,rnb_soul,rule:rnb_soul,True,blues rock,2825
+art punk,punk,rule:punk,True,punk,2772
+glitch pop,electronic,rule:electronic,True,indietronica,2761
+sunshine pop,pop,rule:pop,True,pop,2752
+boogie,rnb_soul,rule:rnb_soul,True,disco,2719
+deathgrind,metal,override,True,,2719
+chamber folk,folk_country,rule:folk_country,True,contemporary folk,2692
+harsh noise wall,other,override,True,harsh noise,2687
+acoustic blues,rnb_soul,rule:rnb_soul,True,blues,2679
+freak folk,folk_country,rule:folk_country,True,psychedelic folk,2655
+rnb,rnb_soul,extra_tag,False,,2636
+crunk,hip_hop,rule:hip_hop,True,hip hop,2635
+broken transmission,electronic,override,True,vaporwave,2611
+j-core,electronic,override,True,hardcore techno,2586
+neurofunk,rnb_soul,rule:rnb_soul,True,drum and bass,2548
+vaportrap,electronic,override,True,vaporwave,2545
+quiet storm,rnb_soul,rule:rnb_soul,True,r&b,2540
+hardcore techno,electronic,override,True,edm,2536
+oratorio,classical,rule:classical,True,western classical,2516
+italo dance,electronic,rule:electronic,True,eurodance,2513
+cajun,folk_country,rule:folk_country,True,,2489
+neo-rockabilly,rock,rule:rock,True,rock,2442
+d-beat,punk,override,True,hardcore punk,2440
+nerdcore,hip_hop,override,True,hip hop,2419
+noisecore,punk,override,True,hardcore punk,2412
+neue deutsche härte,metal,override,True,alternative metal,2410
+pop metal,metal,rule:metal,True,metal,2390
+mambo,other,default,True,,2377
+celtic rock,folk_country,rule:folk_country,True,folk rock,2324
+lovers rock,reggae,rule:reggae,True,reggae,2315
+slushwave,electronic,override,True,vaporwave,2297
+progressive bluegrass,folk_country,rule:folk_country,True,bluegrass,2290
+space rock revival,rock,rule:rock,True,,2277
+romantic classical,classical,rule:classical,True,western classical,2265
+mallsoft,electronic,override,True,vaporwave,2251
+fado,other,rule:other,True,,2235
+tribal ambient,electronic,rule:electronic,True,ambient,2209
+dark jazz,jazz,rule:jazz,True,jazz,2202
+progressive country,folk_country,rule:folk_country,True,country,2197
+rumba,other,default,True,,2193
+industrial techno,electronic,rule:electronic,True,techno,2166
+crossover thrash,metal,override,True,,2150
+halftime,electronic,override,True,drum and bass,2127
+tropical house,electronic,rule:electronic,True,house,2124
+death-doom metal,metal,rule:metal,True,doom metal,2117
+calypso,other,default,True,,2109
+proto-punk,punk,rule:punk,True,rock,2090
+british blues,rnb_soul,rule:rnb_soul,True,blues,2086
+wonky,electronic,override,True,,2079
+bebop,jazz,rule:jazz,True,jazz,2043
+bolero,other,default,True,,2043
+speech,other,override,True,spoken word,1989
+irish folk,folk_country,rule:folk_country,True,celtic,1984
+hauntology,electronic,override,True,,1980
+brostep,electronic,override,True,dubstep,1970
+hyperpop,pop,rule:pop,True,pop,1964
+industrial hip hop,hip_hop,rule:hip_hop,True,experimental hip hop,1948
+dark cabaret,other,override,True,,1943
+psychedelic soul,rnb_soul,rule:rnb_soul,True,soul,1937
+electro swing,electronic,override,True,,1930
+street punk,punk,rule:punk,True,hardcore punk,1908
+minimal synth,electronic,rule:electronic,True,minimal wave,1896
+jam band,rock,override,True,rock,1892
+hands up,electronic,override,True,edm,1869
+digital hardcore,electronic,override,True,,1867
+electro-disco,rnb_soul,rule:rnb_soul,True,disco,1849
+progressive folk,folk_country,rule:folk_country,True,contemporary folk,1837
+hip hop soul,hip_hop,rule:hip_hop,True,contemporary r&b,1830
+zydeco,folk_country,rule:folk_country,True,,1823
+psybient,electronic,override,True,electronic,1792
+southern soul,rnb_soul,rule:rnb_soul,True,soul,1787
+power noise,electronic,override,True,post-industrial,1768
+neo-progressive rock,rock,rule:rock,True,progressive rock,1761
+boogie-woogie,rnb_soul,rule:rnb_soul,True,blues,1755
+hypnagogic pop,pop,rule:pop,True,pop,1755
+christian metal,metal,rule:metal,True,metal,1730
+jumpstyle,electronic,override,True,edm,1724
+crossover jazz,jazz,rule:jazz,True,jazz,1716
+festival progressive house,electronic,rule:electronic,True,house,1713
+drum & bass,electronic,extra_tag,False,,1694
+sonata,classical,rule:classical,True,western classical,1671
+swamp pop,pop,rule:pop,True,r&b,1667
+piedmont blues,rnb_soul,rule:rnb_soul,True,country blues,1663
+space ambient,electronic,rule:electronic,True,ambient,1661
+ballet,classical,override,True,western classical,1646
+neoclassical dark wave,classical,rule:classical,True,dark wave,1645
+city pop,pop,rule:pop,True,pop,1640
+world fusion,other,rule:other,True,,1635
+complextro,electronic,override,True,electro house,1634
+ritual ambient,electronic,rule:electronic,True,dark ambient,1630
+outlaw country,folk_country,rule:folk_country,True,progressive country,1627
+celtic punk,punk,rule:punk,True,folk punk,1605
+old school death metal,metal,rule:metal,True,death metal,1595
+merengue,other,rule:other,True,,1554
+midwest emo,punk,rule:punk,True,emo,1554
+funeral doom metal,metal,rule:metal,True,doom metal,1536
+skiffle,folk_country,override,True,folk,1530
+polka,other,rule:other,True,,1525
+steampunk,other,override,True,,1505
+brass band,other,default,True,western classical,1503
+french electro,electronic,rule:electronic,True,electro house,1503
+merseybeat,rock,override,True,beat music,1493
+post-classical,classical,rule:classical,True,contemporary classical,1493
+symphonic prog,classical,rule:classical,True,progressive rock,1487
+exotica,pop,rule:pop,True,easy listening,1480
+cabaret,other,default,True,musical,1478
+bassline,electronic,override,True,uk garage,1468
+funky house,rnb_soul,rule:rnb_soul,True,house,1463
+atmospheric sludge metal,metal,rule:metal,True,sludge metal,1454
+celtic new age,folk_country,rule:folk_country,True,new age,1440
+drone metal,metal,rule:metal,True,metal,1440
+jazz blues,jazz,rule:jazz,True,,1436
+death industrial,electronic,rule:electronic,True,industrial,1429
+bitpop,electronic,rule:electronic,True,,1421
+nwobhm,metal,rule:metal,True,heavy metal,1414
+cybergrind,metal,override,True,grindcore,1394
+drumstep,electronic,override,True,drum and bass,1390
+madchester,rock,rule:rock,True,alternative dance,1383
+trap edm,hip_hop,rule:hip_hop,True,edm,1368
+western,other,default,True,country,1356
+indian classical,classical,rule:classical,True,classical,1350
+ranchera,other,rule:other,True,regional mexicano,1344
+western swing,folk_country,override,True,country,1325
+tech trance,electronic,rule:electronic,True,trance,1305
+filmi,other,rule:other,True,,1297
+minneapolis sound,rnb_soul,override,True,synth funk,1286
+garage psych,electronic,rule:electronic,True,garage rock,1246
+uk hardcore,electronic,override,True,happy hardcore,1246
+raï,other,default,True,,1242
+deconstructed club,electronic,rule:electronic,True,edm,1238
+neoclassical metal,metal,rule:metal,True,metal,1238
+math pop,pop,rule:pop,True,math rock,1237
+avant-prog,rock,override,True,progressive rock,1233
+emo rap,hip_hop,override,True,,1232
+lolicore,electronic,override,True,breakcore,1225
+contemporary gospel,rnb_soul,rule:rnb_soul,True,gospel,1223
+soul blues,rnb_soul,rule:rnb_soul,True,blues,1218
+gothic country,folk_country,rule:folk_country,True,alternative country,1208
+digital fusion,electronic,override,True,electronic,1186
+old-time,folk_country,override,True,folk,1183
+avant-folk,folk_country,rule:folk_country,True,contemporary folk,1171
+rapcore,rock,override,True,,1164
+vocal trance,electronic,rule:electronic,True,trance,1160
+drill and bass,electronic,override,True,drum and bass; idm,1156
+tape music,other,override,True,experimental,1154
+ambient house,electronic,rule:electronic,True,house,1148
+pigfuck,rock,override,True,noise rock,1148
+highlife,other,default,True,,1146
+ghettotech,electronic,override,True,edm,1138
+trap soul,hip_hop,rule:hip_hop,True,,1137
+electric texas blues,rnb_soul,rule:rnb_soul,True,electric blues; texas blues,1133
+neue deutsche welle,rock,override,True,new wave,1129
+praise & worship,pop,override,True,contemporary christian,1127
+bachata,other,rule:other,True,latin,1125
+chopped and screwed,hip_hop,rule:hip_hop,True,hip hop,1125
+mariachi,other,rule:other,True,regional mexicano,1109
+speed garage,electronic,rule:electronic,True,uk garage,1109
+children's music,other,rule:other,True,,1102
+queercore,punk,override,True,punk rock,1101
+mandopop,pop,rule:pop,True,c-pop,1092
+bakersfield sound,folk_country,override,True,country,1091
+tex-mex,other,default,True,roots rock,1084
+ambient dub,reggae,rule:reggae,True,,1075
+microhouse,electronic,rule:electronic,True,house,1067
+eccojams,electronic,override,True,vaporwave,1063
+pop screamo,punk,rule:punk,True,post-hardcore,1054
+christian hip hop,hip_hop,rule:hip_hop,True,hip hop,1052
+yacht rock,rock,rule:rock,True,soft rock,1051
+funktronica,rnb_soul,rule:rnb_soul,True,electronic,1048
+avant-garde pop,pop,rule:pop,True,pop,1044
+cantata,classical,rule:classical,True,western classical,1043
+post-dubstep,electronic,rule:electronic,True,edm,1042
+shibuya-kei,pop,override,True,pop,1042
+chillstep,electronic,override,True,dubstep,1030
+zouk,other,default,True,,1026
+breakbeat hardcore,punk,rule:punk,True,breakbeat,1019
+traditional doom metal,metal,rule:metal,True,doom metal,1018
+sketch comedy,other,rule:other,True,comedy,1015
+country soul,folk_country,rule:folk_country,True,,1013
+surf punk,punk,rule:punk,True,punk rock,1012
+mainstream rock,rock,rule:rock,True,rock,1006
+post-minimalism,classical,rule:classical,True,modern classical,1003
+country gospel,folk_country,rule:folk_country,True,traditional country,986
+music hall,pop,override,True,musical,981
+séga,other,default,True,,961
+reggae rock,reggae,rule:reggae,True,rock,957
+nightcore,electronic,override,True,electronic,931
+mashcore,electronic,override,True,breakcore,922
+freakbeat,rock,override,True,rock,917
+zeuhl,rock,override,True,avant-prog,906
+morna,other,default,True,,890
+instrumental jazz,jazz,rule:jazz,True,jazz,887
+neo-traditional country,folk_country,rule:folk_country,True,contemporary country,887
+bounce,hip_hop,rule:hip_hop,True,hip hop,885
+seapunk,punk,rule:punk,True,electronic,884
+miami bass,hip_hop,override,True,hip hop,883
+skacore,punk,override,True,ska punk,882
+hardcore breaks,electronic,override,True,breakbeat hardcore,877
+war metal,metal,rule:metal,True,black metal,875
+electro-funk,rnb_soul,rule:rnb_soul,True,funk,871
+worldbeat,other,rule:other,True,,864
+soukous,other,default,True,,858
+american primitive guitar,folk_country,override,True,contemporary folk,857
+indie surf,rock,rule:rock,True,indie rock,855
+southern metal,metal,rule:metal,True,metal,847
+uk funky,rnb_soul,rule:rnb_soul,True,edm,843
+techstep,electronic,override,True,drum and bass,834
+bluegrass gospel,folk_country,rule:folk_country,True,bluegrass,831
+riot grrrl,punk,rule:punk,True,punk rock,824
+us power metal,metal,rule:metal,True,heavy metal,821
+occult rock,rock,rule:rock,True,rock,819
+cowpunk,punk,rule:punk,True,punk,817
+funky breaks,rnb_soul,rule:rnb_soul,True,breakbeat,817
+2-step,electronic,override,True,uk garage,808
+hard techno,electronic,rule:electronic,True,techno,783
+sleaze rock,rock,rule:rock,True,glam metal,782
+spiritual jazz,jazz,rule:jazz,True,jazz,772
+soca,other,default,True,,771
+horror synth,electronic,rule:electronic,True,electronic,769
+hardvapour,electronic,override,True,vaporwave,761
+melodic dubstep,electronic,rule:electronic,True,dubstep,754
+ethio-jazz,jazz,rule:jazz,True,jazz,749
+zolo,rock,override,True,rock,749
+hyphy,hip_hop,rule:hip_hop,True,hip hop,744
+new orleans r&b,rnb_soul,rule:rnb_soul,True,r&b,742
+standup comedy,other,rule:other,True,comedy,742
+bubblegum bass,pop,rule:pop,True,edm,738
+stomp and holler,folk_country,override,True,contemporary folk,738
+brutal prog,rock,override,True,progressive rock,734
+dance-punk revival,punk,rule:punk,True,dance-punk,733
+stride,jazz,override,True,jazz,733
+chillsynth,electronic,rule:electronic,True,electronic,727
+modal jazz,jazz,rule:jazz,True,jazz,722
+beat music,rock,override,True,pop rock,719
+bubblegum pop,pop,rule:pop,True,pop,710
+detroit techno,electronic,rule:electronic,True,techno,696
+electro hop,electronic,rule:electronic,True,pop,686
+desert blues,rnb_soul,rule:rnb_soul,True,,684
+phonk,hip_hop,rule:hip_hop,True,hip hop,682
+mafioso rap,hip_hop,rule:hip_hop,True,gangsta rap,679
+jersey club,electronic,rule:electronic,True,edm,677
+chipmunk soul,rnb_soul,rule:rnb_soul,True,hip hop,676
+néo-trad,folk_country,override,True,folk,674
+technical thrash metal,metal,rule:metal,True,thrash metal,674
+pornogrind,metal,override,True,goregrind,661
+production music,other,override,True,,661
+ambient americana,folk_country,rule:folk_country,True,ambient,660
+geek rock,rock,rule:rock,True,alternative rock,654
+gregorian chant,classical,rule:classical,True,plainchant,654
+electronicore,electronic,rule:electronic,True,,648
+utopian virtual,electronic,override,True,vaporwave,646
+space age pop,pop,rule:pop,True,easy listening,643
+moombahton,electronic,rule:electronic,True,edm,641
+drill,hip_hop,rule:hip_hop,True,trap,636
+pagan black metal,metal,rule:metal,True,black metal,634
+modern creative,jazz,override,True,jazz,626
+j-euro,pop,override,True,eurobeat,621
+swing revival,jazz,rule:jazz,True,swing,617
+brill building,pop,override,True,pop,612
+martial industrial,electronic,rule:electronic,True,post-industrial,610
+ghetto house,electronic,rule:electronic,True,house,609
+emocore,punk,override,True,emo; post-hardcore,608
+future house,electronic,rule:electronic,True,house,606
+northern soul,rnb_soul,rule:rnb_soul,True,soul,605
+c86,rock,override,True,indie pop,604
+kayōkyoku,pop,rule:pop,True,pop,604
+dancefloor drum and bass,electronic,rule:electronic,True,drum and bass,602
+old school hip hop,hip_hop,rule:hip_hop,True,hip hop,586
+contra,other,default,True,,585
+swamp rock,rock,rule:rock,True,rock,584
+boogaloo,other,default,True,latin,583
+mbalax,other,default,True,,582
+microsound,electronic,override,True,electronic,570
+dutch house,electronic,rule:electronic,True,electro house,563
+tejano,other,default,True,regional mexicano,563
+cantopop,pop,rule:pop,True,c-pop,556
+frenchcore,electronic,override,True,hardcore techno,555
+2 tone,reggae,override,True,ska,553
+bhangra,other,default,True,,542
+emoviolence,punk,override,True,screamo,540
+lowercase,other,override,True,reductionism,532
+mento,reggae,rule:reggae,True,,530
+qawwali,other,rule:other,True,,524
+easycore,punk,override,True,pop punk,519
+darkstep,electronic,override,True,drum and bass,516
+black ambient,electronic,rule:electronic,True,dark ambient,514
+sea shanty,folk_country,rule:folk_country,True,work song,514
+gamelan,other,default,True,southeast asian classical,512
+gypsy punk,punk,rule:punk,True,punk rock,510
+british folk rock,folk_country,rule:folk_country,True,folk rock,508
+griot,other,default,True,,507
+epic doom metal,metal,rule:metal,True,traditional doom metal,502
+makina,electronic,override,True,techno,501
+guaguancó,other,default,True,rumba cubana,492
+cyber metal,metal,rule:metal,True,industrial metal,490
+bass house,electronic,rule:electronic,True,house,484
+progressive soul,rnb_soul,rule:rnb_soul,True,soul,481
+pachanga,other,default,True,,478
+nintendocore,punk,override,True,post-hardcore,477
+sampledelia,electronic,override,True,electronic,475
+extratone,electronic,override,True,speedcore,470
+crossover prog,rock,override,True,progressive rock,469
+spacesynth,electronic,rule:electronic,True,edm,469
+trance metal,metal,rule:metal,True,metal,458
+descarga,other,default,True,,457
+cocktail nation,pop,override,True,easy listening,456
+paisley underground,rock,override,True,neo-psychedelia,449
+traditional bluegrass,folk_country,rule:folk_country,True,bluegrass,447
+donk,electronic,override,True,hard house,446
+liedermacher,folk_country,override,True,singer-songwriter,443
+norteño,other,rule:other,True,regional mexicano,440
+pagan folk,folk_country,rule:folk_country,True,folk,439
+free folk,folk_country,rule:folk_country,True,psychedelic folk,438
+anatolian rock,rock,rule:rock,True,rock,437
+barber beats,electronic,override,True,vaporwave,435
+classical period,classical,rule:classical,True,western classical,435
+progressive breaks,electronic,rule:electronic,True,breakbeat,435
+crossbreed,electronic,override,True,,428
+impressionism,classical,rule:classical,True,western classical,428
+guaracha,other,default,True,,425
+atmospheric drum and bass,electronic,rule:electronic,True,drum and bass,424
+deep funk,rnb_soul,rule:rnb_soul,True,funk,424
+doomcore,electronic,override,True,hardcore techno,418
+vaudeville blues,rnb_soul,rule:rnb_soul,True,,413
+dark disco,rnb_soul,rule:rnb_soul,True,edm,411
+third stream,jazz,override,True,,399
+diva house,electronic,rule:electronic,True,house,397
+mod revival,rock,rule:rock,True,mod,393
+bro-country,folk_country,rule:folk_country,True,country pop,392
+sasscore,other,rule:other,True,hardcore punk,392
+schranz,electronic,override,True,techno,391
+bubblegum dance,electronic,rule:electronic,True,eurodance,390
+dissonant death metal,metal,rule:metal,True,technical death metal,388
+nueva trova,folk_country,override,True,trova,388
+modern blues,rnb_soul,rule:rnb_soul,True,blues,387
+doomgaze,metal,override,True,post-metal,382
+persian classical,classical,rule:classical,True,classical,378
+theme and variations,classical,override,True,western classical,375
+visual kei,rock,override,True,rock,373
+tropical rock,rock,rule:rock,True,pop rock,372
+neoclassical new age,classical,rule:classical,True,new age,370
+yé-yé,pop,override,True,pop,367
+acousmatic,other,override,True,electroacoustic,364
+acid breaks,electronic,rule:electronic,True,breakbeat,362
+chicago soul,rnb_soul,rule:rnb_soul,True,soul,362
+space disco,electronic,override,True,electro-disco,362
+celtic metal,metal,rule:metal,True,folk metal,361
+glitch hop edm,electronic,rule:electronic,True,edm,359
+thrashcore,punk,override,True,hardcore punk,359
+neoclassicism,classical,override,True,western classical,358
+cuddlecore,pop,override,True,twee pop,356
+glam punk,punk,rule:punk,True,,354
+lo-fi house,electronic,rule:electronic,True,outsider house,353
+batucada,other,default,True,,347
+waltz,classical,override,True,,346
+operatic pop,classical,rule:classical,True,classical crossover,345
+outsider house,electronic,rule:electronic,True,house,344
+p-funk,rnb_soul,rule:rnb_soul,True,funk,338
+fm synthesis,electronic,rule:electronic,True,bit music,336
+rebetiko,other,rule:other,True,,329
+medieval rock,classical,rule:classical,True,folk rock,327
+cape jazz,jazz,rule:jazz,True,jazz,325
+close harmony,other,default,True,traditional country,325
+country rap,hip_hop,rule:hip_hop,True,,325
+dreamwave,other,default,True,synthwave,324
+dream trance,electronic,rule:electronic,True,trance,321
+liquid funk,rnb_soul,rule:rnb_soul,True,drum and bass,321
+italo house,electronic,rule:electronic,True,house,318
+british rhythm & blues,rnb_soul,rule:rnb_soul,True,r&b,317
+jug band,other,default,True,acoustic blues,315
+andalusian classical,classical,rule:classical,True,classical,314
+big room house,electronic,rule:electronic,True,house,314
+dub poetry,reggae,rule:reggae,True,poetry,314
+chinese classical,classical,rule:classical,True,classical,313
+euro-trance,electronic,rule:electronic,True,trance,312
+afrobeats,other,override,True,,311
+luk thung,other,default,True,,311
+go-go,rnb_soul,rule:rnb_soul,True,funk,310
+son cubano,other,default,True,,310
+forró,other,rule:other,True,,309
+hardbass,other,default,True,hard house,303
+hill country blues,folk_country,rule:folk_country,True,blues,303
+gqom,other,default,True,house,299
+vocalese,pop,rule:pop,True,vocal jazz,296
+artcore,other,default,True,edm,295
+country boogie,folk_country,rule:folk_country,True,traditional country,295
+moombahcore,other,default,True,edm,295
+third wave ska,reggae,rule:reggae,True,ska,295
+levenslied,other,default,True,pop,292
+urban cowboy,other,default,True,country,290
+sound effects,other,default,True,,289
+melodic techno,electronic,rule:electronic,True,techno,287
+central asian throat singing,other,default,True,,286
+porn groove,other,default,True,funk,286
+beatboxing,other,default,True,,285
+experimental big band,jazz,rule:jazz,True,big band,285
+neo-medieval folk,classical,rule:classical,True,folk,284
+coke rap,hip_hop,rule:hip_hop,True,gangsta rap,283
+terrorcore,other,default,True,hardcore techno,283
+kuduro,other,default,True,edm,282
+skweee,other,default,True,electro,279
+trap metal,metal,override,True,trap,277
+lullaby,other,default,True,children's music,275
+medieval metal,metal,rule:metal,True,folk metal,274
+neocrust,punk,rule:punk,True,crust punk,273
+raggacore,reggae,rule:reggae,True,breakcore,273
+canterbury scene,other,default,True,psychedelic rock,271
+salegy,other,default,True,,271
+beatdown hardcore,punk,rule:punk,True,hardcore punk,269
+african blues,rnb_soul,rule:rnb_soul,True,blues,267
+maloya,other,default,True,,263
+neurohop,other,default,True,glitch hop edm,260
+coladeira,other,default,True,,258
+swancore,other,default,True,progressive post-hardcore,258
+indian pop,pop,rule:pop,True,pop,255
+baltimore club,electronic,rule:electronic,True,edm,252
+milonga,other,default,True,,252
+neo-acoustic,other,default,True,pop,252
+death 'n' roll,other,default,True,death metal,250
+kawaii metal,metal,rule:metal,True,metal,250
+lambada,other,default,True,,249
+new orleans blues,rnb_soul,rule:rnb_soul,True,blues,248
+appalachian folk,folk_country,rule:folk_country,True,folk,246
+comfy synth,electronic,rule:electronic,True,dungeon synth,244
+denpa,other,default,True,pop,244
+hybrid trap,hip_hop,rule:hip_hop,True,trap edm,244
+swamp blues,rnb_soul,rule:rnb_soul,True,electric blues,243
+nederpop,pop,rule:pop,True,pop,242
+vallenato,other,default,True,,242
+acoustic texas blues,rnb_soul,rule:rnb_soul,True,texas blues,237
+midtempo bass,other,default,True,edm,237
+nature sounds,other,default,True,field recording,236
+mass,other,default,True,western classical,233
+eai,other,default,True,free improvisation,231
+philly soul,rnb_soul,rule:rnb_soul,True,soul,231
+traditional black gospel,rnb_soul,rule:rnb_soul,True,gospel,231
+progressive psytrance,electronic,rule:electronic,True,psytrance,230
+blackened crust,punk,rule:punk,True,crust punk,229
+chicago drill,hip_hop,rule:hip_hop,True,drill,229
+son montuno,other,default,True,son cubano,229
+axé,other,rule:other,True,,228
+mbaqanga,other,default,True,marabi,228
+texas country,folk_country,rule:folk_country,True,country,227
+éntekhno,other,default,True,,227
+industrial hardcore,punk,rule:punk,True,hardcore techno,226
+cowboy poetry,other,rule:other,True,poetry,225
+ambient noise wall,electronic,rule:electronic,True,harsh noise wall,222
+crack rock steady,rock,rule:rock,True,ska punk,221
+hiplife,other,default,True,hip hop,221
+afro-funk,rnb_soul,rule:rnb_soul,True,funk,220
+epic collage,other,default,True,post-industrial,220
+operetta,other,default,True,opera,220
+chicago house,electronic,rule:electronic,True,house,219
+isicathamiya,other,default,True,,219
+musette,other,default,True,,218
+taarab,other,default,True,,217
+tropicália,other,default,True,,217
+electrotango,electronic,rule:electronic,True,,216
+jazzstep,jazz,rule:jazz,True,drum and bass,216
+canzone napoletana,other,default,True,,213
+trova,other,default,True,,212
+punk rap,punk,rule:punk,True,hip hop,211
+zenonesque,other,default,True,progressive psytrance,211
+black noise,other,default,True,noise,209
+raga rock,rock,rule:rock,True,psychedelic rock,209
+kawaii future bass,electronic,rule:electronic,True,future bass,207
+noisegrind,other,default,True,grindcore,206
+memphis rap,hip_hop,rule:hip_hop,True,hardcore hip hop,205
+trap latino,hip_hop,rule:hip_hop,True,trap,205
+outrun,other,default,True,synthwave,204
+chanson à texte,pop,rule:pop,True,chanson française,203
+art song,classical,override,True,western classical,202
+fidget house,electronic,rule:electronic,True,electro house,201
+funkot,rnb_soul,rule:rnb_soul,True,edm,200
+footwork jungle,electronic,rule:electronic,True,edm,199
+uk drill,hip_hop,rule:hip_hop,True,drill,198
+black 'n' roll,other,default,True,black metal,197
+jamaican ska,reggae,rule:reggae,True,ska,197
+winter synth,electronic,rule:electronic,True,dungeon synth,197
+audio drama,other,default,True,,194
+corrido,other,default,True,regional mexicano,194
+dark psytrance,electronic,rule:electronic,True,psytrance,194
+humppa,other,default,True,,194
+slam death metal,metal,rule:metal,True,brutal death metal,194
+deathstep,other,default,True,brostep,193
+danzón,other,default,True,,189
+gorenoise,other,default,True,goregrind,188
+grebo,other,default,True,alternative rock,187
+afro house,electronic,rule:electronic,True,house,186
+asian rock,rock,rule:rock,True,pluggnb,185
+frat rap,hip_hop,rule:hip_hop,True,pop rap,184
+uk street soul,rnb_soul,rule:rnb_soul,True,contemporary r&b,182
+kizomba,other,rule:other,True,,180
+chanson réaliste,pop,rule:pop,True,chanson française,177
+serialism,classical,rule:classical,True,modern classical,177
+free funk,rnb_soul,rule:rnb_soul,True,avant-garde jazz; jazz-funk,176
+rhumba,other,default,True,latin,176
+balearic beat,other,default,True,house,174
+chicano rap,hip_hop,rule:hip_hop,True,hip hop,174
+melodic trance,electronic,rule:electronic,True,trance,174
+guajira,other,default,True,,172
+comedy hip hop,hip_hop,rule:hip_hop,True,hip hop,171
+funk carioca,other,override,True,funk brasileiro,171
+hyper techno,electronic,rule:electronic,True,hardcore techno,171
+progressive metalcore,metal,rule:metal,True,metalcore,171
+chacarera,other,default,True,,170
+beat poetry,other,rule:other,True,poetry,169
+kabarett,other,default,True,,166
+ars nova,other,default,True,medieval,164
+fairy tale,other,default,True,spoken word,164
+plena,other,default,True,,164
+rage,other,default,True,trap,164
+spirituals,other,default,True,,163
+compas,other,default,True,,161
+red dirt,other,default,True,country,161
+porro,other,default,True,,160
+slam poetry,other,rule:other,True,poetry,160
+nashville sound,other,default,True,country,159
+christian hardcore,punk,rule:punk,True,hardcore punk,158
+gagaku,other,default,True,japanese classical,158
+candombe,other,default,True,,156
+copla,other,default,True,,156
+samba-jazz,jazz,rule:jazz,True,,156
+indorock,rock,rule:rock,True,rock and roll,155
+chamamé,other,default,True,,153
+hi-tech,other,default,True,dark psytrance,152
+shitgaze,other,default,True,slacker rock,151
+ars subtilior,other,default,True,medieval,150
+madrigal,classical,rule:classical,True,western classical,149
+prelude,other,default,True,western classical,149
+crunkcore,hip_hop,rule:hip_hop,True,,148
+battle rap,hip_hop,rule:hip_hop,True,hip hop,147
+dubwise,other,default,True,drum and bass,147
+enka,pop,rule:pop,True,,147
+kwaito,other,default,True,house,147
+sermon,other,default,True,speech,146
+fantasia,other,default,True,western classical,145
+loud kei,other,default,True,visual kei,145
+vapornoise,other,default,True,vaporwave,145
+afro-jazz,jazz,rule:jazz,True,jazz,144
+nueva canción,other,default,True,singer-songwriter,144
+choro,other,default,True,,143
+full-on,other,default,True,psytrance,142
+latin ballad,pop,rule:pop,True,ballad,142
+raw punk,punk,rule:punk,True,d-beat,142
+futurism,other,default,True,modern classical,141
+southern gospel,rnb_soul,rule:rnb_soul,True,gospel,139
+bouncy techno,electronic,rule:electronic,True,happy hardcore,138
+motet,other,default,True,western classical,138
+zamrock,rock,rule:rock,True,psychedelic rock,138
+acoustic chicago blues,rnb_soul,rule:rnb_soul,True,chicago blues,136
+lied,classical,override,True,art song,135
+crime jazz,jazz,rule:jazz,True,jazz,134
+serenade,other,default,True,western classical,134
+snap,other,default,True,hip hop,133
+afro rock,rock,rule:rock,True,rock,132
+gnawa,other,default,True,,130
+jazz poetry,jazz,rule:jazz,True,poetry,130
+zhongguo feng,other,default,True,c-pop,130
+acid trance,electronic,rule:electronic,True,trance,129
+rumba catalana,other,default,True,,129
+champeta,other,default,True,,128
+minimal drum and bass,electronic,rule:electronic,True,drum and bass,128
+sertanejo,other,rule:other,True,,128
+flamenco jazz,jazz,rule:jazz,True,,127
+classic blues,rnb_soul,rule:rnb_soul,True,blues,126
+funaná,other,default,True,,126
+frat rock,rock,rule:rock,True,garage rock,124
+muzika mizrahit,other,default,True,,124
+asmr,other,default,True,,123
+min'yō,other,default,True,,121
+hindustani classical,classical,rule:classical,True,indian classical,120
+suomisaundi,other,default,True,psytrance,120
+britcore,other,default,True,hardcore hip hop,119
+jump up,other,default,True,drum and bass,119
+baião,other,default,True,,118
+flamenco pop,pop,rule:pop,True,pop,117
+timba,other,default,True,salsa,117
+weightless,other,default,True,grime,117
+ambient trance,electronic,rule:electronic,True,trance,115
+future rave,electronic,rule:electronic,True,edm,114
+orchestral jazz,jazz,rule:jazz,True,jazz,114
+free tekno,other,default,True,techno,113
+mincecore,other,default,True,grindcore,113
+onkyo,other,default,True,reductionism,113
+audio documentary,other,default,True,,112
+zamba,other,default,True,,112
+deep tech,other,default,True,tech house,111
+marching band,other,default,True,,111
+future core,electronic,rule:electronic,True,future bass,110
+joik,other,default,True,,108
+ragga jungle,reggae,rule:reggae,True,jungle,108
+thall,other,default,True,metalcore,107
+houston sound,other,default,True,hip hop,106
+sound poetry,other,rule:other,True,poetry,106
+wonky techno,electronic,rule:electronic,True,techno,106
+c-pop,pop,rule:pop,True,pop,105
+nerdcore techno,electronic,rule:electronic,True,edm,105
+digicore,other,default,True,hip hop,104
+hopepunk,punk,rule:punk,True,,102
+dissonant black metal,metal,rule:metal,True,black metal,101
+drumless hip hop,hip_hop,rule:hip_hop,True,hip hop,101
+latin disco,rnb_soul,rule:rnb_soul,True,disco,101
+semba,other,default,True,,101
+string quartet,classical,rule:classical,True,western classical,100
+hamburger schule,other,default,True,indie rock,99
+melbourne bounce,hip_hop,rule:hip_hop,True,electro house,99
+bit music,other,default,True,electronic,98
+melodic house,electronic,rule:electronic,True,house,98
+vaudeville,other,default,True,musical,98
+melodic bass,other,default,True,edm,96
+purple sound,other,default,True,dubstep,96
+regional mexicano,other,default,True,,96
+dnb,electronic,extra_tag,False,,95
+psycore,other,default,True,dark psytrance,94
+laiko,other,default,True,,93
+steel band,other,default,True,,93
+barbershop,other,default,True,,92
+nuevo flamenco,other,rule:other,True,flamenco,92
+hexd,other,default,True,electronic,91
+aquacrunk,hip_hop,rule:hip_hop,True,edm,90
+jùjú,other,default,True,,90
+música criolla,other,default,True,folk,90
+turkish classical,classical,rule:classical,True,islamic modal music,90
+yakousei,other,default,True,j-rock,90
+prank calls,other,default,True,comedy,89
+skullstep,other,default,True,darkstep,89
+slack-key guitar,other,default,True,,89
+charanga,other,default,True,,88
+rock musical,rock,rule:rock,True,musical,87
+chachachá,other,default,True,,86
+chap hop,other,default,True,comedy hip hop,86
+indeterminacy,other,default,True,modern classical,86
+mbube,other,default,True,,86
+banda sinaloense,other,rule:other,True,regional mexicano,85
+nederbeat,other,default,True,beat music,85
+overture,other,default,True,western classical,85
+splittercore,other,default,True,speedcore,85
+nu skool breaks,electronic,rule:electronic,True,breakbeat,83
+birdsong,other,default,True,animal sounds,81
+neoperreo,other,default,True,reggaeton,81
+rumba flamenca,other,default,True,flamenco,81
+digital cumbia,other,rule:other,True,,80
+group sounds,other,default,True,beat music,80
+mantra,other,default,True,,80
+deep drum and bass,electronic,rule:electronic,True,drum and bass,79
+seishun punk,punk,rule:punk,True,pop punk,79
+vocal house,electronic,rule:electronic,True,house,79
+church music,other,default,True,,77
+pagode,other,default,True,samba,77
+requiem,classical,rule:classical,True,mass,77
+dembow,other,default,True,,76
+flashcore,other,default,True,electronic,76
+new jazz,jazz,rule:jazz,True,trap,76
+skinhead reggae,reggae,rule:reggae,True,reggae,76
+afroswing,jazz,rule:jazz,True,hip hop,75
+huayno,other,default,True,,75
+samba-rock,rock,rule:rock,True,samba,75
+darkcore,other,default,True,breakbeat hardcore,74
+peak time techno,electronic,rule:electronic,True,techno,74
+stenchcore,other,default,True,crust punk,74
+canción melódica,other,default,True,pop,73
+neon pop punk,punk,rule:punk,True,pop punk,73
+classic jazz,jazz,rule:jazz,True,jazz,72
+twerk,other,default,True,trap edm,72
+mor lam,other,default,True,,71
+sovietwave,other,default,True,synthwave,71
+kleinkunst,other,default,True,singer-songwriter,70
+jerk rap,hip_hop,rule:hip_hop,True,hip hop,69
+son jarocho,other,default,True,regional mexicano,69
+demostyle,other,default,True,,68
+uptempo hardcore,punk,rule:punk,True,hardcore techno,67
+picopop,pop,rule:pop,True,shibuya-kei,66
+trancestep,electronic,rule:electronic,True,drum and bass,66
+andean new age,other,default,True,new age,64
+nuevo tango,other,rule:other,True,tango,64
+big room trance,electronic,rule:electronic,True,trance,63
+techno bass,electronic,rule:electronic,True,miami bass,63
+countrypolitan,folk_country,rule:folk_country,True,country pop,61
+organic house,electronic,rule:electronic,True,house,61
+bomba,other,default,True,,60
+hardstep,other,default,True,drum and bass,59
+arrocha,other,default,True,,58
+truck driving country,folk_country,rule:folk_country,True,country,58
+bleep techno,electronic,rule:electronic,True,techno,57
+chimurenga,other,default,True,,57
+belgian techno,electronic,rule:electronic,True,hardcore techno,56
+chanson québécoise,pop,rule:pop,True,chanson française,56
+cumbia colombiana,other,rule:other,True,cumbia,56
+doskpop,pop,rule:pop,True,bit music,56
+folkhop,folk_country,rule:folk_country,True,,56
+tough guy hardcore,punk,rule:punk,True,hardcore punk,56
+hard drum,other,default,True,edm,55
+slimepunk,punk,rule:punk,True,edm,54
+algorave,electronic,rule:electronic,True,electronic,53
+bytebeat,other,default,True,bit music,53
+cumbia peruana,other,rule:other,True,cumbia,53
+cumbia mexicana,other,rule:other,True,cumbia,52
+drumfunk,rnb_soul,rule:rnb_soul,True,drum and bass,52
+ghazal,other,default,True,,52
+amapiano,other,default,True,house,51
+tizita,other,default,True,,51
+uk82,other,default,True,hardcore punk,51
+concerto grosso,classical,rule:classical,True,concerto,50
+plainchant,other,default,True,church music; medieval,50
+rominimal,other,default,True,tech house,50
+chicha,other,default,True,cumbia peruana,49
+shaabi,other,default,True,,49
+loner folk,folk_country,rule:folk_country,True,contemporary folk,48
+beat rock,rock,rule:rock,True,rock,47
+deejay,other,default,True,reggae,46
+kankyō ongaku,other,default,True,ambient,46
+nhạc vàng,other,default,True,,46
+psybreaks,electronic,rule:electronic,True,breakbeat,46
+rawstyle,other,default,True,hardstyle,46
+sean-nós,other,default,True,irish folk,46
+dunedin sound,other,default,True,indie rock,45
+hardwave,other,default,True,wave,45
+thai classical,classical,rule:classical,True,southeast asian classical,45
+toypop,pop,rule:pop,True,,45
+vocal surf,rock,rule:rock,True,surf,45
+livetronica,other,default,True,jam band,43
+visa,other,default,True,folk,43
+brit funk,rnb_soul,rule:rnb_soul,True,funk,42
+future bounce,hip_hop,rule:hip_hop,True,house,42
+murga,other,default,True,musical,42
+neue deutsche todeskunst,other,default,True,dark wave,42
+autonomic,other,default,True,minimal drum and bass,40
+electro latino,electronic,rule:electronic,True,edm,40
+latin house,electronic,rule:electronic,True,house,40
+sacred harp,other,default,True,,40
+urban contemporary gospel,rnb_soul,rule:rnb_soul,True,gospel,40
+march,other,default,True,western classical,39
+psystyle,other,default,True,hardstyle,39
+rapso,other,default,True,,39
+euphoric hardstyle,electronic,rule:electronic,True,hardstyle,38
+nocturne,other,default,True,western classical,38
+rumba cubana,other,default,True,,38
+forest psytrance,electronic,rule:electronic,True,psytrance,37
+jungle terror,electronic,rule:electronic,True,edm,37
+ryūkōka,other,default,True,,37
+techno kayō,electronic,rule:electronic,True,kayōkyoku,37
+latin soul,rnb_soul,rule:rnb_soul,True,soul,36
+toytown pop,pop,rule:pop,True,pop,35
+wyrd folk,folk_country,rule:folk_country,True,psychedelic folk,35
+dabke,other,default,True,,34
+microtonal classical,classical,rule:classical,True,modern classical,34
+nagauta,other,default,True,japanese classical,34
+rautalanka,other,default,True,rock,34
+spectralism,other,default,True,modern classical,34
+turbo-folk,folk_country,rule:folk_country,True,folk pop,34
+animal sounds,other,default,True,nature sounds,33
+holy minimalism,classical,rule:classical,True,minimalism,33
+moogsploitation,other,default,True,electronic,33
+bardcore,other,default,True,pop,32
+latin funk,rnb_soul,rule:rnb_soul,True,funk,32
+música cebolla,other,default,True,canción melódica,32
+acidcore,other,default,True,hardcore techno,31
+dariacore,other,default,True,edm,31
+falak,other,default,True,folk,31
+junkanoo,other,default,True,,31
+mugham,other,default,True,islamic modal music,31
+russian chanson,pop,rule:pop,True,pop,31
+byzantine chant,other,default,True,church music,30
+circus march,other,default,True,march,30
+nustyle,other,default,True,hardstyle,30
+plugg,other,default,True,trap,30
+qaraami,other,default,True,,30
+għana,other,default,True,,29
+reductionism,other,default,True,experimental,29
+riddim dubstep,electronic,rule:electronic,True,brostep,29
+cruise,other,default,True,edm,28
+lento violento,other,default,True,edm,28
+luk krung,other,default,True,,28
+persian pop,pop,rule:pop,True,pop,27
+samba-reggae,reggae,rule:reggae,True,,27
+vals criollo,other,default,True,música criolla,27
+kwela,other,default,True,,26
+lecture,other,default,True,spoken word,26
+sierreño,other,default,True,norteño,26
+tropipop,pop,rule:pop,True,latin pop,26
+turkish pop,pop,rule:pop,True,pop,26
+haitian vodou drumming,other,default,True,,25
+rain sounds,other,default,True,nature sounds,25
+rara,other,default,True,,25
+breakstep,electronic,rule:electronic,True,uk garage,24
+expressionism,other,default,True,modern classical,24
+frevo,other,default,True,,24
+izlan,other,default,True,,24
+kirtan,other,default,True,,24
+pumpcore,other,default,True,modern hardtek,24
+whale song,other,default,True,animal sounds,24
+carnatic classical,classical,rule:classical,True,indian classical,23
+night full-on,other,default,True,full-on,23
+samba-canção,other,rule:other,True,samba,23
+stutter house,electronic,rule:electronic,True,house,23
+waila,other,default,True,,23
+briddim,other,default,True,brostep,22
+congolese rumba,other,default,True,,22
+dansband,other,default,True,pop,22
+maskanda,other,default,True,,22
+pop raï,pop,rule:pop,True,raï,22
+punk poetry,punk,rule:punk,True,poetry,22
+salsa dura,other,rule:other,True,salsa,22
+nueva canción chilena,other,default,True,nueva canción,21
+orchestral song,classical,rule:classical,True,art song,21
+candombe beat,other,default,True,,20
+dansktop,other,default,True,pop,20
+future riddim,electronic,rule:electronic,True,riddim dubstep,20
+korean ballad,pop,rule:pop,True,pop,20
+phonk house,hip_hop,rule:hip_hop,True,house,20
+benga,other,default,True,,19
+binaural beats,other,default,True,sound effects,19
+maloya élektrik,other,default,True,maloya,19
+méringue,other,default,True,,19
+tropicanibalismo,other,default,True,,19
+bulería,other,default,True,flamenco,18
+conga,other,default,True,,18
+jota,other,default,True,,18
+narcocorrido,other,default,True,corrido,18
+rock andino,rock,rule:rock,True,rock,18
+colour bass,other,default,True,brostep,17
+dangdut,other,default,True,,17
+g-house,electronic,rule:electronic,True,house,17
+nova cançó,other,default,True,singer-songwriter,17
+stochastic music,other,default,True,modern classical,17
+balearic trance,electronic,rule:electronic,True,trance,16
+bubbling,other,default,True,edm,16
+currulao,other,default,True,,16
+disco polo,rnb_soul,rule:rnb_soul,True,,16
+makossa,other,default,True,,16
+neofolklore,folk_country,rule:folk_country,True,contemporary folk,16
+ondō,other,default,True,,16
+palingsound,other,default,True,pop,16
+powerstomp,other,default,True,hardcore techno,16
+sertanejo romântico,other,rule:other,True,sertanejo,16
+totalism,other,default,True,modern classical,16
+tsugaru-jamisen,other,default,True,,16
+afoxê,other,default,True,,15
+alpenrock,rock,rule:rock,True,,15
+arabesk,other,default,True,,15
+birmingham sound,other,default,True,industrial techno,15
+festival trap,hip_hop,rule:hip_hop,True,trap edm,15
+javanese gamelan,other,default,True,gamelan,15
+jazz house,jazz,rule:jazz,True,house,15
+jesus music,other,default,True,pop,15
+moda de viola,other,default,True,sertanejo raiz,15
+nasheed,other,default,True,islamic religious music,15
+shangaan electro,electronic,rule:electronic,True,edm,15
+noh,other,default,True,japanese classical,14
+white voice,other,default,True,folk,14
+alté,other,default,True,afrobeats,13
+batida,other,default,True,kuduro,13
+cantu a tenore,other,default,True,,13
+choral symphony,classical,rule:classical,True,symphony,13
+cosmic country,folk_country,rule:folk_country,True,country rock,13
+cumbia villera,other,rule:other,True,cumbia argentina,13
+jit,other,default,True,,13
+nortec,other,default,True,edm,13
+raggatek,reggae,rule:reggae,True,modern hardtek,13
+rasin,other,default,True,,13
+tradi-moderne congolais,other,default,True,,13
+apala,other,default,True,,12
+baila,other,default,True,,12
+biguine,other,default,True,,12
+concert band,other,default,True,western classical,12
+cumbia sonidera,other,rule:other,True,cumbia mexicana,12
+electro trance,electronic,rule:electronic,True,trance,12
+hardbag,other,default,True,diva house,12
+keroncong,other,default,True,,12
+kuda lumping,other,default,True,,12
+lowend,other,default,True,hip hop,12
+novo dub,reggae,rule:reggae,True,dub,12
+rock andaluz,rock,rule:rock,True,rock,12
+saeta,other,default,True,,12
+shidaiqu,other,default,True,,12
+sinawi,other,default,True,,12
+singeli,other,default,True,edm,12
+songo,other,default,True,,12
+sōkyoku,other,default,True,japanese classical,12
+tecnobrega,other,default,True,brega,12
+baguala,other,default,True,folk,11
+batidão romântico,other,default,True,brega funk,11
+bhavageethe,other,default,True,,11
+bongo flava,other,default,True,hip hop,11
+brega funk,rnb_soul,rule:rnb_soul,True,,11
+canzone d'autore,other,default,True,,11
+data sonification,other,default,True,experimental,11
+dhrupad,other,default,True,hindustani classical,11
+integral serialism,classical,rule:classical,True,serialism,11
+microfunk,rnb_soul,rule:rnb_soul,True,minimal drum and bass,11
+native american new age,other,default,True,new age,11
+sambass,other,rule:other,True,liquid funk,11
+sevdalinka,other,default,True,folk,11
+son istmeño,other,default,True,regional mexicano,11
+speed house,electronic,rule:electronic,True,house,11
+xote,other,default,True,,11
+balani show,other,default,True,edm,10
+banga,other,default,True,,10
+buchiage trance,electronic,rule:electronic,True,hands up,10
+cumbia amazónica,other,rule:other,True,cumbia peruana,10
+donosti sound,other,default,True,indie pop,10
+eleki,other,default,True,surf rock,10
+estrada,other,default,True,,10
+fantezi,other,default,True,,10
+finnish tango,other,rule:other,True,tango,10
+gamelan degung,other,default,True,gamelan,10
+jiuta,other,default,True,japanese classical,10
+kwassa kwassa,other,default,True,soukous,10
+marabi,other,default,True,jazz,10
+marchinha,other,default,True,,10
+muziki wa dansi,other,default,True,,10
+parang,other,default,True,,10
+parlour music,other,default,True,,10
+rawphoric,other,default,True,rawstyle,10
+samba-enredo,other,rule:other,True,samba,10
+t-pop,pop,rule:pop,True,pop,10
+taizé chant,other,default,True,church music,10
+township jive,other,default,True,,10
+wassoulou,rnb_soul,rule:rnb_soul,True,,10
+beach music,other,default,True,r&b,9
+honkyoku,other,default,True,japanese classical,9
+idol kayō,pop,rule:pop,True,kayōkyoku,9
+kecak,other,default,True,,9
+zeitoper,other,default,True,opera,9
+amigacore,other,default,True,hardcore techno,8
+cuplé,other,default,True,,8
+dark garage,electronic,rule:electronic,True,uk garage,8
+ghetto funk,rnb_soul,rule:rnb_soul,True,glitch hop edm,8
+industrial folk song,folk_country,rule:folk_country,True,work song,8
+jaipongan,other,default,True,,8
+konnakol,other,default,True,carnatic classical,8
+kulintang,other,default,True,southeast asian classical,8
+merenhouse,electronic,rule:electronic,True,merengue,8
+process music,other,default,True,modern classical,8
+sonorism,other,default,True,modern classical,8
+symphonic poem,classical,rule:classical,True,western classical,8
+whistling,other,default,True,,8
+bolero español,other,default,True,,7
+break-in,other,default,True,comedy,7
+chazzanut,other,default,True,,7
+chutney,other,default,True,,6
+freeform hardcore,punk,rule:punk,True,hardcore techno,6
+graphical sound,other,default,True,electronic,6
+pasodoble,other,default,True,,6
+punta,other,default,True,,6
+sertanejo universitário,other,rule:other,True,sertanejo,6
+stoner rap,hip_hop,rule:hip_hop,True,hip hop,6
+technoid,electronic,rule:electronic,True,drum and bass,6
+tsonga disco,rnb_soul,rule:rnb_soul,True,,6
+ballroom house,electronic,rule:electronic,True,house,5
+black midi,other,default,True,electronic,5
+brazilian bass,other,default,True,house,5
+burning spirits,other,default,True,hardcore punk,5
+chicago bop,jazz,rule:jazz,True,pop rap,5
+detroit trap,hip_hop,rule:hip_hop,True,trap,5
+funeral march,other,default,True,march,5
+guided meditation,other,default,True,spoken word,5
+lavani,other,default,True,,5
+yodeling,other,default,True,folk,5
+al jeel,other,default,True,,4
+cape breton fiddling,other,default,True,celtic,4
+conducted improvisation,other,default,True,experimental,4
+hard trap,hip_hop,rule:hip_hop,True,trap edm,4
+hardgroove techno,electronic,rule:electronic,True,techno,4
+jawaiian,other,default,True,pacific reggae,4
+mobb music,other,default,True,hip hop,4
+palm-wine,other,default,True,,4
+puxa,other,default,True,,4
+slap house,electronic,rule:electronic,True,house,4
+son huasteco,other,default,True,regional mexicano,4
+tearout,other,default,True,dubstep,4
+trance 2.0,electronic,rule:electronic,True,trance,4
+ytpmv,other,default,True,plunderphonics,4
+coco,other,default,True,,3
+fungi,other,default,True,,3
+gospel house,rnb_soul,rule:rnb_soul,True,garage house,3
+moe song,other,default,True,denpa,3
+new mexico music,other,default,True,folk,3
+philly club,electronic,rule:electronic,True,edm,3
+tearout brostep,other,default,True,brostep,3
+zouk love,other,default,True,zouk,3
+avtorskaya pesnya,other,default,True,singer-songwriter,2
+beat bolha,other,default,True,funk brasileiro,2
+british brass band,other,default,True,brass band,2
+bubbling house,electronic,rule:electronic,True,,2
+duranguense,other,default,True,norteño,2
+funk brasileiro,rnb_soul,rule:rnb_soul,True,,2
+jackin house,electronic,rule:electronic,True,house,2
+modern hardtek,other,default,True,hardcore techno,2
+natya sangeet,other,default,True,hindustani classical,2
+nyū myūjikku,other,default,True,pop,2
+opera buffa,classical,rule:classical,True,opera,2
+pep band,other,default,True,marching band,2
+ratchet music,other,default,True,hip hop,2
+takamba,other,default,True,,2
+thumri,other,default,True,hindustani classical,2
+v-pop,pop,rule:pop,True,pop,2
+viking rock,rock,rule:rock,True,punk rock,2
+zarzuela,other,default,True,western classical,2
+afro trap,hip_hop,rule:hip_hop,True,hip hop,1
+afropiano,other,rule:other,True,afrobeats,1
+algerian chaabi,other,default,True,,1
+bachatón,other,default,True,reggaeton,1
+bagatelle,other,default,True,western classical,1
+bolero son,other,default,True,,1
+capriccio,other,default,True,western classical,1
+country and irish,folk_country,rule:folk_country,True,,1
+cumbia sanjuanera,other,rule:other,True,cumbia peruana,1
+deathchant hardcore,punk,rule:punk,True,hardcore techno,1
+drift phonk,hip_hop,rule:hip_hop,True,electronic,1
+drinking song,other,default,True,folk,1
+dungeon sound,other,default,True,dubstep,1
+fife and drum,other,default,True,marching band,1
+florida breaks,electronic,rule:electronic,True,breakbeat,1
+funk ostentação,rnb_soul,rule:rnb_soul,True,funk brasileiro,1
+grupera,other,default,True,regional mexicano,1
+heaven trap,hip_hop,rule:hip_hop,True,trap edm,1
+indo jazz,jazz,rule:jazz,True,jazz,1
+jerk,other,default,True,hip hop,1
+jersey club rap,hip_hop,rule:hip_hop,True,hip hop,1
+manila sound,other,default,True,pop rock,1
+merengue típico,other,rule:other,True,merengue,1
+modern laiko,other,default,True,laiko,1
+neo kyma,other,default,True,éntekhno,1
+nu style gabber,electronic,rule:electronic,True,gabber,1
+pacific reggae,reggae,rule:reggae,True,reggae,1
+stotra,other,default,True,,1
+toccata,other,default,True,western classical,1
+trap dancehall,hip_hop,rule:hip_hop,True,dancehall,1
+tread,other,default,True,trap,1
+uk jackin,other,default,True,house,1
+west coast breaks,electronic,rule:electronic,True,breakbeat,1
+work song,other,default,True,folk,1
+xian psych,other,default,True,christian rock,1
+3-step,other,default,True,afro house,0
+aak,other,default,True,korean classical,0
+abhang,other,default,True,hindustani classical,0
+aboio,other,default,True,work song,0
+acholitronix,other,default,True,,0
+adhan,other,default,True,islamic religious music,0
+adhunik geet,other,default,True,,0
+afro-zouk,other,rule:other,True,zouk,0
+agbadza,other,default,True,,0
+agbekor,other,default,True,,0
+agronejo,other,default,True,sertanejo universitário,0
+ahwash,other,default,True,,0
+aita,other,default,True,,0
+akishibu-kei,other,default,True,j-pop,0
+aleke,other,default,True,,0
+alloukou,other,default,True,,0
+ambasse bey,other,default,True,,0
+ambient plugg,electronic,rule:electronic,True,plugg,0
+ambrosian chant,other,default,True,plainchant,0
+american gamelan,other,default,True,,0
+anglican chant,other,default,True,church music,0
+arabesk rap,hip_hop,rule:hip_hop,True,hip hop,0
+arrocha funk,rnb_soul,rule:rnb_soul,True,funk brasileiro,0
+arrocha sertanejo,other,rule:other,True,,0
+arrochadeira,other,default,True,,0
+ars antiqua,other,default,True,medieval,0
+ashkenazi cantorial music,other,default,True,chazzanut,0
+assiko,other,default,True,,0
+avanzada,other,default,True,,0
+bacardi,other,default,True,kwaito,0
+bagad,other,default,True,folk,0
+baisha xiyue,other,default,True,chinese classical,0
+baithak gana,other,default,True,,0
+balinese gamelan,other,default,True,gamelan,0
+balitaw,other,default,True,,0
+ballad opera,classical,rule:classical,True,opera,0
+ballet de cour,other,default,True,ballet,0
+bambuco,other,default,True,,0
+bandari,other,rule:other,True,,0
+bandinha,other,default,True,,0
+bantengan,other,default,True,,0
+baqashot,other,default,True,,0
+bard rock,rock,rule:rock,True,,0
+baroque suite,classical,rule:classical,True,western classical,0
+bashment soca,other,default,True,soca,0
+batonebi songs,other,default,True,lullaby,0
+battle record,other,default,True,turntablism,0
+batuque,other,default,True,,0
+baul gaan,other,default,True,,0
+beat bruxaria,other,default,True,funk mandelão,0
+beat fino,other,default,True,funk brasileiro,0
+bedoui wahrani,other,default,True,,0
+beijing opera,classical,rule:classical,True,chinese opera,0
+bend-skin,other,default,True,,0
+beneventan chant,other,default,True,plainchant,0
+beni,other,default,True,marching band,0
+benna,other,default,True,,0
+beompae,other,default,True,,0
+bhajan,other,default,True,,0
+bhojpuri pop,pop,rule:pop,True,indian pop,0
+bikutsi,other,default,True,,0
+biraha,other,default,True,folk,0
+bocet,other,default,True,,0
+boduberu,other,default,True,,0
+boedra,other,default,True,,0
+bogino duu,other,default,True,,0
+bolero-beat,other,default,True,canción melódica,0
+bomba del chota,other,default,True,,0
+bounce beat,hip_hop,rule:hip_hop,True,go-go,0
+bouyon,other,default,True,,0
+boyfriend country,folk_country,rule:folk_country,True,country pop,0
+bozlak,other,default,True,uzun hava,0
+brazilian phonk,hip_hop,rule:hip_hop,True,funk mandelão,0
+breakbeat kota,electronic,rule:electronic,True,breakbeat,0
+brega,other,default,True,,0
+brega calypso,other,default,True,brega,0
+broadband noise,other,default,True,sound effects,0
+budget rock,rock,rule:rock,True,garage punk,0
+budots,other,default,True,edm,0
+bullerengue,other,default,True,,0
+burger-highlife,other,default,True,highlife,0
+burmese classical,classical,rule:classical,True,southeast asian classical,0
+burmese mono,other,default,True,,0
+burmese stereo,other,default,True,pop rock,0
+burrakatha,other,default,True,,0
+bélé,other,default,True,,0
+bérite club,electronic,rule:electronic,True,edm,0
+ca trù,other,default,True,vietnamese classical,0
+cabo zouk,other,default,True,zouk,0
+cachaca,other,default,True,cumbia,0
+cadence lypso,other,default,True,,0
+cadence rampa,other,default,True,,0
+cakewalk,other,default,True,,0
+calipso venezolano,other,default,True,calypso,0
+campursari,other,default,True,,0
+campus folk,folk_country,rule:folk_country,True,,0
+cante alentejano,other,default,True,,0
+canto a lo poeta,other,default,True,,0
+canto cardenche,other,default,True,regional mexicano,0
+canto degli alpini,other,default,True,,0
+cantonese opera,classical,rule:classical,True,chinese opera,0
+cantoria,other,default,True,,0
+cantu a chiterra,other,default,True,,0
+canzona,other,default,True,western classical,0
+canzone neomelodica,other,default,True,,0
+caporal,other,default,True,,0
+carimbó,other,default,True,,0
+carnavalito,other,default,True,,0
+carranga,other,default,True,,0
+celtic chant,folk_country,rule:folk_country,True,plainchant,0
+celtic electronica,folk_country,rule:folk_country,True,electronic,0
+chakacha,other,default,True,ngoma,0
+chalga,other,default,True,,0
+chamamé tropical,other,default,True,chamamé,0
+chamarrita açoriana,other,default,True,,0
+chamarrita rioplatense,other,default,True,,0
+changa tuki,other,default,True,house,0
+change ringing,other,default,True,,0
+changjak gugak,other,default,True,,0
+changüí,other,default,True,,0
+chaozhou xianshi,other,default,True,,0
+character piece,other,default,True,western classical,0
+chicago polka,other,rule:other,True,polka,0
+chilena,other,default,True,regional mexicano,0
+chimayche,other,default,True,huayno,0
+chinese literati music,other,default,True,,0
+chinese opera,classical,rule:classical,True,chinese classical,0
+chinese revolutionary opera,classical,rule:classical,True,beijing opera,0
+chopper,other,default,True,hardcore hip hop,0
+chotis madrileño,other,default,True,,0
+chuscada,other,default,True,huayno,0
+chutney soca,other,default,True,,0
+chèo,other,default,True,musical,0
+chöd,other,default,True,,0
+cilokaq,other,default,True,,0
+ciranda,other,default,True,,0
+classic ragtime,jazz,rule:jazz,True,ragtime,0
+colindă,other,default,True,,0
+comédie-ballet,other,default,True,ballet,0
+concert spiritual,other,default,True,spirituals,0
+concertina band,other,default,True,western classical,0
+concerto for orchestra,classical,rule:classical,True,concerto,0
+contenance angloise,other,default,True,,0
+coon song,other,default,True,,0
+copla cajamarquina,other,default,True,,0
+corrido tumbado,other,default,True,sierreño,0
+country yodeling,folk_country,rule:folk_country,True,country,0
+coupé-décalé,other,default,True,edm,0
+csárdás,other,default,True,hungarian folk,0
+cuarteto,other,default,True,,0
+cubatón,other,default,True,reggaeton,0
+cueca,other,default,True,,0
+cueca brava,other,default,True,cueca,0
+cumbia argentina,other,rule:other,True,cumbia,0
+cumbia chilena,other,rule:other,True,cumbia,0
+cumbia norteña mexicana,other,rule:other,True,norteño,0
+cumbia norteña peruana,other,rule:other,True,cumbia peruana,0
+cumbia pop,pop,rule:pop,True,cumbia argentina,0
+cumbia rebajada,other,rule:other,True,cumbia sonidera,0
+cumbia salvadoreña,other,rule:other,True,cumbia,0
+cumbia santafesina,other,rule:other,True,cumbia argentina,0
+cumbia sureña peruana,other,rule:other,True,cumbia peruana,0
+cumbia tejana,other,rule:other,True,,0
+cumbia turra,other,rule:other,True,cumbia argentina,0
+cumbiatón,other,rule:other,True,reggaeton,0
+cururu,other,default,True,,0
+cut-up noise,other,default,True,harsh noise,0
+cải lương,other,default,True,,0
+dangak,other,default,True,korean classical,0
+danmono,other,default,True,sōkyoku,0
+dark plugg,other,default,True,plugg,0
+darkcore edm,electronic,rule:electronic,True,hardcore techno,0
+dechovka,other,default,True,brass band,0
+dennery segment,other,default,True,soca,0
+desgarrada,other,default,True,,0
+dhaanto,other,default,True,,0
+dhol tasha,other,default,True,,0
+dikir barat,other,default,True,,0
+dimotiko,other,default,True,,0
+divertissement,other,default,True,western classical,0
+djanba,other,default,True,,0
+doble paso,other,default,True,reggaeton,0
+dobrado,other,default,True,,0
+dohori,other,default,True,,0
+doina,other,default,True,,0
+dondang sayang,other,default,True,,0
+dongjing,other,default,True,chinese classical,0
+dongzu dage,other,default,True,,0
+downtempo deathcore,metal,rule:metal,True,metalcore,0
+drum and bugle corps,other,default,True,marching band,0
+drumline,other,default,True,marching band,0
+dubstyle,other,default,True,hardstyle,0
+duma,other,default,True,,0
+dungeon chip,other,default,True,dungeon synth,0
+dungeon rap,hip_hop,rule:hip_hop,True,memphis rap,0
+dutch trancecore,electronic,rule:electronic,True,gabber,0
+early hardstyle,electronic,rule:electronic,True,hardstyle,0
+eastern-style polka,other,rule:other,True,polka,0
+eletrofunk,rnb_soul,rule:rnb_soul,True,funk brasileiro,0
+embolada,other,default,True,coco,0
+english pastoral school,other,default,True,western classical,0
+epic house,electronic,rule:electronic,True,progressive house,0
+euskal kantagintza berria,other,default,True,singer-songwriter,0
+fado de coimbra,other,rule:other,True,fado,0
+fahrtenlied,other,default,True,folk,0
+fakaseasea,other,default,True,,0
+famo,other,default,True,,0
+fandango,other,default,True,,0
+fandango caiçara,other,default,True,fandango,0
+festejo,other,default,True,música criolla,0
+fife and drum blues,rnb_soul,rule:rnb_soul,True,folk,0
+fijiri,other,default,True,folk,0
+filin,other,default,True,bolero,0
+filipino rondalla,other,default,True,,0
+flex dance music,electronic,rule:electronic,True,dancehall,0
+fon leb,other,default,True,thai classical,0
+football chant,other,default,True,,0
+forró de favela,other,rule:other,True,forró eletrônico,0
+forró eletrônico,other,rule:other,True,forró,0
+forró universitário,other,rule:other,True,forró,0
+frapcore,other,default,True,hardcore techno,0
+free car music,other,default,True,drill,0
+frenchtek,other,default,True,jumpstyle,0
+frevo de bloco,other,default,True,frevo,0
+frevo de rua,other,default,True,frevo,0
+frevo elétrico,other,default,True,frevo,0
+frevo-canção,other,default,True,frevo,0
+fugue,other,default,True,western classical,0
+fuji,other,default,True,,0
+funk automotivo,rnb_soul,rule:rnb_soul,True,funk mandelão,0
+funk consciente,rnb_soul,rule:rnb_soul,True,funk brasileiro,0
+funk de bh,rnb_soul,rule:rnb_soul,True,funk brasileiro,0
+funk mandelão,rnb_soul,rule:rnb_soul,True,funk brasileiro,0
+funk melody,rnb_soul,rule:rnb_soul,True,funk brasileiro,0
+funk proibidão,rnb_soul,rule:rnb_soul,True,funk brasileiro,0
+funknejo,rnb_soul,rule:rnb_soul,True,sertanejo universitário,0
+fusion gugak,other,default,True,,0
+gaana,other,default,True,,0
+gaelic psalm singing,other,default,True,,0
+gagok,other,default,True,korean classical,0
+gaita zuliana,other,default,True,,0
+gallican chant,other,default,True,plainchant,0
+gambang kromong,other,default,True,,0
+gamelan angklung,other,default,True,balinese gamelan,0
+gamelan beleganjur,other,default,True,balinese gamelan,0
+gamelan gambang,other,default,True,balinese gamelan,0
+gamelan gender wayang,other,default,True,balinese gamelan,0
+gamelan gong gede,other,default,True,balinese gamelan,0
+gamelan gong kebyar,other,default,True,balinese gamelan,0
+gamelan jegog,other,default,True,balinese gamelan,0
+gamelan joged bumbung,other,default,True,balinese gamelan,0
+gamelan salendro,other,default,True,javanese gamelan,0
+gamelan sekaten,other,default,True,javanese gamelan,0
+gamelan selunding,other,default,True,balinese gamelan,0
+gamelan semar pegulingan,other,default,True,balinese gamelan,0
+gamelan siteran,other,default,True,javanese gamelan,0
+gamelan surakarta,other,default,True,javanese gamelan,0
+garba,other,default,True,,0
+genge,other,default,True,hip hop,0
+gengetone,other,default,True,genge,0
+ginan,other,default,True,islamic religious music,0
+gommance,other,default,True,dancehall,0
+gondang,other,default,True,,0
+goombay,other,default,True,,0
+gospel hymn,rnb_soul,rule:rnb_soul,True,,0
+gospel reggae,reggae,rule:reggae,True,reggae,0
+grand opera,classical,rule:classical,True,opera,0
+gstanzl,other,default,True,,0
+guangdong yinyue,other,default,True,,0
+guaracha edm,electronic,rule:electronic,True,tribal house,0
+guaracha santiagueña,other,default,True,,0
+guarania,other,default,True,,0
+guayla,other,default,True,,0
+gufeng,other,default,True,c-pop,0
+guggenmusik,other,default,True,marching band,0
+guitarrada,other,default,True,lambada,0
+gumbe,other,default,True,,0
+guoyue,other,default,True,classical,0
+gwo ka,other,default,True,,0
+género chico,other,default,True,zarzuela,0
+género grande,other,default,True,zarzuela,0
+habanera,other,default,True,,0
+hambo,other,default,True,,0
+hanmai,other,default,True,,0
+haozi,other,default,True,work song,0
+hapa haole,other,default,True,,0
+harana,other,default,True,,0
+harawi,other,default,True,,0
+hard beat,other,default,True,new beat,0
+hard nrg,other,default,True,edm,0
+hard renaissance,classical,rule:classical,True,j-core,0
+hardtekk,other,default,True,edm,0
+heikyoku,other,default,True,japanese classical,0
+henan opera,classical,rule:classical,True,chinese opera,0
+hi-tech full-on,other,default,True,trance,0
+himene tarava,other,default,True,,0
+hipco,other,default,True,hip hop,0
+hornpipe,other,default,True,,0
+hot rod music,other,default,True,surf,0
+huapango,other,default,True,,0
+huaylarsh,other,default,True,,0
+huayno con arpa,other,default,True,huayno,0
+hungarian folk,folk_country,rule:folk_country,True,folk,0
+hyangak,other,default,True,korean classical,0
+hypertechno,electronic,rule:electronic,True,edm,0
+hát tuồng,other,default,True,vietnamese classical,0
+iavnana,other,default,True,batonebi songs,0
+impromptu,other,default,True,western classical,0
+industrial musical,electronic,rule:electronic,True,musical,0
+iraqi maqam,other,default,True,islamic modal music,0
+isa,other,default,True,folk,0
+islamic modal music,other,default,True,classical,0
+islamic religious music,other,default,True,,0
+izvorna bosanska muzika,other,default,True,,0
+james bay fiddling,other,default,True,,0
+jamgrass,other,default,True,progressive bluegrass,0
+japanese classical,classical,rule:classical,True,classical,0
+jazz guachaca,jazz,rule:jazz,True,,0
+jazz mugham,jazz,rule:jazz,True,modal jazz,0
+jeongak,other,default,True,korean classical,0
+jersey drill,hip_hop,rule:hip_hop,True,drill,0
+jersey sound,other,default,True,house,0
+jhumar,other,default,True,,0
+jiangnan sizhu,other,default,True,sizhu music,0
+jibonmukhi gaan,other,default,True,,0
+jongo,other,default,True,,0
+joropo,other,default,True,,0
+jovem guarda,other,default,True,beat music,0
+jubilee,other,default,True,barbershop,0
+jungle dutch,electronic,rule:electronic,True,breakbeat kota,0
+jungle techno,electronic,rule:electronic,True,breakbeat hardcore,0
+jácara,other,default,True,,0
+jōruri,other,default,True,japanese classical,0
+kacapi suling,other,default,True,southeast asian classical,0
+kadodi,other,default,True,,0
+kadongo kamu,other,default,True,,0
+kafi,other,default,True,,0
+kagura,other,default,True,,0
+kai,other,default,True,central asian throat singing,0
+kakawin,other,default,True,poetry,0
+kalattut,other,default,True,,0
+kalindula,other,default,True,,0
+kalon'ny fahiny,other,default,True,,0
+kan ha diskan,other,default,True,,0
+kaneka,other,default,True,,0
+kantan chamorrita,other,default,True,,0
+kanto,other,default,True,,0
+kantruem,other,default,True,,0
+kapuka,other,default,True,,0
+kaseko,other,default,True,,0
+kasékò,other,default,True,,0
+keller synth,electronic,rule:electronic,True,dungeon synth,0
+kete,other,default,True,,0
+ketuk tilu,other,default,True,,0
+khrueang sai,other,default,True,thai classical,0
+khyal,other,default,True,hindustani classical,0
+kidandali,other,default,True,,0
+kidumbak,other,default,True,,0
+kilapanga,other,default,True,,0
+klapa,other,default,True,,0
+klasik,other,default,True,hindustani classical,0
+kliningan,other,default,True,,0
+kontakion,other,default,True,byzantine chant,0
+koplo,other,default,True,dangdut,0
+korean classical,classical,rule:classical,True,classical,0
+korean revolutionary opera,classical,rule:classical,True,chinese opera,0
+kouta,other,default,True,,0
+krakowiak,other,default,True,,0
+krushclub,electronic,rule:electronic,True,electronic,0
+kréyol djaz,other,default,True,jazz,0
+kujawiak,other,default,True,,0
+kumi-daiko,other,default,True,,0
+kumiuta,other,default,True,sōkyoku,0
+kundiman,other,default,True,,0
+kunqu,other,default,True,chinese opera,0
+kyivan chant,other,default,True,russian orthodox liturgical music,0
+könsrock,rock,rule:rock,True,punk rock,0
+landó,other,default,True,música criolla,0
+langgam jawa,other,default,True,keroncong,0
+lauda,other,default,True,,0
+liquid riddim,other,default,True,riddim dubstep,0
+liscio,other,default,True,,0
+liwa,other,default,True,,0
+lundu,other,default,True,,0
+lute song,other,default,True,art song,0
+ländlermusik,other,default,True,folk,0
+machine rock,rock,rule:rock,True,industrial rock,0
+mad,other,default,True,plunderphonics,0
+maddahi,other,default,True,islamic religious music,0
+maftirim,other,default,True,,0
+mahori,other,default,True,southeast asian classical,0
+mahraganat,other,default,True,shaabi,0
+malagueña venezolana,other,default,True,,0
+malay gamelan,other,default,True,gamelan,0
+malhun,other,default,True,,0
+malouf,other,default,True,andalusian classical,0
+maloya électronique,other,default,True,maloya,0
+mambo chileno,other,default,True,,0
+mambo urbano,other,default,True,merengue,0
+manele,other,default,True,folk pop,0
+mangambeu,other,default,True,,0
+mangue beat,other,default,True,rock,0
+manyao,other,default,True,edm,0
+mappila,other,default,True,islamic religious music,0
+maracatu,other,default,True,,0
+marinera,other,default,True,música criolla,0
+marinera norteña,other,default,True,marinera,0
+marrabenta,other,default,True,,0
+mataali,other,default,True,islamic religious music,0
+maxixe,other,default,True,,0
+mazurka,other,default,True,,0
+mbolé,other,default,True,,0
+mchiriku,other,default,True,,0
+medieval lyric poetry,classical,rule:classical,True,medieval,0
+mega funk,rnb_soul,rule:rnb_soul,True,funk brasileiro,0
+meiji shinkyoku,other,default,True,japanese classical,0
+menzuma,other,default,True,,0
+merecumbé,other,default,True,,0
+merequetengue,other,default,True,,0
+meyxana,other,default,True,,0
+mgodro,other,default,True,,0
+miejski folk,folk_country,rule:folk_country,True,rock,0
+military cadence,other,default,True,work song,0
+milonga ciudadana,other,default,True,milonga,0
+minatory,other,default,True,electronic,0
+minnesang,other,default,True,medieval lyric poetry,0
+minstrelsy,other,default,True,musical,0
+modinha,other,default,True,,0
+monodrama,other,default,True,opera,0
+mood kayō,other,default,True,kayōkyoku,0
+mor lam sing,other,default,True,mor lam,0
+morenada,other,default,True,,0
+moroccan chaabi,other,default,True,,0
+moutya,other,default,True,,0
+movimiento alterado,other,default,True,norteño,0
+mozarabic chant,other,default,True,plainchant,0
+muak,other,default,True,,0
+mugithi,other,default,True,,0
+muiñeira,other,default,True,,0
+mulatós,other,default,True,pop,0
+muliza,other,default,True,,0
+murga uruguaya,other,default,True,murga,0
+musique concrète instrumentale,other,default,True,modern classical,0
+muzika yehudit mekorit,other,default,True,,0
+muzikat dika'on,other,default,True,muzika mizrahit,0
+mélodie,other,default,True,art song,0
+métis fiddling,other,default,True,,0
+música de intervenção,other,default,True,singer-songwriter,0
+música festera,other,default,True,march,0
+música llanera,other,default,True,,0
+música típica chilena,other,default,True,,0
+mūsīqā lubnāniyya,other,default,True,,0
+nagara naam,other,default,True,,0
+nanguan,other,default,True,chinese classical,0
+narodnozabavna glasba,other,default,True,,0
+neo rave,electronic,rule:electronic,True,edm,0
+neo-bop,other,default,True,jazz,0
+neo-city pop,pop,rule:pop,True,city pop,0
+neo-grime,hip_hop,rule:hip_hop,True,wave,0
+neo-trance,electronic,rule:electronic,True,minimal techno,0
+neoromanticism,classical,rule:classical,True,modern classical,0
+nepali lok geet,other,default,True,folk,0
+new complexity,other,default,True,modern classical,0
+new york drill,hip_hop,rule:hip_hop,True,drill,0
+ngoma,other,default,True,,0
+ngâm thơ,other,default,True,poetry,0
+nhạc tiền chiến,other,default,True,,0
+nhạc đỏ,other,default,True,,0
+nigun,other,default,True,,0
+nitzhonot,other,default,True,goa trance,0
+njuup,other,default,True,,0
+no melody trap,hip_hop,rule:hip_hop,True,trap,0
+noiadance,electronic,rule:electronic,True,,0
+nouveau zydeco,folk_country,rule:folk_country,True,zydeco,0
+novelty piano,other,default,True,ragtime,0
+nueva canción española,other,default,True,nueva canción,0
+nueva cumbia chilena,other,rule:other,True,cumbia,0
+nuevo cancionero,other,default,True,nueva canción,0
+nóta,other,default,True,hungarian folk,0
+oberek,other,default,True,,0
+odissi classical,classical,rule:classical,True,indian classical,0
+ogene music,other,default,True,,0
+old roman chant,other,default,True,plainchant,0
+omutibo,other,default,True,,0
+onda nueva,other,default,True,,0
+opera semiseria,classical,rule:classical,True,opera,0
+opera seria,classical,rule:classical,True,opera,0
+opera-ballet,classical,rule:classical,True,,0
+opm,other,default,True,pop,0
+opéra comique,other,default,True,opera,0
+ori deck,other,default,True,edm,0
+oriental ballad,pop,rule:pop,True,korean ballad,0
+orkes gambus,other,default,True,,0
+orthodox pop,pop,rule:pop,True,pop,0
+paghjella,other,default,True,,0
+pagode romântico,other,default,True,pagode,0
+pagodão,other,default,True,samba,0
+pala,other,default,True,,0
+palo de mayo,other,default,True,,0
+pandilla,other,default,True,,0
+pansori,other,default,True,,0
+paramaribop,other,default,True,jazz,0
+partido alto,other,default,True,samba,0
+partyschlager,pop,rule:pop,True,schlager,0
+pasillo,other,default,True,,0
+passion setting,other,default,True,western classical,0
+payada,other,default,True,,0
+philly club rap,hip_hop,rule:hip_hop,True,hip hop,0
+philly drill,hip_hop,rule:hip_hop,True,drill,0
+phleng phuea chiwit,other,default,True,folk rock,0
+pilón,other,default,True,,0
+pimba,other,default,True,,0
+pinpeat,other,default,True,southeast asian classical,0
+piosenka aktorska,pop,rule:pop,True,,0
+pipe band music,other,default,True,,0
+piphat,other,default,True,thai classical,0
+pirekua,other,default,True,,0
+piseiro,other,default,True,forró eletrônico,0
+piyyut,other,default,True,,0
+pizzica,other,default,True,tarantella,0
+pluggnb,other,default,True,plugg,0
+polca criolla,other,default,True,música criolla,0
+polifonia occitana,other,default,True,,0
+polka paraguaya,other,rule:other,True,,0
+polonaise,other,default,True,,0
+pon-chak disco,rnb_soul,rule:rnb_soul,True,trot,0
+pop ghazal,pop,rule:pop,True,pop,0
+pop kreatif,pop,rule:pop,True,pop,0
+pop minang,pop,rule:pop,True,pop,0
+pop yeh-yeh,pop,rule:pop,True,rock,0
+powada,other,default,True,,0
+power soca,other,default,True,soca,0
+praise break,other,default,True,gospel,0
+progressive post-hardcore,punk,rule:punk,True,post-hardcore,0
+psichedelia occulta italiana,other,default,True,neo-psychedelia,0
+psychploitation,other,default,True,psychedelic,0
+puirt à beul,other,default,True,,0
+pungmul,other,default,True,,0
+punto,other,default,True,,0
+pásztordal,other,default,True,hungarian folk,0
+pìobaireachd,other,default,True,classical,0
+q-pop,pop,rule:pop,True,pop,0
+qasidah modern,other,default,True,,0
+quan họ,other,default,True,,0
+quyi,other,default,True,,0
+rabbit song,other,default,True,folk,0
+rabiz,other,default,True,,0
+ragtime song,jazz,rule:jazz,True,ragtime,0
+raqs baladi,other,default,True,,0
+rasqueado cuiabano,other,default,True,,0
+rasteirinha,other,default,True,funk brasileiro,0
+red disco,rnb_soul,rule:rnb_soul,True,electro-disco,0
+red song,other,default,True,,0
+regalia,other,default,True,trap,0
+reggae panameño,reggae,rule:reggae,True,reggae,0
+reparto,other,default,True,cubatón,0
+repente,other,default,True,cantoria,0
+revue,other,default,True,musical,0
+ricercar,other,default,True,western classical,0
+rigsar,other,default,True,,0
+ring shout,other,default,True,,0
+ripsaw,other,default,True,,0
+ritmada,other,default,True,funk mandelão,0
+rizitika,other,default,True,,0
+rkt,other,default,True,reggaeton,0
+rock jiwang,rock,rule:rock,True,rock kapak,0
+rock kapak,rock,rule:rock,True,hard rock,0
+rock rural,rock,rule:rock,True,folk rock,0
+rock urbano,rock,rule:rock,True,rock,0
+rock urbano mexicano,rock,rule:rock,True,rock,0
+rockaballad,rock,rule:rock,True,rock and roll,0
+rom kbach,other,default,True,pop,0
+romanian popcorn,pop,rule:pop,True,dance-pop,0
+romantic flow,other,default,True,reggaeton,0
+romantische oper,other,default,True,opera,0
+runo song,other,default,True,,0
+russian orthodox liturgical music,other,default,True,church music,0
+russian romance,other,default,True,art song,0
+rustic stomp,other,default,True,folk punk,0
+rōkyoku,other,default,True,,0
+sa'idi,other,default,True,,0
+sacred steel,other,default,True,gospel,0
+salsa choke,other,rule:other,True,salsa,0
+salsa romántica,other,rule:other,True,salsa,0
+saluang klasik,other,default,True,southeast asian classical,0
+samba de breque,other,rule:other,True,samba,0
+samba de gafieira,other,rule:other,True,samba,0
+samba de roda,other,rule:other,True,samba,0
+samba de terreiro,other,rule:other,True,samba,0
+samba rap,hip_hop,rule:hip_hop,True,hip hop,0
+samba soul,rnb_soul,rule:rnb_soul,True,samba-rock,0
+samba-choro,other,rule:other,True,,0
+samba-exaltação,other,rule:other,True,samba,0
+samba-joia,other,rule:other,True,samba,0
+sambalanço,other,rule:other,True,samba,0
+sample drill,hip_hop,rule:hip_hop,True,new york drill,0
+samri,other,default,True,,0
+sanjo,other,default,True,,0
+sanjuanito,other,default,True,,0
+santé engagé,other,default,True,,0
+sarala gee,other,default,True,,0
+sardana,other,default,True,,0
+sarum chant,other,default,True,gregorian chant,0
+sawt,other,default,True,islamic modal music,0
+saya afroboliviana,other,rule:other,True,,0
+scam rap,hip_hop,rule:hip_hop,True,gangsta rap,0
+schottische,other,default,True,polka,0
+scottish country dance music,folk_country,rule:folk_country,True,folk,0
+scrumpy and western,other,default,True,folk,0
+seggae,other,default,True,,0
+seguidilla,other,default,True,folk,0
+semi-trot,other,default,True,trot,0
+seresta,other,default,True,,0
+sertanejo raiz,other,rule:other,True,sertanejo,0
+seto leelo,other,default,True,runo song,0
+sevillanas,other,default,True,folk,0
+sexy drill,hip_hop,rule:hip_hop,True,new york drill,0
+shabad kirtan,other,default,True,kirtan,0
+shan'ge,other,default,True,work song,0
+shanto,other,default,True,,0
+shashmaqam,other,default,True,classical,0
+shatta,other,default,True,dancehall,0
+shima-uta,other,default,True,,0
+shinkyoku,other,default,True,,0
+shoor,other,default,True,maddahi,0
+shōmyō,other,default,True,japanese classical,0
+sichuan opera,classical,rule:classical,True,chinese opera,0
+sigidrigi,other,default,True,,0
+sigilkore,other,default,True,trap,0
+sikuri,other,default,True,,0
+sinfonia concertante,other,default,True,western classical,0
+singspiel,other,default,True,opera,0
+siren jam,other,default,True,,0
+sissy bounce,hip_hop,rule:hip_hop,True,bounce,0
+sitarsploitation,other,default,True,exotica,0
+sizhu music,other,default,True,,0
+skiladiko,other,default,True,laiko,0
+skizzo,other,default,True,new beat,0
+slow waltz,other,default,True,waltz,0
+slowed & reverb,other,default,True,,0
+soft visual,other,default,True,visual kei,0
+son calentano,other,default,True,regional mexicano,0
+son de pascua,other,default,True,,0
+son nica,other,default,True,,0
+song of sana’a,other,default,True,,0
+southeast asian classical,classical,rule:classical,True,classical,0
+spamwave,other,default,True,sound collage,0
+spiritual art song,other,default,True,art song; concert spiritual,0
+spouge,other,default,True,,0
+staïfi,other,default,True,,0
+sticheron,other,default,True,byzantine chant,0
+stornello,other,default,True,folk,0
+sufi rock,rock,rule:rock,True,rock,0
+sufiana kalam,other,default,True,classical,0
+sundanese pop,pop,rule:pop,True,pop,0
+sungura,other,default,True,,0
+sutartinės,other,default,True,folk,0
+sweet jazz,jazz,rule:jazz,True,jazz,0
+symphonic mugham,classical,rule:classical,True,western classical,0
+séga tambour,other,default,True,traditional séga,0
+tajaraste,other,default,True,folk,0
+talempong,other,default,True,southeast asian classical,0
+talempong goyang,other,default,True,pop minang,0
+talking blues,rnb_soul,rule:rnb_soul,True,folk,0
+tallava,other,default,True,folk pop,0
+tamborera,other,default,True,,0
+tamborito,other,default,True,,0
+tamborzão,other,default,True,funk brasileiro,0
+tammurriata,other,default,True,tarantella,0
+tanjidor,other,default,True,,0
+taoist ritual music,other,default,True,,0
+tappa,other,default,True,hindustani classical,0
+taquirari,other,default,True,,0
+tarana,other,default,True,hindustani classical,0
+tarantella,other,default,True,folk,0
+tarawangsa,other,default,True,,0
+tarraxinha,other,default,True,kizomba,0
+tassa,other,default,True,,0
+tassu,other,default,True,,0
+tbm,other,default,True,,0
+tchinkoumé,other,default,True,,0
+technobanda,electronic,rule:electronic,True,banda sinaloense,0
+tecnocumbia,other,rule:other,True,cumbia,0
+tecnofunk,rnb_soul,rule:rnb_soul,True,,0
+tecnomerengue,other,rule:other,True,merengue,0
+tecnorumba,other,default,True,dance-pop,0
+tembang cianjuran,other,default,True,southeast asian classical,0
+terror plugg,other,default,True,plugg,0
+tibetan buddhist chant,other,default,True,mantra,0
+tiento,other,default,True,,0
+timbila,other,default,True,,0
+tin pan alley,pop,rule:pop,True,traditional pop,0
+tivaner inngernerlu,other,default,True,,0
+toada de boi,other,default,True,,0
+tonada asturiana,other,default,True,folk,0
+tonada potosina,other,default,True,,0
+tonadilla,other,default,True,,0
+tondero,other,default,True,,0
+tontipop,pop,rule:pop,True,indie pop,0
+township bubblegum,pop,rule:pop,True,dance-pop,0
+toytown techno,electronic,rule:electronic,True,edm,0
+tradi-moderne ivoirien,other,default,True,,0
+traditional séga,other,default,True,séga,0
+tragédie en musique,other,default,True,opera,0
+trallalero,other,default,True,,0
+trampská hudba,other,default,True,folk,0
+trap shaabi,hip_hop,rule:hip_hop,True,trap,0
+trapfunk,rnb_soul,rule:rnb_soul,True,funk brasileiro,0
+tribal guarachero,other,default,True,edm,0
+trikitixa,other,default,True,folk,0
+troparion,other,default,True,byzantine chant,0
+trot,other,default,True,,0
+troubadour song,other,default,True,medieval lyric poetry,0
+trova yucateca,other,default,True,regional mexicano,0
+tsapiky,other,default,True,,0
+tumba,other,default,True,,0
+tumba francesa,other,default,True,,0
+tumbélé,other,default,True,,0
+turkish folk,folk_country,rule:folk_country,True,folk,0
+twoubadou,other,default,True,,0
+tân cổ giao duyên,other,default,True,,0
+uaajeerneq,other,default,True,,0
+udigrudi,other,default,True,psychedelic folk,0
+ufie music,other,default,True,,0
+unakesa,other,default,True,,0
+unyago,other,default,True,ngoma,0
+upopo,pop,rule:pop,True,,0
+urtiin duu,other,default,True,,0
+urumi melam,other,default,True,,0
+uyghur muqam,other,default,True,islamic modal music,0
+uzun hava,other,default,True,,0
+vaigat,other,default,True,,0
+valaam chant,other,default,True,russian orthodox liturgical music,0
+vals venezolano,other,default,True,waltz,0
+valsa brasileira,other,default,True,waltz,0
+vanera,other,default,True,,0
+vedic chant,other,default,True,,0
+verbunkos,other,default,True,,0
+verismo,other,default,True,opera,0
+vietnamese bolero,other,default,True,,0
+vietnamese classical,classical,rule:classical,True,classical,0
+villancico,other,default,True,,0
+vinahouse,electronic,rule:electronic,True,house,0
+volkstümliche musik,other,default,True,schlager,0
+vude,other,default,True,,0
+wa euro,other,default,True,j-pop,0
+waka,other,default,True,,0
+wangga,other,default,True,,0
+waulking song,other,default,True,folk,0
+west coast swing,jazz,rule:jazz,True,,0
+wong shadow,other,default,True,pop,0
+xaxado,other,default,True,,0
+xtra raw,other,default,True,rawstyle,0
+xuc,other,default,True,folk,0
+xẩm,other,default,True,,0
+yangzhou opera,classical,rule:classical,True,chinese opera,0
+yanyue,other,default,True,chinese classical,0
+yaraví,other,default,True,,0
+yayue,other,default,True,chinese classical,0
+yu-mex,other,default,True,,0
+yue opera,classical,rule:classical,True,chinese opera,0
+yukar,other,default,True,,0
+zamacueca,other,default,True,,0
+zarzuela barroca,other,default,True,zarzuela,0
+zema,other,default,True,church music,0
+zemirot,other,default,True,piyyut,0
+zess,other,default,True,dancehall,0
+zeybek,other,default,True,turkish folk,0
+ziglibithy,other,default,True,,0
+zinli,other,default,True,,0
+znamenny chant,other,default,True,russian orthodox liturgical music,0
+zoblazo,other,default,True,,0
+zohioliin duu,other,default,True,,0
+zouglou,other,default,True,,0
+étude,other,default,True,western classical,0
+özgün müzik,other,default,True,,0
+čalgija,other,default,True,,0
+ʻōteʻa,other,default,True,,0

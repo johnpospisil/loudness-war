@@ -14,8 +14,9 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - ✅ DONE! P07: MusicBrainz tables
 - ✅ DONE! P08: Release matching and reissue flag
 - ✅ DONE! P09: Dedupe and the analysis table
-- ⬜ P10: Genre assignment ← next
-- ⬜ P11 onward
+- ✅ DONE! P10: Genre assignment
+- ⬜ P11: EDA and sanity checks ← next
+- ⬜ P12 onward
 
 ## How we work
 
@@ -35,7 +36,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - Dump parts 0–29 are in submission order (part 0 ≤ 2014; later parts reach 2022), so all 30 parts are needed.
 - Headline break year: 2015, with 2013–2017 as alternatives. (P04: report 2016 alongside 2015, since the era starts Dec 2015 and release years are whole years.)
 - "Lossless" = FLAC/ALAC/WAV/AIFF; lossy is flagged and dropped in robustness checks.
-- Genre: MusicBrainz release-group tags mapped to ~12 top-level genres; AcousticBrainz high-level genre used only as a fallback, and flagged.
+- Genre: MusicBrainz release-group tags mapped to 12 top-level genres (`data/reference/genre_map.csv`; blues → "R&B / soul / blues"). **Changed at P10:** fallbacks are release → recording → **artist tags** (68% agreement with rg genre) → AcousticBrainz rosamerica classifier (33%, `genre_source = 'hl'`, flagged; leave out of P15 or use as a sensitivity check). `make dedupe` drops the genre columns, so `make genres` must follow it.
 - Ingest scale: **stream the full low-level dumps** (user decision, 2026-11-02).
 - **Headline sample (user decision, 2026-11-05): lossless units only.** P12/P13 use `in_main_lossless` (main sample with ≥1 lossless submission: 2,997,479 units, 771k in 2015–2022; 2,997,536 before the 2026-11-07 tag exclusions); the dashed comparison is **all codecs excluding units whose loudness comes from a ≤160 kbps lossy copy** (user decision 2026-11-07; drops 21.4% of `in_main`, 38.1% of 2015–2022, up to ~50% in 2020–21; the headline loses none). This reverses the original "lossy dropped in robustness checks" default.
 - **Gain tags (user decision, 2026-11-05; done 2026-11-07):** re-stream finished (30/30 parts, 29,460,584 rows). Gain tags exist only in dump part 0, and the `mp3gain_undo` correction leaves a −5 LU residual, so MP3Gain-tagged and named stream-rip lossy files are **excluded** (`gain_tagged` 9,606, `stream_rip` 45,315), not corrected; headline sample now 2,997,479. The 2014+ lossy gap is a **bitrate-mix effect** (≤160 kbps copies read −0.44 LU in every year since 2007, >160 kbps −0.04 LU; low-bitrate share rose to ~50%), not streaming or mastering. P19 adds a "drop ≤160 kbps lossy" spec. See `notes/p09_dedupe.md`.
@@ -71,7 +72,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 - [x] ✅ DONE! **P09: Dedupe and the analysis table.** _Done 2026-11-05: 29.46M submissions → 9,269,713 (recording, release) units, 7,206,307 in the main sample (median −11.79 est. LUFS, 6.71 LU LRA); exclusions remove 0.85%; found MP3Gain-normalised lossy files, so unit loudness is lossless-first; see `notes/p09_dedupe.md`._ Write `src/lw/build/dedupe.py`: take the median per (recording, release), keep the submission count and IQR, and use the IQR to flag inconsistent measurements. Add codec/bitrate flags. Apply exclusions (LUFS > 0 or < −60, duration < 30 s, invalid LRA) and log each one. Output `data/processed/tracks.parquet`. *Figures: `figures/p09_data_funnel.png` (rows surviving each step), `figures/p09_tracks_per_year.png`, `figures/p09_codec_mix_by_year.png`.*
 
-- [ ] **P10: Genre assignment.** Write `src/lw/build/genres.py`: map MusicBrainz tags to ~12 top-level genres (rock, metal, pop, hip-hop, electronic/EDM, jazz, classical, folk/country, R&B/soul, punk, reggae, other) with the map kept in `data/reference/genre_map.csv`; use AcousticBrainz high-level as a fallback. Compare the genre mix in AcousticBrainz against all MusicBrainz releases per year; this comparison gives the reweighting targets for P19. *Figures: `figures/p10_genre_mix_ab_vs_mb.png`, `figures/p10_genre_coverage.png`.*
+- [x] ✅ DONE! **P10: Genre assignment.** _Done 2026-11-07: 2,251-tag map (94.9% weight agrees with MB parent genres); 79.8% of main units genre from release-group tags, 94.4% from MB tags incl. new artist-tag fallback, 5.6% from the weak rosamerica classifier (33% agreement, flagged); AB over-represents rock/classical, under-represents hip-hop after 2015; P19 weights in `genre_mix.parquet`; see `notes/p10_genres.md`._ Write `src/lw/build/genres.py`: map MusicBrainz tags to ~12 top-level genres (rock, metal, pop, hip-hop, electronic/EDM, jazz, classical, folk/country, R&B/soul, punk, reggae, other) with the map kept in `data/reference/genre_map.csv`; use AcousticBrainz high-level as a fallback. Compare the genre mix in AcousticBrainz against all MusicBrainz releases per year; this comparison gives the reweighting targets for P19. *Figures: `figures/p10_genre_mix_ab_vs_mb.png`, `figures/p10_genre_coverage.png`.*
 
 - [ ] **P11: EDA and sanity checks.** Profile `tracks.parquet`: distributions, outliers, and the correlation between LUFS, LRA, dynamic complexity and average_loudness. Spot-check 50 well-known albums (Death Magnetic, Californication, (What's the Story) Morning Glory?, Random Access Memories, etc.) against published values where their terms allow. Flag anything implausible. Write `notes/p11_eda.md`. *Figures: `figures/p11_ridgeline_lufs_by_decade.png` (brief chart 5), `figures/p11_lufs_vs_lra.png` (hexbin), `figures/p11_spotcheck_albums.png`.*
 
