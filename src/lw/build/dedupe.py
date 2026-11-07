@@ -11,7 +11,13 @@ Steps, each counted in the funnel (``data/processed/tracks_funnel.json``):
    ``data/interim/p09_excluded.parquet``:
    ``unmatched`` (no MB release, P08) · ``no_features`` (replay_gain or dynamic_complexity
    missing or not finite) · ``short`` (< 30 s) · ``lufs_gt_0`` / ``lufs_lt_-60`` (estimated LUFS
-   outside [-60, 0]) · ``invalid_lra`` (dynamic_complexity <= 0, or estimated LRA > 50 LU).
+   outside [-60, 0]) · ``invalid_lra`` (dynamic_complexity <= 0, or estimated LRA > 50 LU) ·
+   ``gain_tagged`` (lossy file carrying an MP3Gain tag: ``mp3gain_undo`` / ``_minmax`` /
+   ``_album_minmax``; these read 5-16 LU below the lossless copy, and the 1.5 dB-per-step undo
+   correction leaves a ~-5 LU residual, so they are dropped, not corrected) · ``stream_rip``
+   (lossy file whose name / encodedby / encoder names Spotify, YouTube, SoundCloud, Audials,
+   Tunebite or Streamripper). The two tag reasons need ``data/interim/ab_gaintags``; the dump
+   only kept gain tags in part 0, so ``gain_tagged`` reaches early submissions only.
 3. **Dedupe.** Median of every audio feature per (MB recording, release), with the submission
    count and the IQR of the estimated LUFS and LRA. ``inconsistent`` flags units with 2+
    submissions whose LUFS IQR > 1.5 LU or LRA IQR > 3 LU. These are about one calibration RMSE
@@ -57,7 +63,14 @@ IQR_LUFS, IQR_LRA = 1.5, 3.0
 LOW_BITRATE = 128_000
 CORE = (1980, 2022)
 LOSSLESS_CODEC = "(codec in ('flac', 'alac', 'ape', 'wavpack', 'tta') or codec like 'pcm%')"
-REASONS = ["unmatched", "no_features", "short", "lufs_gt_0", "lufs_lt_-60", "invalid_lra"]
+TAGS = ROOT / "data" / "interim" / "ab_gaintags"
+# appended last so the earlier funnel counts are unchanged; lossy submissions only
+TAG_REASONS = ["gain_tagged", "stream_rip"]
+REASONS = ["unmatched", "no_features", "short", "lufs_gt_0", "lufs_lt_-60", "invalid_lra",
+           *TAG_REASONS]  # fmt: skip
+# named services / recorder tools only: 'tidal', 'pandora', 'deezer', 'stream' are mostly song
+# titles in file names and show no level shift (notes/p09_dedupe.md, gain-tag follow-up)
+STREAM_RIP_RE = "spotify|youtube|soundcloud|audials|tunebite|streamripper"
 
 # audio features carried to the unit as medians (replay_gain/dynamic_complexity handled apart)
 FEATURES = [
@@ -88,9 +101,19 @@ def calibration(path: Path = CAL) -> dict[str, tuple[float, float]]:
 
 
 def dedupe(
-    con, src: str, out: Path, excluded: Path = EXCLUDED, cal: dict | None = None, buckets: int = 48
+    con,
+    src: str,
+    out: Path,
+    excluded: Path = EXCLUDED,
+    cal: dict | None = None,
+    buckets: int = 48,
+    tags: str | None = None,
 ) -> dict:
-    """Build the analysis table from the view/table ``src`` (P08 columns). Returns the funnel."""
+    """Build the analysis table from the view/table ``src`` (P08 columns). Returns the funnel.
+
+    ``tags`` is a table/view of per-submission gain and provenance tags (``parse_gaintags``);
+    without it the two tag exclusions remove nothing.
+    """
     cal = cal or calibration()
     (a0, a1), (b0, b1) = cal["lufs"], cal["lra"]
     lufs = f"({a0} + {a1} * replay_gain)"
@@ -108,6 +131,24 @@ def dedupe(
         select * from (select * from {src} semi join rep using ({key}))
         qualify row_number() over (partition by {key} order by match_tier nulls last,
             release_mbid nulls last, tag_album, tag_date, replay_gain) = 1""")
+    if tags is None:
+        con.execute("""create or replace temp view s1t as
+            select *, false as gain_tagged, false as stream_rip from s1""")
+    else:
+        prov = "lower(concat_ws(' ', tag_file_name, tag_encodedby, tag_encoder))"
+        # keep only the few flagged keys (~60k of 29M), so the join below stays small
+        con.execute(f"""create or replace temp table gt as select {key},
+            bool_or(g) as gain_tagged, bool_or(r) as stream_rip
+            from (select {key},
+                coalesce(tag_mp3gain_undo, tag_mp3gain_minmax, tag_mp3gain_album_minmax)
+                    is not null as g,
+                regexp_matches({prov}, '{STREAM_RIP_RE}') as r
+              from {tags})
+            where g or r group by all""")
+        con.execute(f"""create or replace temp view s1t as select s1.*,
+            coalesce(gt.gain_tagged, false) as gain_tagged,
+            coalesce(gt.stream_rip, false) as stream_rip
+            from s1 left join gt using ({key})""")
 
     # 2. exclusion reason per submission (first rule that applies)
     finite = "(x is not null and isfinite(x))"
@@ -118,8 +159,10 @@ def dedupe(
         when {lufs} > {LUFS_MAX} then 'lufs_gt_0'
         when {lufs} < {LUFS_MIN} then 'lufs_lt_-60'
         when dynamic_complexity <= 0 or {lra} > {LRA_MAX} then 'invalid_lra'
+        when gain_tagged and not {LOSSLESS_CODEC} then 'gain_tagged'
+        when stream_rip and not {LOSSLESS_CODEC} then 'stream_rip'
         end"""
-    con.execute(f"create or replace temp view s2 as select *, {reason} as excl from s1")
+    con.execute(f"create or replace temp view s2 as select *, {reason} as excl from s1t")
     excluded.parent.mkdir(parents=True, exist_ok=True)
     con.execute(f"""copy (select recording_mbid, part, submission_offset, recording_mbid_mb,
             release_mbid, match_tier, year, codec, length_s, replay_gain, dynamic_complexity,
@@ -263,7 +306,13 @@ def main(argv: list[str] | None = None) -> None:
     con.execute(f"set memory_limit='{args.memory}'; set temp_directory='{tmp}'")
     con.execute("set preserve_insertion_order=false")
     con.execute(f"create view m as select * from read_parquet('{SRC}')")
-    stats = {"funnel": dedupe(con, "m", args.out)}
+    tags = None
+    if len(list(TAGS.glob("part=*.done.json"))) == 30:
+        con.execute(f"create view gtags as select * from read_parquet('{TAGS}/part=*.parquet')")
+        tags = "gtags"
+    else:
+        print(f"warning: {TAGS} incomplete; gain_tagged / stream_rip exclusions skipped")
+    stats = {"funnel": dedupe(con, "m", args.out, tags=tags)}
     stats["summary"] = summarise(con)
     stats["thresholds"] = {"min_len_s": MIN_LEN_S, "lufs": [LUFS_MIN, LUFS_MAX],
                            "lra_max": LRA_MAX, "iqr_lufs": IQR_LUFS, "iqr_lra": IQR_LRA,

@@ -30,7 +30,7 @@ def base(**kw):
     return row
 
 
-def run(rows, tmp_path):
+def run(rows, tmp_path, tags=None):
     con = duckdb.connect()
     df = pl.DataFrame(rows, infer_schema_length=None)
     for c in df.columns:  # untyped all-null columns -> varchar
@@ -38,7 +38,11 @@ def run(rows, tmp_path):
             df = df.with_columns(pl.col(c).cast(pl.Utf8))
     con.register("src_df", df)
     con.execute("create table src as select * from src_df")
-    f = dd.dedupe(con, "src", tmp_path / "t.parquet", tmp_path / "x.parquet", cal=CAL)
+    if tags is not None:
+        con.register("tags_df", pl.DataFrame(tags, infer_schema_length=None))
+        con.execute("create table tags as select * from tags_df")
+    f = dd.dedupe(con, "src", tmp_path / "t.parquet", tmp_path / "x.parquet", cal=CAL,
+                  tags="tags" if tags is not None else None)  # fmt: skip
     t = {(r["recording_mbid"], r["release_mbid"]): r
          for r in pl.read_parquet(tmp_path / "t.parquet").to_dicts()}  # fmt: skip
     x = pl.read_parquet(tmp_path / "x.parquet")
@@ -89,11 +93,52 @@ def test_exclusions_and_repeats(tmp_path):
     f, t, x = run(rows, tmp_path)
     assert f["submissions"] == 11 and f["after_repeats"] == 10
     assert f["excluded"] == {"unmatched": 1, "no_features": 1, "short": 1, "lufs_gt_0": 1,
-                             "lufs_lt_-60": 1, "invalid_lra": 2}  # fmt: skip
+                             "lufs_lt_-60": 1, "invalid_lra": 2, "gain_tagged": 0,
+                             "stream_rip": 0}  # fmt: skip
     assert f["after_invalid_lra"] == 3 and len(x) == 7
     u = t[("r1", "rel1")]
     assert u["n_sub"] == 3 and u["lufs"] == pytest.approx(-13.0)  # median of -13, -13, -23
-    assert sorted(x["reason"].to_list()) == sorted(dd.REASONS + ["invalid_lra"])
+    assert sorted(x["reason"].to_list()) == sorted(
+        [r for r in dd.REASONS if r not in dd.TAG_REASONS] + ["invalid_lra"]
+    )
+
+
+def tag(offset, md5="m", **kw):
+    row = {"recording_mbid": "r1", "part": 0, "submission_offset": offset, "md5_encoded": md5,
+           "tag_mp3gain_undo": None, "tag_mp3gain_minmax": None, "tag_mp3gain_album_minmax": None,
+           "tag_file_name": "01 song.mp3", "tag_encodedby": None, "tag_encoder": None}  # fmt: skip
+    row.update(kw)
+    return row
+
+
+def test_gain_and_stream_rip_exclusions(tmp_path):
+    rows = [
+        base(submission_offset=0, md5_encoded="a"),  # FLAC, tagged: lossless cannot be gain-shifted
+        base(submission_offset=1, md5_encoded="b", codec="mp3", bit_rate=192000),  # mp3gain_undo
+        base(submission_offset=2, md5_encoded="c", codec="mp3", bit_rate=192000),  # minmax only
+        base(submission_offset=3, md5_encoded="d", codec="mp3", bit_rate=320000),  # Spotify rip
+        base(submission_offset=4, md5_encoded="e", codec="aac", bit_rate=256000),  # Audials
+        base(submission_offset=5, md5_encoded="f", codec="mp3", bit_rate=320000),  # "Tidal Wave"
+        base(submission_offset=6, md5_encoded="g", codec="mp3", bit_rate=320000),  # no tag row
+    ]
+    tags = [
+        tag(0, "a", tag_mp3gain_undo="+006,+006,N", tag_file_name="spotify.flac"),
+        tag(1, "b", tag_mp3gain_undo="+006,+006,N"),
+        tag(2, "c", tag_mp3gain_minmax="120,210"),
+        tag(3, "d", tag_file_name="Artist - Song [Spotify].mp3"),
+        tag(4, "e", tag_encodedby="Audials One"),
+        tag(5, "f", tag_file_name="03 Tidal Wave.mp3"),
+    ]
+    f, t, x = run(rows, tmp_path, tags)
+    assert f["excluded"]["gain_tagged"] == 2 and f["excluded"]["stream_rip"] == 2
+    assert sorted(x["submission_offset"].to_list()) == [1, 2, 3, 4]
+    u = t[("r1", "rel1")]
+    assert u["n_sub"] == 3 and u["n_lossless"] == 1
+
+
+def test_tags_optional(tmp_path):
+    f, t, _ = run([base()], tmp_path)  # no tag table: nothing excluded for tags
+    assert f["excluded"]["gain_tagged"] == 0 and f["excluded"]["stream_rip"] == 0
 
 
 def test_core_and_main_sample(tmp_path):
@@ -132,12 +177,13 @@ def test_pinned_funnel():
     assert f["excluded"] == {
         "unmatched": 65_697, "no_features": 0, "short": 235_350,
         "lufs_gt_0": 4_286, "lufs_lt_-60": 126, "invalid_lra": 10_541,
+        "gain_tagged": 9_606, "stream_rip": 45_315,  # gain-tag follow-up, 2026-11-07
     }  # fmt: skip
-    assert (f["units"], f["units_core"], f["units_main"]) == (9_269_713, 8_793_287, 7_206_307)
-    assert f["units_main_consistent"] == 6_640_436
-    assert f["units_main_lossless"] == 2_997_536  # headline sample (P12/P13)
+    assert (f["units"], f["units_core"], f["units_main"]) == (9_264_611, 8_788_511, 7_202_054)
+    assert f["units_main_consistent"] == 6_640_205
+    assert f["units_main_lossless"] == 2_997_479  # headline sample (P12/P13)
     m = s["summary"]
-    assert m["recordings"] == 6_773_007 and m["releases"] == 1_215_764
+    assert m["recordings"] == 6_769_680 and m["releases"] == 1_214_688
     assert m["median_lufs_main"] == pytest.approx(-11.79, abs=0.01)
     assert m["median_lra_main"] == pytest.approx(6.71, abs=0.01)
-    assert m["inconsistent_among_multi"] == pytest.approx(0.1773, abs=1e-3)
+    assert m["inconsistent_among_multi"] == pytest.approx(0.1764, abs=1e-3)

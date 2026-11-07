@@ -122,3 +122,30 @@ In the main sample:
    - Sample check: 1,866 files carry `mp3gain_undo`. They sit at a replay gain of about 0 dB whatever their step count (`+001` … `+008`), so each file's original level can be recovered: original RG ≈ RG − 1.5 dB × steps.
    - `file_name` is present on every record.
    - Once the stream finishes: correct or flag those files, rebuild `tracks.parquet`, and re-check both the 2014+ lossy gap and the −5.5 dB MP3 hump. The undo-tagged files sit at ~0 dB, not −5.5, so the hump may come from a different tool or target.
+
+## Gain-tag follow-up (2026-11-07)
+
+The re-stream finished: 30/30 parts, 29,460,584 rows (identical to P06), sha256 all OK. The only parse errors are the 31 `COPYING` licence files inside the archives. Every submission joins to its tag row on recording + part + offset + audio md5.
+
+**Gain tags exist in part 0 only.** Part 0 has 2,272 `mp3gain_undo`, 9,792 `mp3gain_minmax` and 200,239 `replaygain_*` tags. Parts 1–29 have none of these, although they still carry 20–30 other tags per file (median). AcousticBrainz must have dropped gain tags from later submissions. So tags can't identify gain-normalised files after the earliest submissions.
+
+**The undo correction doesn't work.** For part-0 MP3s with `mp3gain_undo` and a lossless copy in the same unit, the raw gap grows by about 1.6 LU per step (1 → 8 steps: −6.8 → −17.5 LU). After the 1.5 dB × steps correction, a constant **≈ −5 LU residual** remains at every step count. Files carrying only `mp3gain_minmax` (analysed, with no recorded undo) also read −5.3 LU low. These files were brought to a fixed target as well as shifted, so they are **dropped, not corrected**.
+
+**New exclusions (lossy files only, logged in `p09_excluded.parquet`):**
+- `gain_tagged`: any MP3Gain tag. 9,606 submissions.
+- `stream_rip`: the file name, encodedby or encoder names Spotify, YouTube, SoundCloud, Audials, Tunebite or Streamripper. 45,315 submissions.
+  - Keyword checks against the lossless copy: Spotify −3.3 LU (64% of files more than 2 LU low), SoundCloud −5.7 LU, YouTube −1.8 LU, Audials −1.3 LU.
+  - "Tidal", "Pandora", "Deezer" and "stream" are mostly song titles (median about 0 LU), so they aren't used.
+
+Effect on the main table: 9,264,611 units (−5,102); main sample 7,202,054; **headline `in_main_lossless` 2,997,479 (−57)**. Median LUFS moves from −11.792 to −11.789 and median LRA doesn't change.
+
+**The −5.5 dB MP3 hump** is a population of 192 kbps MP3s normalised to about −18 est. LUFS, which is Essentia RG ≈ −5.2 dB and consistent with the standard 89 dB ReplayGain/MP3Gain target. The cluster has a tight spread (SD about 2.3 LU against about 3 LU for the matching lossless copies). It covers 13–14% of 192 kbps MP3s for release years 1980–2009, 24% for 2010–14 and 46% for 2015–19. Without tags it can't be told apart from genuinely quiet masters, and a reference-free detector based on track-to-track spread fails: precision 13–17%, recall 3–24%, and it flags 4–22% of lossless albums. Lossy-only units therefore stay biased quiet, which is why the headline is lossless-only.
+
+**The 2014+ lossy gap is a bitrate-mix effect** (`figures/p09_lossy_gap_by_bitrate.png`). In paired main-sample units:
+- lossy copies at 160 kbps or below read **−0.43 to −0.45 LU in every release year from 2008 to 2022**;
+- lossy copies above 160 kbps read **−0.02 to −0.05 LU in every year**;
+- the low-bitrate share of paired units rises from about 12% (2008) to 50–60% (2018–2021), mostly through 128 kbps MP3 bulk-submitter cohorts (parts 20–27).
+
+The low-bitrate shift grew from about −0.15 LU to −0.44 LU around 2005–07, the loudness-war peak, so it probably tracks how hot the master is. It doesn't change at 2015. So the post-2015 "lossy reads quieter" gap is neither stream normalisation nor a mastering change. It can still bias any all-codec series by a few tenths of an LU.
+
+**For P12/P13/P19:** the headline stays lossless-only. The all-codec dashed line should note this bias. P19 adds a specification that drops units whose lossy copies are ≤ 160 kbps.

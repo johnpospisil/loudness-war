@@ -31,6 +31,14 @@ def fig_funnel(s: dict) -> None:
         ("estimated LUFS ≤ 0", f["after_lufs_gt_0"], "sub"),
         ("estimated LUFS ≥ −60", f["after_lufs_lt_-60"], "sub"),
         ("valid LRA (DC > 0, LRA ≤ 50 LU)", f["after_invalid_lra"], "sub"),
+        *(
+            [
+                ("lossy: no MP3Gain tag", f["after_gain_tagged"], "sub"),
+                ("lossy: not a named stream rip", f["after_stream_rip"], "sub"),
+            ]
+            if "after_stream_rip" in f
+            else []
+        ),  # fmt: skip
         ("→ units (recording × release)", f["units"], "unit"),
         ("release year 1980–2022", f["units_core"], "unit"),
         ("main sample: tier A/B, not a reissue", f["units_main"], "unit"),
@@ -216,6 +224,50 @@ def fig_gain_check() -> None:
                    note="right: main-sample units with lossless + lossy submissions")  # fmt: skip
 
 
+def fig_lossy_gap_bitrate(c) -> None:
+    """The 2014+ lossy - lossless gap is a bitrate-mix effect: constant within bitrate class."""
+    g = c.execute(f"""select year, bit_rate_lossy <= 160000 as low, count(*) n,
+          median(lufs_lossy - lufs_lossless) d
+        from read_parquet('{T}') where in_main and lufs_lossy is not null
+          and lufs_lossless is not null and bit_rate_lossy is not null
+          and year between {Y0} and {Y1} group by all order by 1""").fetchall()
+    years = np.arange(Y0, Y1 + 1)
+    by = {(y, lo): (n, d) for y, lo, n, d in g}
+    theme.apply()
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(11.5, 4.6))
+    for a in (a1, a2):
+        theme.shade_era(a, start=era_start(), end=Y1 + 0.5)
+    a1.axhline(0, color=theme.MUTED, lw=0.8)
+    for lo, col, lab in [(True, theme.SERIES[1], "lossy copy ≤ 160 kbps"),
+                         (False, theme.SERIES[0], "lossy copy > 160 kbps")]:  # fmt: skip
+        yy = [y for y in years if (y, lo) in by]
+        a1.plot(yy, [by[(y, lo)][1] for y in yy], color=col, lw=1.8, marker="o", ms=3, label=lab)
+    a1.set_ylim(-0.7, 0.2)
+    a1.set_xlabel("Release year")
+    a1.set_ylabel("Median lossy − lossless est. LUFS (LU)")
+    a1.set_title("Same unit: within each bitrate class, no change after 2007", loc="left",
+                 fontsize=10.5)  # fmt: skip
+    a1.legend(fontsize=8.5, loc="lower left")
+    share = [100 * by.get((y, True), (0, 0))[0]
+             / max(1, by.get((y, True), (0, 0))[0] + by.get((y, False), (0, 0))[0])
+             for y in years]  # fmt: skip
+    a2.bar(years, share, color=theme.SERIES[1], width=0.8)
+    a2.set_ylim(0, 100)
+    a2.set_xlabel("Release year")
+    a2.set_ylabel("Units whose lossy copy is ≤ 160 kbps (%)")
+    a2.set_title("…but low-bitrate copies became common for recent releases", loc="left",
+                 fontsize=10.5)  # fmt: skip
+    fig.suptitle(
+        "The post-2014 lossy gap comes from more low-bitrate copies, not from a change in "
+        "mastering or streaming",
+        x=0.01, ha="left", fontsize=12.5, fontweight="bold",
+    )  # fmt: skip
+    fig.tight_layout()
+    theme.save_fig(fig, "p09_lossy_gap_by_bitrate", n=int(sum(r[2] for r in g)), source=SRC,
+                   note="main-sample units with lossless + lossy submissions; "
+                        "bitrate = median over the unit's lossy copies")  # fmt: skip
+
+
 def main() -> None:
     s = json.loads(FUNNEL.read_text())
     c = duckdb.connect()
@@ -223,6 +275,7 @@ def main() -> None:
     fig_per_year(c)
     fig_codec(c)
     fig_gain_check()
+    fig_lossy_gap_bitrate(c)
 
 
 if __name__ == "__main__":
