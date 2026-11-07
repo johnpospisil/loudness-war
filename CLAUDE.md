@@ -17,8 +17,9 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - ✅ DONE! P10: Genre assignment
 - ✅ DONE! P11: EDA and sanity checks
 - ✅ DONE! P12: Hero chart v1 and LRA chart
-- ⬜ P13: Interrupted time series ← next
-- ⬜ P14 onward
+- ✅ DONE! P13: Interrupted time series
+- ⬜ P14: Quantile trends ← next
+- ⬜ P15 onward
 
 ## How we work
 
@@ -82,7 +83,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 - [x] ✅ DONE! **P12: Hero chart v1 and LRA chart.** _Done 2026-11-07: headline redefined to `in_headline` (recording's first appearance, 2.60M units) after box sets of old recordings were found to distort single years; median est. LUFS rose ~5 LU to a 2009 peak (−10.41); 2016–22 is 0.2 LU below 2005–15, easing visible from ~2013; P90 flat, P10 rose; est. LRA flat since 2005 (and flat without silence); release-group bootstrap CIs ±0.17; see `notes/p12_hero.md`._ Plot median LUFS by release year, 1980–2022, with the P10–P90 band, bootstrap CI on the median, the normalisation era shaded from P04, and n per year shown. Make the same chart for LRA, **with two lines: all units and units with < 5% near-silent frames** (user decision 2026-11-07, P11: est. LRA tracks silence, ρ 0.92), labelled as an estimate that includes silence; floor est. LRA at 0. Use `in_headline` (tier A+B, no reissues, lossless source, recording's first appearance; decided at P09 and P12) as the main sample, and overlay a dashed comparison line: first-appearance `in_main` minus units with `loudness_source = 'lossy'` and `bit_rate_lossy <= 160000` (user decision 2026-11-07; label it "all codecs, excluding ≤160 kbps"). *Figures: `figures/p12_hero_lufs.png` + `.html`, `figures/p12_lra.png` + `.html` (brief charts 1–2).*
 
-- [ ] **P13: Interrupted time series.** Write `src/lw/models/its.py`: a segmented regression of the yearly median (and a track-level model with year fixed effects) with level and slope change at 2015, Newey-West SEs, and pre-trend projection. Re-run with break years 2013–2017, placebo breaks (1995–2010), and a data-driven break search (Bai-Perron or a likelihood-profile scan). Answer the brief's falsification test: is there a break vs the 2000–2014 trend? *Figures: `figures/p13_its_fit.png` (observed vs counterfactual), `figures/p13_break_year_sensitivity.png`, `figures/p13_breakpoint_profile.png`.*
+- [x] ✅ DONE! **P13: Interrupted time series.** _Done 2026-11-07: vs a straight 2000–15 trend the 2016–22 headline sits ~0.5 LU low, but the data-driven break is 2007–2010 (≈95% set 2006–2011) and, once that bend is modelled, 2015/16 terms add nothing (joint p 0.13–0.64); gap grows when the break moves earlier; est. LRA +0.2 LU (≈0 without silence); falsification test: no distinct post-2015 break at aggregate level (moderate); see `notes/p13_its.md`._ Write `src/lw/models/its.py`: a segmented regression of the yearly median (and a track-level model with year fixed effects) with level and slope change at 2015, Newey-West SEs, and pre-trend projection. Re-run with break years 2013–2017, placebo breaks (1995–2010), and a data-driven break search (Bai-Perron or a likelihood-profile scan). Answer the brief's falsification test: is there a break vs the 2000–2014 trend? *Figures: `figures/p13_its_fit.png` (observed vs counterfactual), `figures/p13_break_year_sensitivity.png`, `figures/p13_breakpoint_profile.png`.*
 
 - [ ] **P14: Quantile trends.** Write `src/lw/models/quantile_trends.py`: quantile regression (τ = 0.1, 0.5, 0.9) with the same segmented form, with bootstrap CIs. Did the loudest decile come down? *Figures: `figures/p14_quantile_trends.png`, `figures/p14_quantile_slope_change.png` (coefficient plot by τ).*
 
