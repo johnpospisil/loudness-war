@@ -18,7 +18,8 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - ✅ DONE! P11: EDA and sanity checks
 - ✅ DONE! P12: Hero chart v1 and LRA chart
 - ✅ DONE! P13: Interrupted time series
-- ⬜ P14: Quantile trends ← next
+- ✅ DONE! P14: Quantile trends
+- ⬜ P15: Genre hierarchical model ← next
 - ⬜ P15 onward
 
 ## How we work
@@ -85,7 +86,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 - [x] ✅ DONE! **P13: Interrupted time series.** _Done 2026-11-07: vs a straight 2000–15 trend the 2016–22 headline sits ~0.5 LU low, but the data-driven break is 2007–2010 (≈95% set 2006–2011) and, once that bend is modelled, 2015/16 terms add nothing (joint p 0.13–0.64); gap grows when the break moves earlier; est. LRA +0.2 LU (≈0 without silence); falsification test: no distinct post-2015 break at aggregate level (moderate); see `notes/p13_its.md`._ Write `src/lw/models/its.py`: a segmented regression of the yearly median (and a track-level model with year fixed effects) with level and slope change at 2015, Newey-West SEs, and pre-trend projection. Re-run with break years 2013–2017, placebo breaks (1995–2010), and a data-driven break search (Bai-Perron or a likelihood-profile scan). Answer the brief's falsification test: is there a break vs the 2000–2014 trend? *Figures: `figures/p13_its_fit.png` (observed vs counterfactual), `figures/p13_break_year_sensitivity.png`, `figures/p13_breakpoint_profile.png`.*
 
-- [ ] **P14: Quantile trends.** Write `src/lw/models/quantile_trends.py`: quantile regression (τ = 0.1, 0.5, 0.9) with the same segmented form, with bootstrap CIs. Did the loudest decile come down? *Figures: `figures/p14_quantile_trends.png`, `figures/p14_quantile_slope_change.png` (coefficient plot by τ).*
+- [x] ✅ DONE! **P14: Quantile trends.** _Done 2026-11-07: the loudest decile did not come down: P90 ≈ −7.4 est. LUFS every year 2003–21, 2016–22 gap +0.04 LU vs the plateau trend (+0.12 after the 2007 bend, −0.20 vs a straight 2000–15 trend); the loud end stopped rising first (bend 2004–05 vs median 2007–09); the quiet end's rise is mostly genre mix; P99 rose −5.25 → −4.52 within genres (electronic, partly beyond the calibration range); exact track-level QR, bootstrap + HAC CIs; see `notes/p14_quantile.md`._ Write `src/lw/models/quantile_trends.py`: quantile regression (τ = 0.1, 0.5, 0.9) with the same segmented form, with bootstrap CIs. Did the loudest decile come down? *Figures: `figures/p14_quantile_trends.png`, `figures/p14_quantile_slope_change.png` (coefficient plot by τ).*
 
 - [ ] **P15: Genre hierarchical model.** Write `src/lw/models/genre_hier.py`: a partially pooled Bayesian model in PyMC (genre-varying intercept, pre-slope, break level and slope change), fitted on genre-year cells weighted by n. Run diagnostics (R-hat, ESS, posterior predictive checks). Rank genres by post-2015 change. *Figures: `figures/p15_genre_small_multiples.png` (brief chart 3), `figures/p15_genre_break_forest.png`, `figures/p15_ppc.png`.*
 

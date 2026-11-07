@@ -73,6 +73,8 @@ models: ## (P12-P17) Fit models and write figures
 	$(PY) -m lw.viz.p12
 	$(PY) -m lw.models.its
 	$(PY) -m lw.viz.p13
+	$(PY) -m lw.models.quantile_trends
+	$(PY) -m lw.viz.p14
 
 report: ## (P21) Render Quarto article
 	@echo "TODO P21"
