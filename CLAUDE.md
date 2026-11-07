@@ -19,7 +19,8 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - ✅ DONE! P12: Hero chart v1 and LRA chart
 - ✅ DONE! P13: Interrupted time series
 - ✅ DONE! P14: Quantile trends
-- ⬜ P15: Genre hierarchical model ← next
+- ✅ DONE! P15: Genre hierarchical model
+- ⬜ P16: Remaster pairs ← next
 - ⬜ P15 onward
 
 ## How we work
@@ -88,7 +89,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 - [x] ✅ DONE! **P14: Quantile trends.** _Done 2026-11-07: the loudest decile did not come down: P90 ≈ −7.4 est. LUFS every year 2003–21, 2016–22 gap +0.04 LU vs the plateau trend (+0.12 after the 2007 bend, −0.20 vs a straight 2000–15 trend); the loud end stopped rising first (bend 2004–05 vs median 2007–09); the quiet end's rise is mostly genre mix; P99 rose −5.25 → −4.52 within genres (electronic, partly beyond the calibration range); exact track-level QR, bootstrap + HAC CIs; see `notes/p14_quantile.md`._ Write `src/lw/models/quantile_trends.py`: quantile regression (τ = 0.1, 0.5, 0.9) with the same segmented form, with bootstrap CIs. Did the loudest decile come down? *Figures: `figures/p14_quantile_trends.png`, `figures/p14_quantile_slope_change.png` (coefficient plot by τ).*
 
-- [ ] **P15: Genre hierarchical model.** Write `src/lw/models/genre_hier.py`: a partially pooled Bayesian model in PyMC (genre-varying intercept, pre-slope, break level and slope change), fitted on genre-year cells weighted by n. Run diagnostics (R-hat, ESS, posterior predictive checks). Rank genres by post-2015 change. *Figures: `figures/p15_genre_small_multiples.png` (brief chart 3), `figures/p15_genre_break_forest.png`, `figures/p15_ppc.png`.*
+- [x] ✅ DONE! **P15: Genre hierarchical model.** _Done 2026-11-07: PyMC partially pooled model on 276 genre-year cells (1.89M units; median, P90 (user decision) and LRA; AR(1); 13 fits, 0 divergences, R-hat ≤ 1.010); vs the brief's straight 2000–15 trend 7–8/12 genres are quieter and 7/12 more dynamic after 2016, but every genre's rise ended ~2007 (LOO prefers the bend form by 25–59 elpd) and once that bend is modelled no general break remains (pooled median +0.08 LU [−0.14, +0.31]; only metal clearly quieter, −0.33; classical louder; electronic's loud end still rising); see `notes/p15_genre_hier.md`._ Write `src/lw/models/genre_hier.py`: a partially pooled Bayesian model in PyMC (genre-varying intercept, pre-slope, break level and slope change), fitted on genre-year cells weighted by n. Run diagnostics (R-hat, ESS, posterior predictive checks). Rank genres by post-2015 change. *Figures: `figures/p15_genre_small_multiples.png` (brief chart 3), `figures/p15_genre_break_forest.png`, `figures/p15_ppc.png`.*
 
 - [ ] **P16: Remaster pairs.** Write `src/lw/models/remaster_pairs.py`: pair the same recording's original release with its later reissue(s). Plot ΔLUFS and ΔLRA by reissue year, with a mixed model including a recording random effect. Has the remaster gap shrunk since 2015? Pick ~20 famous albums for the dumbbell chart. *Figures: `figures/p16_remaster_gap_by_year.png`, `figures/p16_dumbbell_famous_albums.png` (brief chart 4).*
 
