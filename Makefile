@@ -77,6 +77,8 @@ models: ## (P12-P17) Fit models and write figures
 	$(PY) -m lw.viz.p14
 	$(PY) -m lw.models.genre_hier
 	$(PY) -m lw.viz.p15
+	$(PY) -m lw.models.remaster_pairs
+	$(PY) -m lw.viz.p16
 
 report: ## (P21) Render Quarto article
 	@echo "TODO P21"

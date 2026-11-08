@@ -20,7 +20,8 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - ✅ DONE! P13: Interrupted time series
 - ✅ DONE! P14: Quantile trends
 - ✅ DONE! P15: Genre hierarchical model
-- ⬜ P16: Remaster pairs ← next
+- ✅ DONE! P16: Remaster pairs
+- ⬜ P17: Other descriptors ← next
 - ⬜ P15 onward
 
 ## How we work
@@ -92,7 +93,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 - [x] ✅ DONE! **P15: Genre hierarchical model.** _Done 2026-11-07: PyMC partially pooled model on 276 genre-year cells (1.89M units; median, P90 (user decision) and LRA; AR(1); 13 fits, 0 divergences, R-hat ≤ 1.010); vs the brief's straight 2000–15 trend 7–8/12 genres are quieter and 7/12 more dynamic after 2016, but every genre's rise ended ~2007 (LOO prefers the bend form by 25–59 elpd) and once that bend is modelled no general break remains (pooled median +0.08 LU [−0.14, +0.31]; only metal clearly quieter, −0.33; classical louder; electronic's loud end still rising); see `notes/p15_genre_hier.md`._ Write `src/lw/models/genre_hier.py`: a partially pooled Bayesian model in PyMC (genre-varying intercept, pre-slope, break level and slope change), fitted on genre-year cells weighted by n. Run diagnostics (R-hat, ESS, posterior predictive checks). Rank genres by post-2015 change. *Figures: `figures/p15_genre_small_multiples.png` (brief chart 3), `figures/p15_genre_break_forest.png`, `figures/p15_ppc.png`.*
 
-- [ ] **P16: Remaster pairs.** Write `src/lw/models/remaster_pairs.py`: pair the same recording's original release with its later reissue(s). Plot ΔLUFS and ΔLRA by reissue year, with a mixed model including a recording random effect. Has the remaster gap shrunk since 2015? Pick ~20 famous albums for the dumbbell chart. *Figures: `figures/p16_remaster_gap_by_year.png`, `figures/p16_dumbbell_famous_albums.png` (brief chart 4).*
+- [x] ✅ DONE! **P16: Remaster pairs.** _Done 2026-11-07: 16,991 lossless, digital-only track pairs (1,567 albums; vinyl rips excluded after they produced implausible 'remasters'); labelled remasters are louder than the original master (median +1.1 LU per track; +2–3 LU for 1980s CD masters; Graceland +7.0, Thriller +5.9, Nevermind +5.0); the gap peaked in 2005–09 and 2015–22 remasters are 0.5 LU less over-loud than 2005–14 ([−0.81, −0.14]) but with no 2016 step (bend form p = 0.90); est. LRA barely changes; see `notes/p16_remaster_pairs.md`._ Write `src/lw/models/remaster_pairs.py`: pair the same recording's original release with its later reissue(s). Plot ΔLUFS and ΔLRA by reissue year, with a mixed model including a recording random effect. Has the remaster gap shrunk since 2015? Pick ~20 famous albums for the dumbbell chart. *Figures: `figures/p16_remaster_gap_by_year.png`, `figures/p16_dumbbell_famous_albums.png` (brief chart 4).*
 
 - [ ] **P17: Other descriptors.** Trend dynamic complexity, a crest-factor proxy (peak − loudness, if peak is available; otherwise say so), spectral flatness and spectral centroid by year and genre. Is music denser even if it isn't louder? **Added 2026-11-07 (user decision, P15):** check whether classical's (+0.52 LU) and "other"'s (+0.38) post-2016 rise in median est. LUFS is composition (neo-classical / crossover / soundtrack tags, track length, near-silent share) rather than mastering. *Figures: `figures/p17_descriptor_trends.png`, `figures/p17_density_vs_loudness.png`.*
 
