@@ -21,7 +21,8 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - ✅ DONE! P14: Quantile trends
 - ✅ DONE! P15: Genre hierarchical model
 - ✅ DONE! P16: Remaster pairs
-- ⬜ P17: Other descriptors ← next
+- ✅ DONE! P17: Other descriptors
+- ⬜ P18: Own-measurement validation ← next
 - ⬜ P15 onward
 
 ## How we work
@@ -83,7 +84,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 - [x] ✅ DONE! **P11: EDA and sanity checks.** _Done 2026-11-07: decade medians −15.8 → −10.9 est. LUFS; all 20 Wikipedia-cited loud albums above their year median (14 top quartile), both 'dynamic' ones below; est. LRA tracks silence (ρ 0.92) and is nearly flat without it, so P12 adds a near-silence-free LRA line; edition mismatch hits single classics, not yearly medians; see `notes/p11_eda.md`._ Profile `tracks.parquet`: distributions, outliers, and the correlation between LUFS, LRA, dynamic complexity and average_loudness. Spot-check 50 well-known albums (Death Magnetic, Californication, (What's the Story) Morning Glory?, Random Access Memories, etc.) against published values where their terms allow. Flag anything implausible. Write `notes/p11_eda.md`. *Figures: `figures/p11_ridgeline_lufs_by_decade.png` (brief chart 5), `figures/p11_lufs_vs_lra.png` (hexbin), `figures/p11_spotcheck_albums.png`.*
 
-## Phase 2 — Models and core charts
+## Phase 2 — Models and core charts ✅ DONE
 
 - [x] ✅ DONE! **P12: Hero chart v1 and LRA chart.** _Done 2026-11-07: headline redefined to `in_headline` (recording's first appearance, 2.60M units) after box sets of old recordings were found to distort single years; median est. LUFS rose ~5 LU to a 2009 peak (−10.41); 2016–22 is 0.2 LU below 2005–15, easing visible from ~2013; P90 flat, P10 rose; est. LRA flat since 2005 (and flat without silence); release-group bootstrap CIs ±0.17; see `notes/p12_hero.md`._ Plot median LUFS by release year, 1980–2022, with the P10–P90 band, bootstrap CI on the median, the normalisation era shaded from P04, and n per year shown. Make the same chart for LRA, **with two lines: all units and units with < 5% near-silent frames** (user decision 2026-11-07, P11: est. LRA tracks silence, ρ 0.92), labelled as an estimate that includes silence; floor est. LRA at 0. Use `in_headline` (tier A+B, no reissues, lossless source, recording's first appearance; decided at P09 and P12) as the main sample, and overlay a dashed comparison line: first-appearance `in_main` minus units with `loudness_source = 'lossy'` and `bit_rate_lossy <= 160000` (user decision 2026-11-07; label it "all codecs, excluding ≤160 kbps"). *Figures: `figures/p12_hero_lufs.png` + `.html`, `figures/p12_lra.png` + `.html` (brief charts 1–2).*
 
@@ -95,7 +96,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 - [x] ✅ DONE! **P16: Remaster pairs.** _Done 2026-11-07: 16,991 lossless, digital-only track pairs (1,567 albums; vinyl rips excluded after they produced implausible 'remasters'); labelled remasters are louder than the original master (median +1.1 LU per track; +2–3 LU for 1980s CD masters; Graceland +7.0, Thriller +5.9, Nevermind +5.0); the gap peaked in 2005–09 and 2015–22 remasters are 0.5 LU less over-loud than 2005–14 ([−0.81, −0.14]) but with no 2016 step (bend form p = 0.90); est. LRA barely changes; see `notes/p16_remaster_pairs.md`._ Write `src/lw/models/remaster_pairs.py`: pair the same recording's original release with its later reissue(s). Plot ΔLUFS and ΔLRA by reissue year, with a mixed model including a recording random effect. Has the remaster gap shrunk since 2015? Pick ~20 famous albums for the dumbbell chart. *Figures: `figures/p16_remaster_gap_by_year.png`, `figures/p16_dumbbell_famous_albums.png` (brief chart 4).*
 
-- [ ] **P17: Other descriptors.** Trend dynamic complexity, a crest-factor proxy (peak − loudness, if peak is available; otherwise say so), spectral flatness and spectral centroid by year and genre. Is music denser even if it isn't louder? **Added 2026-11-07 (user decision, P15):** check whether classical's (+0.52 LU) and "other"'s (+0.38) post-2016 rise in median est. LUFS is composition (neo-classical / crossover / soundtrack tags, track length, near-silent share) rather than mastering. *Figures: `figures/p17_descriptor_trends.png`, `figures/p17_density_vs_loudness.png`.*
+- [x] ✅ DONE! **P17: Other descriptors.** _Done 2026-11-07: lossless-only Essentia descriptors for 2.60M units; no sample peak in AcousticBrainz, so no true crest factor (frame-RMS proxy instead); dynamics (avg loudness, dyn. complexity, crest) tracked loudness and have been flat since ~2009, but spectra kept getting flatter (+0.16 SD at fixed loudness and genre, 2016–22 vs 2009–15) and darker (−60 Hz): denser in timbre, not dynamics; classical's post-2016 rise is label mix + less silence (+0.44 → +0.12 LU, CI incl. 0), not sub-genre; see `notes/p17_descriptors.md`._ Trend dynamic complexity, a crest-factor proxy (peak − loudness, if peak is available; otherwise say so), spectral flatness and spectral centroid by year and genre. Is music denser even if it isn't louder? **Added 2026-11-07 (user decision, P15):** check whether classical's (+0.52 LU) and "other"'s (+0.38) post-2016 rise in median est. LUFS is composition (neo-classical / crossover / soundtrack tags, track length, near-silent share) rather than mastering. *Figures: `figures/p17_descriptor_trends.png`, `figures/p17_density_vs_loudness.png`.*
 
 ## Phase 3 — Validation and robustness
 
