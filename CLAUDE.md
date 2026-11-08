@@ -48,6 +48,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - **Unit loudness (P09): lossless first.** `lufs`/`lra` = median over a unit's lossless submissions if it has any, else its lossy ones; some lossy files had MP3Gain/aacgain applied (identical audio, level shifted). `lufs_all`, `lufs_lossless`, `lufs_lossy` are kept. Lossy copies read ~0.4 LU quieter than lossless from 2014 on (a bitrate-mix effect, see Gain tags), so the lossless-only check is essential in P12/P13/P19.
 - Reissue rule (P08): deluxe / special edition / bonus tracks are `is_deluxe`, **not** reissues (86% are released with the original); reissue keywords are remaster, anniversary, reissue, legacy edition, expanded.
 - Own audio: **some rips, mostly lossy** (user decision, 2026-11-02). P18 treats them as secondary evidence, and the R128 test signals plus published measurements serve as the main check. P03 used `~/Music/iTunes/iTunes Media/Music` + `~/Music/Music` (AAC). **Update 2026-11-05:** the user will rip ~12 CDs to FLAC/ALAC with MusicBrainz IDs (quiet pre-1990, loud-war peak, post-2015, classical/jazz, metal/EDM, plus an original + remaster pair if possible) for P18. Ask for the folder path at P18. The 64 KB short/broken files in the library are intentional; leave them skipped.
+- **Break framing (user decision 2026-11-07, P15):** P20/P21 lead with the **bend-first** result (each series' rise ended ~2007; no general post-2015 break once that bend is modelled) and show the **brief's literal straight 2000–14/15 trend test alongside** (it "passes" in most genres), with the LOO comparison and per-genre pre/post-2007 slopes explaining why the bend form is preferred. Never present only one form.
 - App: **static site on GitHub Pages** (user decision, 2026-11-02).
 - Genre model: **Bayesian, PyMC** (user decision, 2026-11-02).
 
@@ -93,7 +94,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 - [ ] **P16: Remaster pairs.** Write `src/lw/models/remaster_pairs.py`: pair the same recording's original release with its later reissue(s). Plot ΔLUFS and ΔLRA by reissue year, with a mixed model including a recording random effect. Has the remaster gap shrunk since 2015? Pick ~20 famous albums for the dumbbell chart. *Figures: `figures/p16_remaster_gap_by_year.png`, `figures/p16_dumbbell_famous_albums.png` (brief chart 4).*
 
-- [ ] **P17: Other descriptors.** Trend dynamic complexity, a crest-factor proxy (peak − loudness, if peak is available; otherwise say so), spectral flatness and spectral centroid by year and genre. Is music denser even if it isn't louder? *Figures: `figures/p17_descriptor_trends.png`, `figures/p17_density_vs_loudness.png`.*
+- [ ] **P17: Other descriptors.** Trend dynamic complexity, a crest-factor proxy (peak − loudness, if peak is available; otherwise say so), spectral flatness and spectral centroid by year and genre. Is music denser even if it isn't louder? **Added 2026-11-07 (user decision, P15):** check whether classical's (+0.52 LU) and "other"'s (+0.38) post-2016 rise in median est. LUFS is composition (neo-classical / crossover / soundtrack tags, track length, near-silent share) rather than mastering. *Figures: `figures/p17_descriptor_trends.png`, `figures/p17_density_vs_loudness.png`.*
 
 ## Phase 3 — Validation and robustness
 
