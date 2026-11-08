@@ -88,6 +88,8 @@ This is the same timing as new releases (P13–P15): a turn in the late 2000s, n
   - (b, c) period effects for remasters, reissues and later compilations, for LUFS and LRA.
 - `figures/p16_dumbbell_famous_albums.png`: brief chart 4. 20 widely submitted albums, chosen as the most-submitted originals with a labelled digital remaster, at least 6 paired tracks, tier A on both sides and one album per artist. The remaster point is the original plus the median paired-track difference.
 
+**User decisions (2026-11-07):** keep the automatic, reproducible album rule for the dumbbell (hand-picked iconic albums go to P18's own CD rips instead), and keep the identical-audio albums, with a caption note.
+
 ## For later prompts
 
 - **P18:** the user's own CD rips should include an original + remaster pair (already planned). Use them to check the dumbbell albums where possible, and the size of the mis-tag attenuation.

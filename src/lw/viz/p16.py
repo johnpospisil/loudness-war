@@ -170,7 +170,8 @@ def fig_dumbbell() -> None:
                  "the remaster with the most paired tracks is shown; remaster point = original + median paired-track difference", fontsize=8.8, color=theme.TEXT_2)  # fmt: skip
     fig.tight_layout(rect=(0, 0, 1, 0.9))
     theme.save_fig(fig, "p16_dumbbell_famous_albums", n=int(f["n_tracks"].sum()), source=SRC,
-                   note=f"n = paired tracks; AcousticBrainz-derived estimates, not official measurements; one AB submission set per edition, so a mislabelled file moves an album's value; {NOTE}")  # fmt: skip
+                   note=f"n = paired tracks; AcousticBrainz-derived estimates, not official measurements; ±0.0 LU = the 'remaster' files match the original audio (same master reissued, or one rip tagged as both editions); "
+                        f"one AB submission set per edition, so a mislabelled file moves an album's value; {NOTE}")  # fmt: skip
 
 
 def main() -> None:
