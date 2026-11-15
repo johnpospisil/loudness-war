@@ -92,9 +92,13 @@ models: ## (P12-P17) Fit models and write figures
 	$(PY) -m lw.models.descriptors
 	$(PY) -m lw.viz.p17
 
+robustness: ## (P19) Specification curve and genre-reweighted hero
+	$(PY) -m lw.models.robustness
+	$(PY) -m lw.viz.p19
+
 report: ## (P21) Render Quarto article
 	@echo "TODO P21"
 
 all: ingest-ab ingest-mb build models report ## Full rebuild
 
-.PHONY: validate match dedupe genres eda ingest-ab-tags help setup test lint theme calibrate timeline ingest-ab-hl ab-report ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all
+.PHONY: robustness validate match dedupe genres eda ingest-ab-tags help setup test lint theme calibrate timeline ingest-ab-hl ab-report ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all
