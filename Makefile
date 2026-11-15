@@ -1,6 +1,7 @@
 # Is the Loudness War Over? — pipeline. Each target is idempotent.
 .DEFAULT_GOAL := help
 PY := uv run python
+RIPS ?= $(HOME)/Music/Lossless
 
 help: ## Show targets
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-14s\033[0m %s\n",$$1,$$2}'
@@ -66,6 +67,15 @@ eda: ## (P11) Profile + album spot-check -> data/processed/p11_*.{json,csv}, fig
 	$(PY) -m lw.eda
 	$(PY) -m lw.viz.p11
 
+validate: ## (P18) Own-rip measurements, encoding test, DR Database check, figures (RIPS=~/Music/Lossless)
+	$(PY) -m lw.measure.own_rips inventory --root $(RIPS)
+	caffeinate -i $(PY) -m lw.measure.own_rips measure --jobs 3
+	caffeinate -i $(PY) -m lw.measure.own_rips encode --per-album 2 --jobs 3
+	$(PY) -m lw.ingest.drdb targets --per-year 6
+	$(PY) -m lw.ingest.drdb fetch
+	$(PY) -m lw.models.validation
+	$(PY) -m lw.viz.p18
+
 build: match dedupe genres ## (P08-P10) Release match, dedupe, genres -> data/processed/tracks.parquet
 
 models: ## (P12-P17) Fit models and write figures
@@ -87,4 +97,4 @@ report: ## (P21) Render Quarto article
 
 all: ingest-ab ingest-mb build models report ## Full rebuild
 
-.PHONY: match dedupe genres eda ingest-ab-tags help setup test lint theme calibrate timeline ingest-ab-hl ab-report ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all
+.PHONY: validate match dedupe genres eda ingest-ab-tags help setup test lint theme calibrate timeline ingest-ab-hl ab-report ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all
