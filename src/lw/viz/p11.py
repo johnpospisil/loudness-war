@@ -53,7 +53,7 @@ def fig_ridgeline(c, head: str = HEAD, unit: str = UNIT) -> None:
             if dd == d:
                 h[int(round((b - lo) / w))] += n
         h = np.convolve(h, np.ones(5) / 5, mode="same")
-        h = h / h.max() * 1.15
+        h = h / h.max() * 0.88  # peaks stay below the next row: no overlap with 5 rows
         base = (len(decades) - 1 - k) * step
         ax.fill_between(edges + w / 2, base, base + h, color=cols[k], alpha=0.9, lw=0,
                         zorder=10 - k)  # fmt: skip
