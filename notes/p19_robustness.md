@@ -7,7 +7,7 @@ _2026-11-14. Code: `lw.models.robustness`, `lw.viz.p19`; `make robustness`. Outp
 - **Model forms**, each with a break B = 2015 or 2016:
   - **Straight pre-trend** (the brief's test), window 2000–22 or 2005–22.
   - **Bend-first**: a continuous hinge at 2007 plus the level/slope change at B, window 2000–22.
-- **Estimate shown:** the mean post-break gap against the fitted counterfactual, with Newey-West SEs. 17 specs × 6 fits = 102 estimates; the early-submission cohort can't be fitted (see below).
+- **Estimate shown:** the mean post-break gap against the fitted counterfactual, with Newey-West SEs. 20 specs × 6 fits; the early-submission cohort can't be fitted (see below), giving 114 estimates. (The two release-group weighting specs were added during P20 QA.)
 - **Coverage rule:** a year is used only if it has ≥ 500 units. Submission cohorts also need ≥ 25% of their own 2000–14 yearly count. Cohorts are right-censored: early submitters can't hold later releases.
 - A fit needs ≥ 4 post-break years. The early cohort (dump parts 0–9) ends in 2017, so it drops out.
 
@@ -17,6 +17,8 @@ _2026-11-14. Code: `lw.models.robustness`, `lw.viz.p19`; `make robustness`. Outp
 | Headline | −0.56 ± 0.41 | −0.26 ± 0.28 | −0.08 ± 0.16 (0.23) |
 | No first-appearance rule | −0.29 | −0.10 | 0.00 (0.18) |
 | Every submission lossless | −0.48 | −0.25 | −0.12 (0.38) |
+| Release group capped at 30 units *(added P20)* | — | — | see `p19_specs.parquet` |
+| **Every release group weighted equally** *(added P20)* | −0.42 | −0.04 | **+0.14** (0.01) |
 | Tier A only | −0.43 | −0.12 | +0.06 (0.19) |
 | No compilations / studio originals | −0.65 / −0.68 | −0.23 / −0.20 | −0.03 / −0.01 |
 | RG agrees within 1 dB (P18) | −0.59 | −0.34 | −0.17 (0.14) |
@@ -39,6 +41,10 @@ _2026-11-14. Code: `lw.models.robustness`, `lw.viz.p19`; `make robustness`. Outp
 - **Residual dips:**
   - **All-codec samples:** about −0.2 LU even after the bend. The lossy-only units above 192 kbps fell 0.22 LU between 2009–14 and 2016–22 (−10.61 → −10.83), while lossless units did not. P18 found that 256k AAC, 320k and V2 encoding move LUFS by ≤ 0.05 LU, so it isn't the encoding. It is either which music exists only as lossy files after 2016, or level-altered downloads/rips the P09 flags miss. The data can't separate the two. The lossless headline avoids the issue; the dashed comparison line inherits it.
   - **Late-submission cohort (parts 20–29, most of the 2016–22 data):** −0.26 [−0.46, −0.06] after the bend. The mid cohort is −0.26 but very noisy. With no submitter ID, contributor drift can't be ruled out here. Cohort medians for 2000–17 sit within about 0.2 LU of each other, except the mid cohort, which is 0.3–0.6 LU quieter in 2000–10.
+
+## Added at P20 (QA)
+- **Album weighting flips the sign of the small residual.** With every release group weighted equally, 2016–22 equals 2005–15 (−10.27 vs −10.26), and the bend gap is +0.14 / +0.17 LU. So the residual direction depends on the weighting; "flat" is the robust statement. See `notes/p20_findings.md`.
+- Summary over 38 estimates per form: straight 2000–22 median −0.61 (87% CI below 0); bend median −0.11, range −0.42 to +0.17.
 
 ## For P20
 - **Strong:** the 2016–22 median lies below a straight 2000–15 extrapolation in every spec.

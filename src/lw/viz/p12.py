@@ -33,7 +33,7 @@ def _period(h: pl.DataFrame, a: int, b: int, col: str = "median") -> float:
 
 def _png(d: pl.DataFrame, metric: str) -> None:
     h = _get(d, "headline", metric)
-    cmp_ = _get(d, "all_codec_ex160", metric)
+    cmp_ = _get(d, "all_codec_ex192", metric)
     low = _get(d, "headline_low_sil", metric)
     yy = h["year"].to_numpy()
     blue, orange, grey = theme.SERIES[0], theme.SERIES[1], theme.TEXT_2
@@ -68,7 +68,7 @@ def _png(d: pl.DataFrame, metric: str) -> None:
         label="headline: median (lossless source)",
     )
     ax.plot(cmp_["year"], cmp_["median"], color=grey, lw=1.4, ls=(0, (4, 2.5)),
-            label="all codecs, excluding ≤160 kbps: median")  # fmt: skip
+            label="all codecs, excluding ≤192 kbps lossy: median")  # fmt: skip
     if metric == "lra":
         ax.fill_between(low["year"], low["ci_lo"], low["ci_hi"], color=orange, alpha=0.3, lw=0)
         ax.plot(low["year"], low["median"], color=orange, lw=2.0, marker="o", ms=3,
@@ -135,7 +135,7 @@ def _png(d: pl.DataFrame, metric: str) -> None:
 
 def _html(d: pl.DataFrame, metric: str) -> None:
     h = _get(d, "headline", metric)
-    cmp_ = _get(d, "all_codec_ex160", metric)
+    cmp_ = _get(d, "all_codec_ex192", metric)
     low = _get(d, "headline_low_sil", metric)
     unit = "LUFS" if metric == "lufs" else "LU"
     name = "est. LUFS" if metric == "lufs" else "est. LRA"
@@ -159,7 +159,7 @@ def _html(d: pl.DataFrame, metric: str) -> None:
                              fillcolor=theme.SEQ_BLUE[5], line_width=0, hoverinfo="skip", name="95% CI"))  # fmt: skip
     fig.add_trace(go.Scatter(x=yy, y=h["median"], mode="lines+markers", name="headline median (lossless)",
                              line=dict(color=theme.SERIES[0], width=3), customdata=cd(h), hovertemplate=hover))  # fmt: skip
-    fig.add_trace(go.Scatter(x=cmp_["year"], y=cmp_["median"], mode="lines", name="all codecs, excl. ≤160 kbps",
+    fig.add_trace(go.Scatter(x=cmp_["year"], y=cmp_["median"], mode="lines", name="all codecs, excl. ≤192 kbps lossy",
                              line=dict(color=theme.TEXT_2, width=1.6, dash="dash"), customdata=cd(cmp_),
                              hovertemplate=hover))  # fmt: skip
     if metric == "lra":

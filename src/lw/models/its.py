@@ -88,7 +88,7 @@ def _series(d: pl.DataFrame, sample: str, metric: str, lo: int, hi: int):
 
 def yearly_fits(d: pl.DataFrame) -> list[dict]:
     rows = []
-    series = [("headline", "lufs"), ("headline", "lra"), ("all_codec_ex160", "lufs"),
+    series = [("headline", "lufs"), ("headline", "lra"), ("all_codec_ex160", "lufs"), ("all_codec_ex192", "lufs"),
               ("headline_low_sil", "lufs"), ("headline_low_sil", "lra"),
               ("lossless_all_units", "lufs")]  # fmt: skip
     for sample, metric in series:
@@ -198,7 +198,7 @@ def main() -> None:
         rows += r
         fe_rows[b] = (years, fe, se)
     tb = []
-    for sample in ["headline", "all_codec_ex160", "lossless_all_units", "headline_low_sil"]:
+    for sample in ["headline", "all_codec_ex160", "all_codec_ex192", "lossless_all_units", "headline_low_sil"]:
         t, y, _ = _series(d, sample, "lufs", *WINDOWS["2000-2022"])
         for k in range(2006, 2012):
             for b in [2015, 2016]:

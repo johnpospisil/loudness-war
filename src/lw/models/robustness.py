@@ -20,6 +20,8 @@ Specs (CLAUDE.md decisions; "headline" = ``in_headline``):
 * sample definition: headline; previous headline ``in_main_lossless`` (no first-appearance
   rule); all codecs excluding <= 160 kbps lossy (dashed line); all codecs incl. <= 160 kbps;
   every submission lossless;
+* weighting (P12 rules): release group capped at 30 units; every release group weighted
+  equally (the "average album", a different estimand);
 * matching: tier A only; no compilations; studio originals only (no compilation, live,
   soundtrack, remix, DJ-mix, deluxe);
 * measurement: drop units whose submissions' replay gain spans > 1 dB (P18: other masters
@@ -68,7 +70,7 @@ B_BOOT = 300
 # post-break years.
 MIN_N, MIN_SHARE, MIN_POST = 500, 0.25, 4
 SEED = 20261114
-BOOT_SPECS = ["headline", "genre_mb_mix", "genre_fixed_mix", "rg_range_le_1db", "one_per_recording"]
+BOOT_SPECS = ["rg_equal", "headline", "genre_mb_mix", "genre_fixed_mix", "rg_range_le_1db", "one_per_recording"]
 
 # name -> (group, label, filter on the loaded frame); weights are added in ``weights``
 SPECS: dict[str, tuple[str, str, str]] = {
@@ -78,6 +80,8 @@ SPECS: dict[str, tuple[str, str, str]] = {
     "all_codec_ex192": ("sample", "All codecs, excl. ≤192 kbps lossy", "in_main and first_appearance and not low192"),
     "all_codec": ("sample", "All codecs, incl. ≤160 kbps lossy", "in_main and first_appearance"),
     "all_lossless": ("sample", "Every submission lossless", "in_headline and all_lossless"),
+    "rg_cap30": ("weighting", "Release group capped at 30 units", "in_headline"),
+    "rg_equal": ("weighting", "Every release group weighted equally", "in_headline"),
     "tier_a": ("matching", "Tier A matches only", "in_headline and match_tier = 'A'"),
     "no_compilation": ("matching", "No compilations", "in_headline and not is_compilation"),
     "studio_originals": ("matching", "Studio originals only", "in_headline and not (is_compilation or is_live or is_soundtrack or is_remix or is_djmix or is_deluxe)"),
@@ -118,6 +122,9 @@ def load(con) -> pl.DataFrame:
 
 def weights(name: str, d: pl.DataFrame) -> pl.Series | None:
     """Unit weights for the reweighted specs (None = equal weights)."""
+    if name in ("rg_cap30", "rg_equal"):
+        n = d.select(pl.len().over("year", "cl"))["len"].cast(pl.Float64)
+        return (30.0 / n).clip(upper_bound=1.0) if name == "rg_cap30" else 1.0 / n
     if name == "genre_mb_mix":
         g = pl.read_parquet(GMIX).select("year", "genre", w="weight_headline")
         return d.join(g, on=["year", "genre"], how="left", maintain_order="left")["w"].fill_null(0.0)

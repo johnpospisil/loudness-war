@@ -15,6 +15,8 @@ Samples (CLAUDE.md decisions):
                         read ~0.44 LU quiet, notes/p09_dedupe.md)
 * ``lossless_all_units`` ``in_main_lossless``, the headline before 2026-11-07 (old recordings in
                         new box sets / best-ofs included), kept for P19
+* ``all_codec_ex192``   the dashed comparison since 2026-11-14 (user decision, P19): also drops
+                        lossy copies at <= 192 kbps (192k CBR reads -0.26 LU, P18)
 * ``headline_low_sil``  headline units with < 5% near-silent frames (LRA chart; P11 showed est.
                         LRA tracks silence)
 
@@ -44,7 +46,9 @@ LOW_SIL = 0.05
 SAMPLES = {
     "headline": "in_headline",
     "all_codec_ex160": "in_main and first_appearance and not (loudness_source = 'lossy'"
-    " and coalesce(bit_rate_lossy, 1e9) <= 160000)",
+    " and coalesce(bit_rate_lossy, 1e9) <= 160000)",  # dashed line until 2026-11-14
+    "all_codec_ex192": "in_main and first_appearance and not (loudness_source = 'lossy'"
+    " and coalesce(bit_rate_lossy, 1e9) <= 192000)",
     "headline_low_sil": f"in_headline and silence_rate_60db < {LOW_SIL}",
     "lossless_all_units": "in_main_lossless",  # pre-2026-11-07 headline, kept for P19
 }  # fmt: skip

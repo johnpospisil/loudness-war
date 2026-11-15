@@ -20,7 +20,7 @@ FORMS = {
     ("bend", "2000-2022"): ("Bend at 2007 + break (bend-first)", theme.SERIES[0]),
 }
 MARK = {2015: "o", 2016: "D"}
-GROUPS = {"baseline": "Baseline", "sample": "Sample", "matching": "Matching", "measurement": "Measurement",
+GROUPS = {"baseline": "Baseline", "sample": "Sample", "weighting": "Unit weighting", "matching": "Matching", "measurement": "Measurement",
           "genre": "Genre", "cohort": "Submission cohort"}  # fmt: skip
 
 
@@ -50,8 +50,8 @@ def fig_spec_curve() -> None:
     a.text(0.01, 0.97,
            f"Straight 2000–22 trend: {st['n_estimates']} estimates, all negative, median {st['gap_median']:+.2f} LU, "
            f"{st['share_ci_below_0']:.0%} with CI below 0\n"
-           f"Bend-first: median {bd['gap_median']:+.2f} LU, {bd['share_ci_below_0']:.0%} with CI below 0 "
-           "(all-codec samples and the late-submission cohort)",
+           f"Bend-first: median {bd['gap_median']:+.2f} LU, range {bd['gap_min']:+.2f} to {bd['gap_max']:+.2f}; CI below 0 only for "
+           "all-codec samples and the late-submission cohort; the album-weighted series sits above 0",
            transform=a.transAxes, va="top", fontsize=8.8, color=theme.TEXT_2)  # fmt: skip
     a.grid(axis="x", visible=False)
     # indicator matrix
