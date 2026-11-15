@@ -34,8 +34,8 @@ function genreName(g, plural = true) {
 // ---------- data ----------
 async function init() {
   const [dist, buf] = await Promise.all([
-    fetch("data/dist.json").then((r) => r.json()),
-    fetch("data/albums.parquet").then((r) => {
+    fetch("data/dist.json?v=bc99e0cd60").then((r) => r.json()),
+    fetch("data/albums.parquet?v=46d987d708").then((r) => {
       if (!r.ok) throw new Error(`albums.parquet: HTTP ${r.status}`);
       return r.arrayBuffer();
     }),
