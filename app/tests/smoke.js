@@ -36,6 +36,14 @@ const check = (ok, msg) => { console.log(`${ok ? "PASS" : "FAIL"}  ${msg}`); if 
   const bj = await page.waitForSelector('#results li .r-sub:has-text("Björk")', { timeout: 10000 }).catch(() => null);
   check(bj !== null, "accent-free query finds Björk");
 
+  // results are listed in release-year order
+  await page.fill("#q", "metallica");
+  await page.press("#q", "Enter");
+  await page.waitForFunction(() => document.getElementById("status").textContent.includes("oldest first"));
+  const years = await page.$$eval("#results .r-sub", (els) => els.map((e) => Number(e.textContent.slice(-4))));
+  check(years.length > 5 && years.every((y, i) => i === 0 || y >= years[i - 1]),
+        `results in release-year order (${years[0]}…${years[years.length - 1]}, n = ${years.length})`);
+
   // empty result gives directions
   await page.fill("#q", "zzqqxx nonexistent album");
   await page.press("#q", "Enter");

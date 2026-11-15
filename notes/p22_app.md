@@ -3,7 +3,7 @@
 _2026-11-14. Code: `lw.app.build` (data), `app/` (static page), `lw.app.site` (assembles `docs/`). Rebuild with `make site`._
 
 ## What it does
-- **Search:** an album or artist, accent- and punctuation-insensitive, with every word required. Results are ranked by exact title or artist match, then by number of submissions.
+- **Search:** an album or artist, accent- and punctuation-insensitive, with every word required. Up to 200 matches are kept (exact title or artist match first, then most submitted) and **listed in release-year order, oldest first** (user request 2026-11-14).
 - **Album page:**
   - median est. LUFS and est. LRA;
   - percentile among albums released within ±2 years, overall and within the album's genre;

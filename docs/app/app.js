@@ -5,6 +5,7 @@ const $ = (id) => document.getElementById(id);
 const state = { conn: null, dist: null, album: null, scope: "all", metric: "lufs" };
 const SVGNS = "http://www.w3.org/2000/svg";
 const Y0 = 1980, Y1 = 2022;
+const MAX_RESULTS = 200;
 
 const minus = (s) => String(s).replace(/-/g, "−");
 const fmt = (v, d = 1) => minus(Number(v).toFixed(d));
@@ -73,11 +74,13 @@ async function search(q) {
   if (!words.length) return [];
   const where = words.map(() => "(title_key || ' ' || artist_key) like ?").join(" and ");
   const full = norm(q);
-  return rows(
-    `select ${COLS} from albums where ${where}
-     order by (title_key = ?) desc, (artist_key = ?) desc, n_sub desc limit 25`,
+  // keep the MAX_RESULTS most relevant matches, then list them in release-year order
+  const list = await rows(
+    `select ${COLS}, count(*) over () as n_total from albums where ${where}
+     order by (title_key = ?) desc, (artist_key = ?) desc, n_sub desc limit ${MAX_RESULTS}`,
     [...words.map((w) => `%${w}%`), full, full],
   );
+  return list.sort((a, b) => a.year - b.year || a.title.localeCompare(b.title));
 }
 
 // ---------- rendering ----------
@@ -97,9 +100,10 @@ function renderResults(list, q) {
     $("status").textContent = `No albums match "${q}". Try fewer words, or the artist's name on its own.`;
     return;
   }
-  $("status").textContent = list.length === 25
-    ? "Showing the 25 most-submitted matches. Add a word to narrow it down."
-    : `${list.length} ${list.length === 1 ? "match" : "matches"}.`;
+  const total = list[0].n_total;
+  $("status").textContent = total > list.length
+    ? `${total.toLocaleString("en-GB")} matches. Showing the ${list.length} most-submitted, oldest first. Add a word to narrow it down.`
+    : list.length === 1 ? "1 match." : `${list.length} matches, oldest first.`;
   for (const a of list) {
     const li = document.createElement("li");
     const b = document.createElement("button");
