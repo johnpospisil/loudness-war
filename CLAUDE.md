@@ -25,7 +25,8 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - ✅ DONE! P18: Own-measurement validation
 - ✅ DONE! P19: Robustness and specification curve
 - ✅ DONE! P20: Results QA
-- ⬜ P21: Article ← next
+- ✅ DONE! P21: Article
+- ⬜ P22: "How loud is my album?" app ← next
 
 ## How we work
 
@@ -53,6 +54,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - Reissue rule (P08): deluxe / special edition / bonus tracks are `is_deluxe`, **not** reissues (86% are released with the original); reissue keywords are remaster, anniversary, reissue, legacy edition, expanded.
 - Own audio: **some rips, mostly lossy** (user decision, 2026-11-02). P18 treats them as secondary evidence, and the R128 test signals plus published measurements serve as the main check. P03 used `~/Music/iTunes/iTunes Media/Music` + `~/Music/Music` (AAC). **Update 2026-11-05:** the user will rip ~12 CDs to FLAC/ALAC with MusicBrainz IDs (quiet pre-1990, loud-war peak, post-2015, classical/jazz, metal/EDM, plus an original + remaster pair if possible) for P18. **Done at P18 (2026-11-14):** 13 CDs / 149 FLAC tracks in `~/Music/Lossless` (`make validate RIPS=...`); 4 albums without MB tags are resolved by barcode/catalogue. The 64 KB short/broken files in the library are intentional; leave them skipped.
 - **Break framing (user decision 2026-11-07, P15):** P20/P21 lead with the **bend-first** result (each series' rise ended ~2007; no general post-2015 break once that bend is modelled) and show the **brief's literal straight 2000–14/15 trend test alongside** (it "passes" in most genres), with the LOO comparison and per-genre pre/post-2007 slopes explaining why the bend form is preferred. Never present only one form.
+- **P21 decisions (user, 2026-11-14):** hero title "Loudness rose about 5 LU, then went flat after 2009"; the article's one-line answer is "No — the loudness war ended in a stalemate around 2008, before streaming normalisation." No author byline set yet.
 - **P19/P20 decisions (user, 2026-11-14):** the P19 spec curve goes in the P21 **main text**; P21 takes claims, strength tags and wording from `notes/p20_findings.md` and says "flat since 2009" (not "slightly quieter"), because the residual's sign depends on track vs album weighting.
 - **P18 follow-ups (user decisions 2026-11-14):** the > 1 dB replay-gain spec is in P19; P21 shows the encoding-shift result as a figure (`p18_encoding_shift.png`, explains the lossy gap), not only in the appendix; the DR Database owner will **not** be asked, so per-album DR stays unpublished.
 - App: **static site on GitHub Pages** (user decision, 2026-11-02).
@@ -112,7 +114,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 ## Phase 4 — Publish
 
-- [ ] **P21: Article.** Write `report/index.qmd` (Quarto, HTML): the narrative "Turned Down for What", with the hero chart up front, methods in a collapsible appendix, and every number pulled from `data/processed/` (none hard-coded). Run `quarto render`. *Figures: final versions of the hero chart and charts 2–6 (`figures/final_*.png`).*
+- [x] ✅ DONE! **P21: Article.** _Done 2026-11-14: `report/index.qmd` → `report/index.html` (`make report`); answer up front ('No — ended in a stalemate around 2008, before streaming normalisation'); hero retitled 'rose about 5 LU, then went flat after 2009'; 8 final figures (brief charts 1–6 + spec curve + encoding shift); every number inline from `data/processed/article_numbers.json` (`lw.report.numbers`); methods in collapsible appendix; ridgeline switched to the headline sample._ Write `report/index.qmd` (Quarto, HTML): the narrative "Turned Down for What", with the hero chart up front, methods in a collapsible appendix, and every number pulled from `data/processed/` (none hard-coded). Run `quarto render`. *Figures: final versions of the hero chart and charts 2–6 (`figures/final_*.png`).*
 
 - [ ] **P22: "How loud is my album?" app.** Build a static web app in `app/`: search an album or artist and see its LUFS/LRA against its year and genre distribution. It loads a precomputed compact Parquet/JSON via DuckDB-WASM, so it needs no server and deploys to GitHub Pages. Test with Playwright. *Figures: `figures/p22_app_screenshot.png`.*
 

@@ -45,6 +45,8 @@ DIV_NEG, DIV_MID, DIV_POS = "#2a78d6", "#f0efec", "#e34948"
 
 # Neutral band for the streaming-normalisation era; percentile bands use a tint of the series.
 ERA_FILL = "#ecebe7"
+# figure name -> (final name, replacement suptitle or None); used by lw.viz.final
+FINAL: dict[str, tuple[str, str | None]] = {}
 
 
 def apply() -> None:
@@ -107,7 +109,16 @@ def save_fig(
     source: str = SOURCE,
     dpi: int = 200,
 ) -> Path:
-    """Stamp source/n/note in the bottom-left and write figures/<name>.png."""
+    """Stamp source/n/note in the bottom-left and write figures/<name>.png.
+
+    ``FINAL`` (set by ``lw.viz.final``) renames a figure and replaces its suptitle, so the
+    article versions reuse the prompt figures' code unchanged."""
+    if name in FINAL:
+        name, title = FINAL[name]
+        if fig._suptitle is not None:
+            if title:
+                fig._suptitle.set_text(title)
+            fig._suptitle.set_fontweight("bold")
     bits = [source]
     if n is not None:
         bits.append(f"n = {n:,}")

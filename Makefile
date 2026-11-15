@@ -96,8 +96,10 @@ robustness: ## (P19) Specification curve and genre-reweighted hero
 	$(PY) -m lw.models.robustness
 	$(PY) -m lw.viz.p19
 
-report: ## (P21) Render Quarto article
-	@echo "TODO P21"
+report: ## (P21) Article numbers, final figures, render report/index.html
+	$(PY) -m lw.report.numbers
+	$(PY) -m lw.viz.final
+	QUARTO_PYTHON=$(CURDIR)/.venv/bin/python quarto render report/index.qmd
 
 all: ingest-ab ingest-mb build models report ## Full rebuild
 

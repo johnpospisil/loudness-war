@@ -26,7 +26,9 @@ UNIT = "unit = one recording on one release; headline sample (main, lossless sou
 CAL = "est. LUFS / LRA = AcousticBrainz proxies calibrated in P03 (RMSE 1.3 LU / 2.9 LU)"
 
 
-def fig_ridgeline(c) -> None:
+def fig_ridgeline(c, head: str = HEAD, unit: str = UNIT) -> None:
+    """``head``/``unit``: sample filter and its footnote (P21 passes the final headline)."""
+    HEAD = head  # noqa: N806
     lo, hi, w = -32.0, -2.0, 0.25
     rows = c.execute(f"""select year // 10 * 10 d, floor(lufs / {w}) * {w} b, count(*)
         from read_parquet('{T}') where {HEAD} and lufs between {lo} and {hi}
@@ -76,7 +78,7 @@ def fig_ridgeline(c) -> None:
                  loc="left", fontsize=10)  # fmt: skip
     fig.tight_layout()
     theme.save_fig(fig, "p11_ridgeline_lufs_by_decade", n=sum(ns.values()), source=SRC,
-                   note=f"{UNIT}; {CAL}")  # fmt: skip
+                   note=f"{unit}; {CAL}")  # fmt: skip
 
 
 def _hex(ax, c, where: str, title: str):
