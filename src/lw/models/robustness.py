@@ -70,7 +70,14 @@ B_BOOT = 300
 # post-break years.
 MIN_N, MIN_SHARE, MIN_POST = 500, 0.25, 4
 SEED = 20261114
-BOOT_SPECS = ["rg_equal", "headline", "genre_mb_mix", "genre_fixed_mix", "rg_range_le_1db", "one_per_recording"]
+BOOT_SPECS = [
+    "rg_equal",
+    "headline",
+    "genre_mb_mix",
+    "genre_fixed_mix",
+    "rg_range_le_1db",
+    "one_per_recording",
+]
 
 # name -> (group, label, filter on the loaded frame); weights are added in ``weights``
 SPECS: dict[str, tuple[str, str, str]] = {
@@ -127,14 +134,21 @@ def weights(name: str, d: pl.DataFrame) -> pl.Series | None:
         return (30.0 / n).clip(upper_bound=1.0) if name == "rg_cap30" else 1.0 / n
     if name == "genre_mb_mix":
         g = pl.read_parquet(GMIX).select("year", "genre", w="weight_headline")
-        return d.join(g, on=["year", "genre"], how="left", maintain_order="left")["w"].fill_null(0.0)
+        return d.join(g, on=["year", "genre"], how="left", maintain_order="left")["w"].fill_null(
+            0.0
+        )
     if name == "genre_fixed_mix":
         # direct standardisation: weight_{y,g} = fixed share_g / share_{y,g}
-        sh = d.group_by("year", "genre").len().with_columns(
-            s=pl.col("len") / pl.col("len").sum().over("year"))
+        sh = (
+            d.group_by("year", "genre")
+            .len()
+            .with_columns(s=pl.col("len") / pl.col("len").sum().over("year"))
+        )
         fx = (d.filter(pl.col("year").is_between(*FIXED_MIX)).group_by("genre").len()
               .with_columns(f=pl.col("len") / pl.col("len").sum()).select("genre", "f"))  # fmt: skip
-        w = sh.join(fx, on="genre", how="left").with_columns(w=pl.col("f").fill_null(0.0) / pl.col("s"))
+        w = sh.join(fx, on="genre", how="left").with_columns(
+            w=pl.col("f").fill_null(0.0) / pl.col("s")
+        )
         return d.join(w.select("year", "genre", "w"), on=["year", "genre"], how="left",
                       maintain_order="left")["w"]  # fmt: skip
     return None
@@ -222,14 +236,28 @@ def summarise(res: pl.DataFrame, ys: pl.DataFrame) -> dict:
                 "share_ci_below_0": float((hi < 0).mean()), "share_ci_above_0": float((lo > 0).mean())}  # fmt: skip
 
     s: dict = {"hinge": HINGE, "breaks": BREAKS, "specs": {k: v[1] for k, v in SPECS.items()}}
-    for form, window in [("straight", "2000-2022"), ("straight", "2005-2022"), ("bend", "2000-2022")]:
+    for form, window in [
+        ("straight", "2000-2022"),
+        ("straight", "2005-2022"),
+        ("bend", "2000-2022"),
+    ]:
         f = res.filter((pl.col("form") == form) & (pl.col("window") == window))
         s[f"{form}|{window}"] = stats(f)
         if form == "bend":
             s[f"{form}|{window}"]["share_p_joint_lt_05"] = float((f["p_joint"] < 0.05).mean())
     s["by_spec"] = {
         r["spec"] + f"|{r['form']}|{r['window']}|{r['break']}": {
-            k: r[k] for k in ["gap", "gap_se", "p_level", "p_joint", "n_units", "min_year_n", "last_year", "n_post"]
+            k: r[k]
+            for k in [
+                "gap",
+                "gap_se",
+                "p_level",
+                "p_joint",
+                "n_units",
+                "min_year_n",
+                "last_year",
+                "n_post",
+            ]
         }
         for r in res.iter_rows(named=True)
     }

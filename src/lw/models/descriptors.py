@@ -95,7 +95,11 @@ def unit_descriptors(con) -> None:
 def yearly(units: pl.DataFrame, reps: int = REPS, seed: int = SEED) -> pl.DataFrame:
     rng = np.random.default_rng(seed)
     rows = []
-    for (y,), g in units.filter(pl.col("year").is_between(1980, 2022)).group_by(["year"]):
+    for (y,), g in (
+        units.filter(pl.col("year").is_between(1980, 2022))
+        .sort("year")
+        .group_by(["year"], maintain_order=True)
+    ):
         cl = (g["release_group_mbid"].fill_null("?").rank("dense") - 1).cast(pl.Int64).to_numpy()
         for c in [*DESC, "lufs"]:
             v = g[c].to_numpy()
@@ -131,7 +135,9 @@ def genre_change(
         for c in [*DESC, "lufs"]
     }
     rows = []
-    for (g,), d in u.filter(pl.col("per").is_in([a, b])).group_by(["genre"]):
+    for (g,), d in (
+        u.filter(pl.col("per").is_in([a, b])).sort("genre").group_by(["genre"], maintain_order=True)
+    ):
         for c in [*DESC, "lufs"]:
             med = {}
             boots = {}
@@ -353,7 +359,8 @@ def main() -> None:
     con.execute("set preserve_insertion_order = false")
     if not UNITS.exists():
         unit_descriptors(con)
-    units = pl.read_parquet(UNITS)
+    # a fixed row order: the seeded subsample and bootstraps must not depend on how DuckDB wrote the file
+    units = pl.read_parquet(UNITS).sort("recording_mbid", "release_mbid")
     print(f"units {units.height:,} ({time.time() - t0:.0f}s)", flush=True)
     s: dict = {
         "n_units": units.height,

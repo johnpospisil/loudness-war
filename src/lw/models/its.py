@@ -151,6 +151,8 @@ def track_level(con, b: int, lo: int = 2000, hi: int = 2022) -> list[dict]:
     df = con.sql(f"""select year, lufs, genre, release_group_mbid from read_parquet('{T}')
         where in_headline and year between {lo} and {hi} and genre_source <> 'hl'
           and genre is not null""").pl()
+    # fixed reference genre (alphabetically first), whatever order DuckDB returns rows in
+    df = df.sort("genre", "year", "lufs", "release_group_mbid", nulls_last=True)
     t = df["year"].to_numpy().astype(float)
     y = df["lufs"].to_numpy()
     G = df.select("genre").to_dummies(drop_first=True).to_numpy().astype(float)
@@ -198,7 +200,13 @@ def main() -> None:
         rows += r
         fe_rows[b] = (years, fe, se)
     tb = []
-    for sample in ["headline", "all_codec_ex160", "all_codec_ex192", "lossless_all_units", "headline_low_sil"]:
+    for sample in [
+        "headline",
+        "all_codec_ex160",
+        "all_codec_ex192",
+        "lossless_all_units",
+        "headline_low_sil",
+    ]:
         t, y, _ = _series(d, sample, "lufs", *WINDOWS["2000-2022"])
         for k in range(2006, 2012):
             for b in [2015, 2016]:

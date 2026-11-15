@@ -96,7 +96,7 @@ robustness: ## (P19) Specification curve and genre-reweighted hero
 	$(PY) -m lw.models.robustness
 	$(PY) -m lw.viz.p19
 
-report: ## (P21) Article numbers, final figures, render report/index.html
+report: ## (P21) Article numbers, final figures, render report/index.html (run `app` first)
 	$(PY) -m lw.report.numbers
 	$(PY) -m lw.viz.final
 	QUARTO_PYTHON=$(CURDIR)/.venv/bin/python quarto render report/index.qmd
@@ -107,6 +107,14 @@ app: ## (P22) Album lookup data -> app/data/
 site: app report ## (P22) Assemble the GitHub Pages site in docs/ (article + app + interactive charts)
 	$(PY) -m lw.app.site
 
-all: ingest-ab ingest-mb build models report site ## Full rebuild
+ingest: ingest-ab ingest-ab-hl ingest-ab-tags fetch-mb ingest-mb ## (P05-P07) All downloads and parsing (~2 days, network-bound; resumable)
 
-.PHONY: app site robustness validate match dedupe genres eda ingest-ab-tags help setup test lint theme calibrate timeline ingest-ab-hl ab-report ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all
+analysis: build eda models robustness validate ## (P08-P19) Everything from parsed data to model outputs and figures
+
+all: ingest analysis site check ## Full rebuild from raw downloads (calibrate is separate: needs the author's audio library)
+
+rebuild: analysis site check ## Rebuild everything downstream of the parsed dumps (~45 min)
+
+check: lint test ## Ruff + pytest
+
+.PHONY: ingest analysis rebuild check app site robustness validate match dedupe genres eda ingest-ab-tags help setup test lint theme calibrate timeline ingest-ab-hl ab-report ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all

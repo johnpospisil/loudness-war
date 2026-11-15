@@ -138,7 +138,8 @@ def dedupe(
         union all by name
         select * from (select * from {src} semi join rep using ({key}))
         qualify row_number() over (partition by {key} order by match_tier nulls last,
-            release_mbid nulls last, tag_album, tag_date, replay_gain) = 1""")
+            release_mbid nulls last, tag_album, tag_date, replay_gain, dynamic_complexity,
+            spectral_centroid, barkbands_flatness_db, rhythm_bpm, average_loudness) = 1""")
     if tags is None:
         con.execute("""create or replace temp view s1t as
             select *, false as gain_tagged, false as stream_rip from s1""")

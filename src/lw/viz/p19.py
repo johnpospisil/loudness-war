@@ -35,7 +35,9 @@ def fig_spec_curve() -> None:
     a.axhline(0, color=theme.TEXT, lw=0.9)
     for (form, win), (_lab, col) in FORMS.items():
         for brk, m in MARK.items():
-            f = r.filter((pl.col("form") == form) & (pl.col("window") == win) & (pl.col("break") == brk))
+            f = r.filter(
+                (pl.col("form") == form) & (pl.col("window") == win) & (pl.col("break") == brk)
+            )
             xx, g, se = f["x"].to_numpy(), f["gap"].to_numpy(), f["gap_se"].to_numpy()
             a.vlines(xx, g - 1.96 * se, g + 1.96 * se, color=col, lw=1.1, alpha=0.55)
             a.plot(xx, g, m, color=col, ms=4.6 if m == "o" else 4, mec="white", mew=0.4)
@@ -43,8 +45,15 @@ def fig_spec_curve() -> None:
     a.plot(h["x"], h["gap"], "o", ms=10, mfc="none", mec=theme.TEXT, mew=1.1)
     a.set_ylabel("2016–22 (or 2015–22) gap vs\nfitted counterfactual (LU, 95% CI)")
     hs = [Line2D([], [], color=c, marker="o", ls="-", lw=1, label=lab) for lab, c in FORMS.values()]
-    hs += [Line2D([], [], color=theme.TEXT_2, marker=m, ls="", label=f"break {k}") for k, m in MARK.items()]
-    hs += [Line2D([], [], marker="o", ms=10, mfc="none", mec=theme.TEXT, ls="", label="headline sample")]
+    hs += [
+        Line2D([], [], color=theme.TEXT_2, marker=m, ls="", label=f"break {k}")
+        for k, m in MARK.items()
+    ]
+    hs += [
+        Line2D(
+            [], [], marker="o", ms=10, mfc="none", mec=theme.TEXT, ls="", label="headline sample"
+        )
+    ]
     a.legend(handles=hs, loc="lower right", fontsize=8.5, ncol=2, frameon=False)
     st, bd = s["straight|2000-2022"], s["bend|2000-2022"]
     a.text(0.01, 0.97,
@@ -100,13 +109,21 @@ def fig_spec_curve() -> None:
             "cohorts also drop years with < 25% of their 2000–14 count (early cohort ends 2017, too few post years: not shown). "
             "≤160 kbps lossy copies read ~0.4 LU quiet (P18). No causal claim.")  # fmt: skip
     fig.subplots_adjust(top=0.88)
-    theme.save_fig(fig, "p19_spec_curve", note=f"headline n = {int(h['n_units'][0]):,} units, 2000–22" + note, source=SRC)
+    theme.save_fig(
+        fig,
+        "p19_spec_curve",
+        note=f"headline n = {int(h['n_units'][0]):,} units, 2000–22" + note,
+        source=SRC,
+    )
 
 
 def fig_reweighted_hero() -> None:
     y = pl.read_parquet(rb.YEARLY)
     s = json.loads(rb.SUMMARY.read_text())
-    get = {k: y.filter(pl.col("spec") == k).sort("year") for k in ["headline", "genre_mb_mix", "genre_fixed_mix"]}
+    get = {
+        k: y.filter(pl.col("spec") == k).sort("year")
+        for k in ["headline", "genre_mb_mix", "genre_fixed_mix"]
+    }
     lines = {"headline": ("Headline (as observed)", theme.SERIES[0]),
              "genre_mb_mix": ("(A) Reweighted to MusicBrainz genre mix of each year", theme.SERIES[1]),
              "genre_fixed_mix": ("(C) Fixed 2000–14 genre mix (within-genre change only)", theme.SERIES[2])}  # fmt: skip

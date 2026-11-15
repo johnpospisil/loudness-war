@@ -85,11 +85,11 @@ def match(con, subs: str, out: Path) -> dict:
     t0 = time.time()
     q = con.execute
     # 1. distinct match keys (submissions share them: same recording + same tags), with an id
-    q(f"""create or replace temp table k as
+    q(f"""create or replace table k as
         select row_number() over () as kid, * from (
             select distinct {", ".join(f"{e} as {n}" for n, e in _keys("").items())} from {subs})""")
     # 2. resolve recording and release MBIDs through redirects
-    q("""create or replace temp table kr as
+    q("""create or replace table kr as
         select k.*,
                coalesce(r.recording_mbid, x.new_mbid) as rec,
                case when r.recording_mbid is not null then 'direct'
@@ -103,16 +103,16 @@ def match(con, subs: str, out: Path) -> dict:
         left join (select old_mbid, new_mbid from mb_mbid_redirect where entity = 'release') xr
                on xr.old_mbid = k.tag_rel and rl.release_mbid is null""")
     # 3. the recording's releases, with what tiers B and C need
-    q(f"""create or replace temp table rr as
+    q(f"""create or replace table rr as
         select distinct rr.recording_mbid as rec, rr.release_mbid, rel.release_year,
                rel.release_date, {STATUS_RANK} as status_rank, {norm("rel.name")} as name_norm
         from mb_recording_release rr join mb_release rel using (release_mbid)
         where rr.recording_mbid in (select rec from kr where rec is not null)""")
-    q("""create or replace temp table ma as
+    q("""create or replace table ma as
         select kr.kid, kr.tag_rel_res as release_mbid, 'A' as tier from kr
         where exists (select 1 from rr where rr.rec = kr.rec and rr.release_mbid = kr.tag_rel_res)""")
     # tier B: same year + album title; prefer the release whose full date equals the tag's
-    q("""create or replace temp table mb_ as
+    q("""create or replace table mb_ as
         select kr.kid, arg_min(rr.release_mbid,
                    (case when rr.release_date = kr.tag_dt then '0' else '1' end)
                    || coalesce(rr.release_date, '9999') || rr.status_rank || rr.release_mbid)
@@ -122,31 +122,31 @@ def match(con, subs: str, out: Path) -> dict:
         where kr.tag_y <> '' and kr.tag_alb <> '' and kr.kid not in (select kid from ma)
         group by kr.kid""")
     # tier C: earliest dated release; undated ones last; then Official > none > Promotion > rest
-    q("""create or replace temp table first_rel as
+    q("""create or replace table first_rel as
         select rec, arg_min(release_mbid, coalesce(release_date, '9999') || status_rank
                     || release_mbid) as release_mbid
         from rr group by 1""")
-    q("""create or replace temp table m as
+    q("""create or replace table m as
         select kr.*, coalesce(a.release_mbid, b.release_mbid, f.release_mbid) as release_mbid,
                case when a.kid is not null then 'A' when b.kid is not null then 'B'
                     when f.release_mbid is not null then 'C' end as tier
         from kr left join ma a using (kid) left join mb_ b using (kid)
         left join first_rel f on f.rec = kr.rec""")
     # 4. group first year (the earlier of MB's derived value and the group's earliest release)
-    q("""create or replace temp table rg as
+    q("""create or replace table rg as
         select g.*, least(g.first_release_year, e.min_year) as rg_first_year
         from mb_release_group g
         left join (select release_group_mbid, min(release_year) as min_year from mb_release
                    where release_year between 1900 and 2030 group by 1) e using (release_group_mbid)
         where g.release_group_mbid in (select r.release_group_mbid from mb_release r
                                        where r.release_mbid in (select release_mbid from m))""")
-    q("""create or replace temp table tlen as
+    q("""create or replace table tlen as
         select recording_mbid as rec, release_mbid, min(track_length_ms) / 1000.0 as len_min,
                max(track_length_ms) / 1000.0 as len_max
         from mb_recording_release
         where release_mbid in (select release_mbid from m) group by 1, 2""")
     # 5. one row per submission
-    q(f"""create or replace temp table s as
+    q(f"""create or replace table s as
         select s.*, m.rec as recording_mbid_mb, m.rec_resolve, m.tier as match_tier,
                m.tag_rel <> '' as has_release_tag,
                m.tag_rel <> '' and m.tag_rel_res is null as release_tag_unknown,
@@ -171,7 +171,7 @@ def match(con, subs: str, out: Path) -> dict:
         left join rg g on g.release_group_mbid = rel.release_group_mbid
         left join tlen t on t.rec = m.rec and t.release_mbid = m.release_mbid""")
     # 6. wrong-edition check, only for tier-A rows whose length is off
-    q(f"""create or replace temp table best as
+    q(f"""create or replace table best as
         select s.recording_mbid, s.submission_offset, s.part, s.release_mbid,
                min(abs(s.length_s - r.track_length_ms / 1000.0)) as len_best_s
         from s join mb_recording_release r on r.recording_mbid = s.recording_mbid_mb
@@ -241,18 +241,27 @@ def main(argv: list[str] | None = None) -> None:
 
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
     ap.add_argument("--memory", default="7GB")
+    ap.add_argument("--threads", type=int, default=4)
     ap.add_argument("--out", type=Path, default=OUT)
     args = ap.parse_args(argv)
-    con = duckdb.connect()
     tmp = ROOT / "data" / "interim" / "duckdb_tmp"
+    tmp.mkdir(parents=True, exist_ok=True)
+    # an on-disk scratch database: its tables (29.5 M wide rows) can be paged out to disk; an
+    # in-memory database cannot, and ran out of memory on the P23 rebuild (16 GB machine)
+    db = tmp / "release_match.duckdb"
+    db.unlink(missing_ok=True)
+    con = duckdb.connect(str(db))
     con.execute(f"set memory_limit='{args.memory}'; set temp_directory='{tmp}'")
-    con.execute("set preserve_insertion_order=false")
+    con.execute(f"set preserve_insertion_order=false; set threads={args.threads}")
     register_mb(con)
     con.execute(f"create view ll as select * from read_parquet('{LL}/part=*.parquet')")
     stats = match(con, "ll", args.out)
     stats.update(summarise(con))
     (args.out.parent / "ab_matched_summary.json").write_text(json.dumps(stats, indent=2))
     print(json.dumps(stats, indent=2))
+    con.close()
+    db.unlink(missing_ok=True)
+    db.with_suffix(".duckdb.wal").unlink(missing_ok=True)
 
 
 if __name__ == "__main__":

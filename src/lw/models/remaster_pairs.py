@@ -92,7 +92,7 @@ def build_pairs(con) -> pl.DataFrame:
         select recording_mbid, rg as orig_rg, rg_first_year from u
         where not is_compilation and rg_first_year <= coalesce(rec_first_year, rg_first_year) + 1
         group by recording_mbid, rg, rg_first_year
-        qualify row_number() over (partition by recording_mbid order by rg_first_year, count(*) desc) = 1""")
+        qualify row_number() over (partition by recording_mbid order by rg_first_year, count(*) desc, rg) = 1""")
     # original master = earliest digital, non-remaster issue in that release group (+1 year)
     con.execute("""create or replace temp table orig as
         with c as (select u.*, o.orig_rg, min(u.year) over (partition by u.recording_mbid) as y0
@@ -100,7 +100,7 @@ def build_pairs(con) -> pl.DataFrame:
                    where not u.labelled)
         select recording_mbid, orig_rg, min(year) as orig_year, any_value(rg_first_year) as rg_first_year,
                median(lufs) as orig_lufs, median(lra) as orig_lra, count(*) as n_orig,
-               bool_and(tier_a) as orig_tier_a, any_value(genre) as genre, sum(n_sub) as orig_subs
+               bool_and(tier_a) as orig_tier_a, min(genre) as genre, sum(n_sub) as orig_subs
         from c where year <= y0 + 1 group by 1, 2""")
     df = con.sql("""select o.*, (o.orig_year > o.rg_first_year + 1) as orig_first_cd,
             u.release_mbid as re_release, u.rg as re_rg, u.year as re_year, u.lufs as re_lufs,
@@ -116,12 +116,15 @@ def build_pairs(con) -> pl.DataFrame:
         _period("re_year", PERIODS).alias("re_period"),
         _period("orig_year", DECADES).alias("orig_decade"),
     )
-    return df.with_columns((pl.col("d_lufs").abs() < 0.05).alias("identical"))
+    # fixed row order: album_pairs takes first() per album, and DuckDB's order is arbitrary
+    return df.with_columns((pl.col("d_lufs").abs() < 0.05).alias("identical")).sort(
+        "orig_rg", "re_release", "recording_mbid"
+    )
 
 
 def album_pairs(pairs: pl.DataFrame) -> pl.DataFrame:
     return (
-        pairs.group_by(["kind", "orig_rg", "re_release"])
+        pairs.group_by(["kind", "orig_rg", "re_release"], maintain_order=True)
         .agg(
             pl.len().alias("n_tracks"),
             pl.col("orig_year").min(),
@@ -226,7 +229,7 @@ def by_year(albums: pl.DataFrame, reps: int = REPS, seed: int = SEED) -> pl.Data
         .when(pl.col("orig_year") < 2000).then(pl.lit("1990s originals")).otherwise(None).alias("grp")
     ).filter(pl.col("grp").is_not_null())  # fmt: skip
     rows = []
-    for (grp,), g in a.group_by(["grp"]):
+    for (grp,), g in a.sort("grp", "orig_rg", "re_release").group_by(["grp"], maintain_order=True):
         cl = (g["orig_rg"].rank("dense") - 1).cast(pl.Int64).to_numpy()
         k = int(cl.max()) + 1
         yr = g["re_year"].to_numpy()
@@ -263,11 +266,11 @@ def famous(
     a = albums.filter((pl.col("kind") == "remaster") & pl.col("tier_a") & (pl.col("n_tracks") >= min_tracks)
                       & (pl.col("orig_year") < 2000))  # fmt: skip
     a = (
-        a.sort(["n_tracks", "re_year"], descending=True)
+        a.sort(["n_tracks", "re_year", "re_release"], descending=True)
         .group_by("orig_rg", maintain_order=True)
         .first()
     )
-    a = a.sort("orig_subs", descending=True).head(200)
+    a = a.sort(["orig_subs", "orig_rg"], descending=[True, False]).head(200)
     names = artist_names(con, a["orig_rg"].to_list())
     rg = pl.read_parquet(RG, columns=["release_group_mbid", "name"])
     a = a.join(rg, left_on="orig_rg", right_on="release_group_mbid", how="left").with_columns(

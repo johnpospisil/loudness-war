@@ -82,7 +82,8 @@ def build_cells(con, reps: int = REPS, seed: int = SEED) -> pl.DataFrame:
     rng = np.random.default_rng(seed)
     rows = []
     for source, d in [("tags", df.filter(~pl.col("hl"))), ("tags+hl", df)]:
-        for (g, y), c in d.group_by(["genre", "year"], maintain_order=False):
+        # sorted, so the bootstrap draws do not depend on row order (P23 reproducibility)
+        for (g, y), c in d.sort("genre", "year").group_by(["genre", "year"], maintain_order=True):
             row = {"source": source, "genre": g, "year": int(y), "n": len(c),
                    "n_rg": c["release_group_mbid"].n_unique(),
                    "share_gt8": float((c["lufs"] > -8).mean())}  # fmt: skip

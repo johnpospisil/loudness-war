@@ -27,7 +27,8 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - ✅ DONE! P20: Results QA
 - ✅ DONE! P21: Article
 - ✅ DONE! P22: "How loud is my album?" app
-- ⬜ P23: Reproducibility pass ← next
+- ✅ DONE! P23: Reproducibility pass
+- ⬜ P24: Distribution kit ← next
 
 ## How we work
 
@@ -119,7 +120,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 - [x] ✅ DONE! **P22: "How loud is my album?" app.** _Done 2026-11-14: static DuckDB-WASM app in `app/` (181,582 original albums, each = its most-submitted edition; percentiles vs albums ± 2 years, overall and by genre; meter histogram + trend dot; deep links); `make site` assembles `docs/` (article with byline + app + interactive charts) for GitHub Pages from main /docs; Playwright smoke test 18/18, data tests pinned; see `notes/p22_app.md`._ Build a static web app in `app/`: search an album or artist and see its LUFS/LRA against its year and genre distribution. It loads a precomputed compact Parquet/JSON via DuckDB-WASM, so it needs no server and deploys to GitHub Pages. Test with Playwright. *Figures: `figures/p22_app_screenshot.png`.*
 
-- [ ] **P23: Reproducibility pass.** `make all` rebuilds everything from raw data; tests pin row counts and headline medians. Finish README.md (findings, how to reproduce) and DATA.md (sources, licences, field definitions, exclusions). Run ruff and pytest until clean. *Figures: none.*
+- [x] ✅ DONE! **P23: Reproducibility pass.** _Done 2026-11-15: full `make rebuild` passes ruff + pytest; release_match OOM fixed (on-disk DuckDB scratch); 9 order/tie nondeterminisms fixed (genre mode() ties, unordered bootstraps, dummy reference genre, P16 ties); second pass reproduces the hero, ITS, spec curve and every article number exactly (P15 no-AR sensitivity fits within MC error); P16 pin 16,991 → 16,993; README/DATA.md finished; `scripts/make_progress.sh` progress bar; see `notes/p23_reproducibility.md`._ `make all` rebuilds everything from raw data; tests pin row counts and headline medians. Finish README.md (findings, how to reproduce) and DATA.md (sources, licences, field definitions, exclusions). Run ruff and pytest until clean. *Figures: none.*
 
 - [ ] **P24: Distribution kit.** Draft posts for r/dataisbeautiful (hero chart, OC rules), r/audioengineering / Gearspace (methods-forward, measurement caveats), Hacker News (title + first comment), and a one-paragraph press note. Draft only; the user posts them. *Figures: social-crop versions of the hero chart (`figures/social_hero_1x1.png`, `_16x9.png`).*
 

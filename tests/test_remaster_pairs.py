@@ -71,7 +71,7 @@ def test_mixed_recovers_a_period_drop():
 def test_pinned():
     s = json.loads(rp.SUMMARY.read_text())
     c = s["counts"]["remaster"]
-    assert c["track_pairs"] == 16_991
+    assert c["track_pairs"] == 16_993  # 16,991 before P23 made the original-album tie-break fixed
     assert c["orig_albums"] == 1_567
     assert c["album_median_d_lufs"] == pytest.approx(0.8, abs=0.1)
     m = s["models"]["remaster|album|d_lufs"]["post2015_vs_2005_14"]

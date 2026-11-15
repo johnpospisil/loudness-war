@@ -317,14 +317,29 @@ def _winner(con, src: str, out: str) -> None:
 
 
 def hl_labels(con) -> None:
-    """Most common label per (MB recording, release) for each AB genre classifier."""
-    cols = ", ".join(f"mode({c}) as {c}" for c in HL_MAPS)
-    con.execute(f"""create or replace temp table hl as
-        select m.recording_mbid_mb as recording_mbid, m.release_mbid, {cols}
+    """Most common label per (MB recording, release) for each AB genre classifier.
+
+    Ties go to the alphabetically last label. DuckDB's ``mode()`` breaks ties arbitrarily, which
+    moved 1,825 classifier-only units between genres on the P23 rebuild."""
+    raw = ", ".join(f"h.{c}" for c in HL_MAPS)
+    con.execute(f"""create or replace temp table hl_sub as
+        select m.recording_mbid_mb as recording_mbid, m.release_mbid, {raw}
         from read_parquet('{MATCHED}') m
         join read_parquet('{HL}/part=*.parquet') h
           using (recording_mbid, part, submission_offset, md5_encoded)
-        where m.release_mbid is not null group by all""")
+        where m.release_mbid is not null""")
+    picks = []
+    for c in HL_MAPS:
+        con.execute(f"""create or replace temp table hl_{c} as
+            select recording_mbid, release_mbid, arg_max({c}, (n, {c})) as {c}
+            from (select recording_mbid, release_mbid, {c}, count(*) as n from hl_sub
+                  where {c} is not null group by all)
+            group by all""")
+        picks.append(c)
+    joins = " ".join(f"left join hl_{c} using (recording_mbid, release_mbid)" for c in picks)
+    con.execute(f"""create or replace temp table hl as
+        select recording_mbid, release_mbid, {", ".join(picks)}
+        from (select distinct recording_mbid, release_mbid from hl_sub) k {joins}""")
 
 
 def assign(con) -> dict:

@@ -106,7 +106,16 @@ def bland_altman(a: np.ndarray, b: np.ndarray, groups: np.ndarray | None = None)
     """Bias (b − a), SD, 95% limits of agreement, with a cluster bootstrap CI on the bias."""
     d = b - a
     ok = np.isfinite(d)
-    d, groups = d[ok], (groups[ok] if groups is not None else np.arange(ok.sum()))
+    d = d[ok]
+    # fixed order (values rounded, as upstream sums vary in the last bit), so the seeded
+    # bootstrap does not depend on the order rows arrive in
+    if groups is None:
+        d = d[np.argsort(np.round(d, 9), kind="stable")]
+        groups = np.arange(d.size)
+    else:
+        groups = groups[ok]
+        o = np.lexsort((np.round(d, 9), groups))
+        d, groups = d[o], groups[o]
     out = {"n": int(d.size), "bias": float(d.mean()), "sd": float(d.std(ddof=1)),
            "median": float(np.median(d)), "mae": float(np.abs(d).mean())}  # fmt: skip
     out["loa"] = [out["bias"] - 1.96 * out["sd"], out["bias"] + 1.96 * out["sd"]]
@@ -177,6 +186,10 @@ def _spearman(x: np.ndarray, y: np.ndarray) -> float:
 
 
 def _boot_corr(x: np.ndarray, y: np.ndarray, fn) -> dict:
+    o = np.lexsort(
+        (np.round(y, 9), np.round(x, 9))
+    )  # fixed order, so the seeded bootstrap does not depend on row order
+    x, y = x[o], y[o]
     rng = np.random.default_rng(SEED)
     est = fn(x, y)
     b = [fn(x[i], y[i]) for i in (rng.integers(0, x.size, x.size) for _ in range(N_BOOT))]
@@ -341,7 +354,8 @@ def _master_mix(own: pl.DataFrame, ab: pl.DataFrame) -> dict:
         out[lv] = {"n_submissions": q.height, "share_other_master": float(q["diff"].mean())
                    if q.height else None,
                    "albums": q.group_by(pl.col("path").str.extract(r"Lossless/([^/]+/[^/]+)/"))
-                   .agg(n=pl.len(), share=pl.col("diff").mean()).sort("share", descending=True)
+                   .agg(n=pl.len(), share=pl.col("diff").mean())
+                   .sort(["share", "path"], descending=[True, False])
                    .rename({"path": "album_dir"}).to_dicts()}  # fmt: skip
     return out
 
