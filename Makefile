@@ -101,6 +101,12 @@ report: ## (P21) Article numbers, final figures, render report/index.html
 	$(PY) -m lw.viz.final
 	QUARTO_PYTHON=$(CURDIR)/.venv/bin/python quarto render report/index.qmd
 
-all: ingest-ab ingest-mb build models report ## Full rebuild
+app: ## (P22) Album lookup data -> app/data/
+	$(PY) -m lw.app.build
 
-.PHONY: robustness validate match dedupe genres eda ingest-ab-tags help setup test lint theme calibrate timeline ingest-ab-hl ab-report ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all
+site: app report ## (P22) Assemble the GitHub Pages site in docs/ (article + app + interactive charts)
+	$(PY) -m lw.app.site
+
+all: ingest-ab ingest-mb build models report site ## Full rebuild
+
+.PHONY: app site robustness validate match dedupe genres eda ingest-ab-tags help setup test lint theme calibrate timeline ingest-ab-hl ab-report ingest-ab-sample ingest-ab fetch-mb ingest-mb build models report all

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How loud is my album?</title>
+  <meta name="description" content="Look up an album's estimated loudness and loudness range against albums from the same years and genre, 1980–2022.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='1' y='9' width='3' height='6' fill='%232a78d6'/%3E%3Crect x='6.5' y='5' width='3' height='10' fill='%232a78d6'/%3E%3Crect x='12' y='1' width='3' height='14' fill='%23eb6834'/%3E%3C/svg%3E">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>How loud is my album?</h1>
+      <p class="lede">Search <span id="n-albums">184,000</span> albums released 1980–2022 and see how loud each one is next to records from the same years. Part of <a href="../index.html">Turned Down for What</a>.</p>
+    </header>
+
+    <form id="search" role="search" autocomplete="off">
+      <label for="q">Album or artist</label>
+      <div class="field">
+        <input id="q" name="q" type="search" placeholder="e.g. Californication, or Daft Punk" disabled>
+        <button type="submit" disabled>Search</button>
+      </div>
+      <p id="status" class="status" aria-live="polite">Loading the catalogue…</p>
+    </form>
+
+    <ol id="results" class="results" aria-label="Matching albums"></ol>
+
+    <section id="album" class="album" hidden aria-live="polite">
+      <h2 id="a-title"></h2>
+      <p id="a-meta" class="meta"></p>
+
+      <div class="reading">
+        <p class="value"><span id="a-lufs"></span> <span class="unit">est. LUFS</span></p>
+        <p id="a-lufs-text" class="verdict"></p>
+      </div>
+
+      <figure class="meter">
+        <div class="meter-head">
+          <figcaption id="m-caption"></figcaption>
+          <div class="toggles" role="group" aria-label="Compare with">
+            <button type="button" data-scope="all" aria-pressed="true">All genres</button>
+            <button type="button" data-scope="genre" aria-pressed="false" id="t-genre">Same genre</button>
+          </div>
+        </div>
+        <svg id="m-svg" role="img" aria-labelledby="m-caption"></svg>
+        <div class="toggles metric" role="group" aria-label="Measure">
+          <button type="button" data-metric="lufs" aria-pressed="true">Loudness</button>
+          <button type="button" data-metric="lra" aria-pressed="false">Loudness range</button>
+        </div>
+      </figure>
+
+      <div class="reading second">
+        <p class="value small"><span id="a-lra"></span> <span class="unit">est. LU loudness range</span></p>
+        <p id="a-lra-text" class="verdict"></p>
+      </div>
+
+      <figure class="trend">
+        <figcaption>The album against the median track of every year (band: 10th–90th percentile of tracks)</figcaption>
+        <svg id="t-svg" role="img" aria-label="Line chart of median estimated loudness by release year with the album marked"></svg>
+      </figure>
+
+      <p class="links"><a id="a-mb" href="#" rel="noopener">Open on MusicBrainz</a> <a id="a-share" href="#">Link to this album</a></p>
+    </section>
+
+    <details class="notes">
+      <summary>What these numbers are</summary>
+      <p>Values are <strong>estimates</strong> from <a href="https://acousticbrainz.org">AcousticBrainz</a>, a volunteer collection of audio analyses that closed in 2022. Its replay-gain and dynamic-complexity values were calibrated against direct EBU R128 measurements of the same audio: about ±1.2 LU per track for loudness and ±3–4 LU for loudness range, which is a coarser measure.</p>
+      <p>An album's value is the median of its tracks (at least <span id="min-tracks">3</span>) on its most-submitted original edition, using lossless copies; bonus tracks from deluxe editions don't count. Only original releases are included, not reissues or compilations of older recordings. Remasters often share recording IDs with the original, so a few albums may mix copies of different masters.</p>
+      <p>"Louder than 80%" compares the album with other albums released within two years of it, across all genres or within its genre (from MusicBrainz tags). Data: AcousticBrainz and MusicBrainz, CC0.</p>
+    </details>
+  </main>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

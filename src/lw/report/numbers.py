@@ -86,6 +86,7 @@ def build() -> dict:
             "submissions": funnel["submissions"], "units": funnel["units"], "units_main": funnel["units_main"],
             "units_headline": funnel["units_headline"], "years": [int(h["year"].min()), int(h["year"].max())],
             "n_rg_headline": int(h["n_rg"].sum()), "n_2022": int(h["n"][-1]), "n_rg_2022": int(h["n_rg"][-1]),
+            "n_albums_app": json.loads((ROOT / "app/data/dist.json").read_text())["n_albums"],
             "ci_halfwidth_median": float(((h["ci_hi"] - h["ci_lo"]) / 2).median()),
         },
         "calibration": {k: {"const": cal[k]["coef"]["const"], "slope": list(cal[k]["coef"].values())[1],

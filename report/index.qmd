@@ -1,6 +1,7 @@
 ---
 title: "Turned Down for What"
 subtitle: "Loudness and dynamic range in recorded music before and after streaming normalisation"
+author: "John Pospisil"
 date: today
 format:
   html:
@@ -68,6 +69,8 @@ def lufs(id_):
 ![](../figures/final_hero_lufs.png){fig-alt="Line chart of median estimated loudness by release year, 1980 to 2022. It falls slightly to about −16 LUFS in the mid-1980s, rises steeply through the 1990s to about −10.5 LUFS by 2007–09, and stays flat after that, including through the shaded normalisation era from late 2015."}
 
 *Median estimated integrated loudness of new releases by release year, with the 10th–90th percentile band of tracks and the normalisation era shaded. [Interactive version](../figures/final_hero_lufs.html).*
+
+**How loud is your favourite album?** [Look it up](../app/index.html) among `{python} k(n["data"]["n_albums_app"])` albums and see where it sits against records from the same years.
 
 ## The question
 
