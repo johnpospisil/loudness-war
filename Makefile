@@ -104,6 +104,9 @@ report: ## (P21) Article numbers, final figures, render report/index.html (run `
 app: ## (P22) Album lookup data -> app/data/
 	$(PY) -m lw.app.build
 
+social: ## (P24) Social-crop hero images -> figures/social_hero_{1x1,16x9}.png
+	$(PY) -m lw.viz.social
+
 site: app report ## (P22) Assemble the GitHub Pages site in docs/ (article + app + interactive charts)
 	$(PY) -m lw.app.site
 

@@ -28,7 +28,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - ✅ DONE! P21: Article
 - ✅ DONE! P22: "How loud is my album?" app
 - ✅ DONE! P23: Reproducibility pass
-- ⬜ P24: Distribution kit ← next
+- ✅ DONE! P24: Distribution kit
 
 ## How we work
 
@@ -61,6 +61,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 - **P18 follow-ups (user decisions 2026-11-14):** the > 1 dB replay-gain spec is in P19; P21 shows the encoding-shift result as a figure (`p18_encoding_shift.png`, explains the lossy gap), not only in the appendix; the DR Database owner will **not** be asked, so per-album DR stays unpublished.
 - App: **static site on GitHub Pages** (user decision, 2026-11-02). Built into `docs/` by `make site`. **Published 2026-11-14** (user decision): public repo https://github.com/johnpospisil/loudness-war, Pages from main /docs at https://johnpospisil.github.io/loudness-war/ (app at `/app/`). Commits use the GitHub no-reply email (history rewritten before the first push; local branch `backup-before-email-rewrite` keeps the old history, never push it). The app stays **originals-only** (user decision 2026-11-14: no reissue/remaster lookup).
 - Genre model: **Bayesian, PyMC** (user decision, 2026-11-02).
+- **Licences (user decision 2026-11-15):** code MIT (`LICENSE`), article/figures/notes CC BY 4.0 (`LICENSE-CONTENT.md`), app album table CC0. The local `backup-before-email-rewrite` branch was deleted (user decision 2026-11-15).
 
 ---
 
@@ -114,7 +115,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 - [x] ✅ DONE! **P20: Results QA.** _Done 2026-11-14: verdict 'share with caveats'; 14 claims tagged (rise ~5 LU and end ~2007–09 strong; no post-2015 break > ~0.25 LU moderate; P90 never fell strong; metal/P99 weak); QA found the post-2016 'slight easing' flips sign under album weighting (now 'flat'), added the missing P12 weighting rows to P19, switched the dashed line to excl. ≤192 kbps; spot-checks reproduce P12/P13 exactly; see `notes/p20_findings.md`._ Run the `data:validate-data` skill over the whole analysis: methodology, leakage, multiple-comparison risk, and whether each claim follows from its evidence. Write `notes/p20_findings.md` with the final claims, each tagged strong/moderate/weak, and the limitations (coverage ends in 2022, contributor bias, no causal claim). *Figures: none, or fixes to earlier ones.*
 
-## Phase 4 — Publish
+## Phase 4 — Publish ✅ DONE
 
 - [x] ✅ DONE! **P21: Article.** _Done 2026-11-14: `report/index.qmd` → `report/index.html` (`make report`); answer up front ('No — ended in a stalemate around 2008, before streaming normalisation'); hero retitled 'rose about 5 LU, then went flat after 2009'; 8 final figures (brief charts 1–6 + spec curve + encoding shift); every number inline from `data/processed/article_numbers.json` (`lw.report.numbers`); methods in collapsible appendix; ridgeline switched to the headline sample._ Write `report/index.qmd` (Quarto, HTML): the narrative "Turned Down for What", with the hero chart up front, methods in a collapsible appendix, and every number pulled from `data/processed/` (none hard-coded). Run `quarto render`. *Figures: final versions of the hero chart and charts 2–6 (`figures/final_*.png`).*
 
@@ -122,7 +123,7 @@ Project brief: [12-loudness-war.md](12-loudness-war.md). Read it before any prom
 
 - [x] ✅ DONE! **P23: Reproducibility pass.** _Done 2026-11-15: full `make rebuild` passes ruff + pytest; release_match OOM fixed (on-disk DuckDB scratch); 9 order/tie nondeterminisms fixed (genre mode() ties, unordered bootstraps, dummy reference genre, P16 ties); second pass reproduces the hero, ITS, spec curve and every article number exactly (P15 no-AR sensitivity fits within MC error); P16 pin 16,991 → 16,993; README/DATA.md finished; `scripts/make_progress.sh` progress bar; see `notes/p23_reproducibility.md`._ `make all` rebuilds everything from raw data; tests pin row counts and headline medians. Finish README.md (findings, how to reproduce) and DATA.md (sources, licences, field definitions, exclusions). Run ruff and pytest until clean. *Figures: none.*
 
-- [ ] **P24: Distribution kit.** Draft posts for r/dataisbeautiful (hero chart, OC rules), r/audioengineering / Gearspace (methods-forward, measurement caveats), Hacker News (title + first comment), and a one-paragraph press note. Draft only; the user posts them. *Figures: social-crop versions of the hero chart (`figures/social_hero_1x1.png`, `_16x9.png`).*
+- [x] ✅ DONE! **P24: Distribution kit.** _Done 2026-11-15: drafts for r/dataisbeautiful ([OC] + source/tools comment), r/audioengineering / Gearspace (methods first), Show HN (title + first comment) and a one-paragraph press note, all numbers from `article_numbers.json` and wording per P20; exact-size social crops 1080×1080 and 1920×1080 (`make social`); MIT (code) + CC BY 4.0 (content) licences; see `notes/p24_distribution.md`._ Draft posts for r/dataisbeautiful (hero chart, OC rules), r/audioengineering / Gearspace (methods-forward, measurement caveats), Hacker News (title + first comment), and a one-paragraph press note. Draft only; the user posts them. *Figures: social-crop versions of the hero chart (`figures/social_hero_1x1.png`, `_16x9.png`).*
 
 ## Stretch
 

@@ -50,7 +50,7 @@
 6. **Validate.** Check against the author's own CD rips, controlled lossy re-encodes and the Dynamic Range Database.
 7. **Publish.** A Quarto article whose numbers are all read from the model outputs, and a static album lookup that runs DuckDB-WASM in the browser.
 
-Each step has a write-up in [`notes/`](notes/) (`p01` … `p22`). Data sources, licences, field definitions and exclusions are in [`DATA.md`](DATA.md).
+Each step has a write-up in [`notes/`](notes/) (`p01` … `p24`). Data sources, licences, field definitions and exclusions are in [`DATA.md`](DATA.md).
 
 ## Reproduce
 
@@ -98,3 +98,9 @@ tests/            pytest suite (parser fixtures, matching cases, pinned results)
 - **Dynamic Range Database** ([dr.loudness-war.info](https://dr.loudness-war.info)): used for an aggregate comparison only.
 
 By John Pospisil.
+
+## Licence
+
+- **Code** (`src/`, `tests/`, `app/*.js`, `scripts/`, `Makefile`): [MIT](LICENSE).
+- **Article, figures and notes** (`report/`, `figures/`, `notes/`, `docs/`): [CC BY 4.0](LICENSE-CONTENT.md). Credit "John Pospisil, *Is the Loudness War Over?*" with a link.
+- **Data**: AcousticBrainz and MusicBrainz are CC0; the derived album table in `app/data/` is also released as CC0. Dynamic Range Database values are not redistributed (aggregates only), see [`DATA.md`](DATA.md).
